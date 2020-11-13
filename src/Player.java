@@ -1,5 +1,3 @@
-package com.isep.project;
-
 public abstract class Player {
     private String name;
     private int role;
