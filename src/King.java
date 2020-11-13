@@ -1,4 +1,3 @@
 public class King {
-    temp123;
-    temp456;
+    temp789;
 }
