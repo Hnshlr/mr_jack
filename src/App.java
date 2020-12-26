@@ -11,7 +11,7 @@ public class App extends Application {
         Scene scene = new Scene(root,650,650);
 
         primaryStage.setTitle("Mister Jack's Pocket");
-        //primaryStage.getIcons().add(new Image("file:Pictures/icon.png"));
+        primaryStage.getIcons().add(new Image("file:images/JetonsDetective/Holmes.png"));
         primaryStage.setResizable(false);
         primaryStage.setWidth(650);
         primaryStage.setHeight(650);
