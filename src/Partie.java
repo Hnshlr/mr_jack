@@ -1,6 +1,4 @@
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -164,8 +162,16 @@ public class Partie extends Application {
 
         // Gestion des évenements sur le bouton valider
 
+        valider.setOnMouseEntered(e ->{
+            valider.setStyle( "-fx-background-color: #6d532f; -fx-font-family : Harrington; -fx-text-fill: white; -fx-font-size : 15;-fx-border-color: grey; -fx-border-radius: 5;" );
+        });
+        valider.setOnMouseExited(e ->{
+            valider.setStyle( "-fx-background-color: #6d532f; -fx-font-family : Harrington; -fx-text-fill: black; -fx-font-size : 15;-fx-border-color: grey; -fx-border-radius: 5;" );
+        });
         valider.setOnMouseClicked(e ->{
             valider.setStyle( "-fx-background-color: #6d532f; -fx-font-family : Harrington; -fx-border-width: 1; -fx-text-fill: white; -fx-font-size : 15;-fx-border-color: white; -fx-border-radius: 5;" );
+        });
+        valider.setOnMouseReleased(e ->{
             joueur1.nom = textField1.getText();
             joueur1.role = "Mr Jack";
 
@@ -176,14 +182,8 @@ public class Partie extends Application {
             System.out.println(joueur2.nom + " " + joueur2.role);
 
             jouer(); // on lance le jeu
+        });
 
-        });
-        valider.setOnMouseEntered(e ->{
-            valider.setStyle( "-fx-background-color: #6d532f; -fx-font-family : Harrington; -fx-text-fill: white; -fx-font-size : 15;-fx-border-color: grey; -fx-border-radius: 5;" );
-        });
-        valider.setOnMouseExited(e ->{
-            valider.setStyle( "-fx-background-color: #6d532f; -fx-font-family : Harrington; -fx-text-fill: black; -fx-font-size : 15;-fx-border-color: grey; -fx-border-radius: 5;" );
-        });
     }
 
     public static void loadImage(Pane root, FileInputStream inputstream) throws FileNotFoundException {
