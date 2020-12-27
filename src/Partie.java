@@ -135,6 +135,8 @@ public class Partie extends Application {
     }
 
     public void menuPlayers(Scene scene,Pane root) throws FileNotFoundException {
+        //Récupère noms et rôles des edux joueurs
+
         loadImage(root,new FileInputStream("images\\Menu\\MenuRoles.png"));
 
         TextField textField1 = new TextField("");
@@ -154,26 +156,33 @@ public class Partie extends Application {
         root.getChildren().add(textField2);
 
         Button valider = new Button("Valider");
+        valider.setStyle( "-fx-background-color: #6d532f; -fx-font-family : Harrington; -fx-text-fill: black; -fx-font-size : 15;-fx-border-color: grey; -fx-border-radius: 5;" );
         valider.setMinWidth(100);
         valider.setLayoutX(460);
         valider.setLayoutY(335);
         root.getChildren().add(valider);
 
-        valider.setOnAction(new EventHandler<ActionEvent>() {
+        // Gestion des évenements sur le bouton valider
 
-            @Override
-            public void handle(ActionEvent event) {
-                joueur1.nom = textField1.getText();
-                joueur1.role = "Mr Jack";
+        valider.setOnMouseClicked(e ->{
+            valider.setStyle( "-fx-background-color: #6d532f; -fx-font-family : Harrington; -fx-border-width: 1; -fx-text-fill: white; -fx-font-size : 15;-fx-border-color: white; -fx-border-radius: 5;" );
+            joueur1.nom = textField1.getText();
+            joueur1.role = "Mr Jack";
 
-                joueur2.nom = textField2.getText();
-                joueur2.role = "Enquêteur";
+            joueur2.nom = textField2.getText();
+            joueur2.role = "Enquêteur";
 
-                System.out.println(joueur1.nom + " " + joueur1.role);
-                System.out.println(joueur2.nom + " " + joueur2.role);
+            System.out.println(joueur1.nom + " " + joueur1.role);
+            System.out.println(joueur2.nom + " " + joueur2.role);
 
-                jouer(); // on lance le jeu
-            }
+            jouer(); // on lance le jeu
+
+        });
+        valider.setOnMouseEntered(e ->{
+            valider.setStyle( "-fx-background-color: #6d532f; -fx-font-family : Harrington; -fx-text-fill: white; -fx-font-size : 15;-fx-border-color: grey; -fx-border-radius: 5;" );
+        });
+        valider.setOnMouseExited(e ->{
+            valider.setStyle( "-fx-background-color: #6d532f; -fx-font-family : Harrington; -fx-text-fill: black; -fx-font-size : 15;-fx-border-color: grey; -fx-border-radius: 5;" );
         });
     }
 
