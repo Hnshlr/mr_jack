@@ -125,12 +125,10 @@ public class Plateau {
         this.districts.get(position2-1).position=(position1);
         Collections.swap(this.districts,position1-1,position2-1);
     }
-
     public void retournerDistrict(int position){
         this.districts.get(position-1).face=2;
         // blabla
     }
-
     public void rotationDistrict(int position, int pivot){
         switch(pivot){
             case 0: // tourne 45deg horaire
