@@ -6,20 +6,23 @@ public class Plateau {
 
     public ArrayList<CarteAlibi> pile_Alibis = new ArrayList<CarteAlibi>(9);
 
-    public District[] districts = new District[9];
-
-    public JetonAction[] jetonsActions = new JetonAction[4];
+    public ArrayList<District> districts = new ArrayList<District>(9);
 
     public JetonDetective Holmes;
     public JetonDetective Watson;
     public JetonDetective Toby;
 
+    public JetonAction[] jetonsActions = new JetonAction[4];
+
 
     public void initPlateau(){
         initDistricts();
         initDetectives();
-        initPileAlibis();
         //toute la mise en place du jeu
+    }
+
+    public void initIdMrJack(){
+       // besoin init players
     }
 
     public void initDistricts(){
@@ -51,11 +54,10 @@ public class Plateau {
                 Alibi.orientation=1;
             }
         }
-
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 if(temp_ListeAlibis[j].position==i+1){
-                    this.districts[i]=temp_ListeAlibis[j];
+                    this.districts.add(i, temp_ListeAlibis[j]);
                 }
             }
         }
@@ -66,7 +68,10 @@ public class Plateau {
         this.Toby = new JetonDetective("Toby",8);
     }
     public void initPileAlibis() {
-        // à faire demain wsh
+        ArrayList<Integer> temp_IndicesPos = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9));
+        CarteAlibi IL = new CarteAlibi("IL",0); CarteAlibi MS = new CarteAlibi("MS",1); CarteAlibi JB = new CarteAlibi("JB",1); CarteAlibi JP = new CarteAlibi("JP",1); CarteAlibi JS = new CarteAlibi("JS",1); CarteAlibi JL = new CarteAlibi("JL",1); CarteAlibi M = new CarteAlibi("M",2); CarteAlibi SG = new CarteAlibi("SG",0); CarteAlibi WG = new CarteAlibi("WG",1);
+        CarteAlibi[] temp_ListeAlibis = {IL,MS,JB,JP,JS,JL,M,SG,WG};
+        // besoin init id mr jack
     }
 
 }
