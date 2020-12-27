@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Partie extends Application {
 
     static Plateau plateau = new Plateau();
-    MisterJack misterJack = new MisterJack();
+    static MisterJack misterJack = new MisterJack();
     Enqueteur enqueteur = new Enqueteur();
 
     @Override

@@ -1,10 +1,11 @@
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
 public class Plateau {
 
-    public ArrayList<CarteAlibi> pile_Alibis = new ArrayList<CarteAlibi>(9);
+    public ArrayList<CarteAlibi> pile_Alibis = new ArrayList<CarteAlibi>(8);
 
     public ArrayList<District> districts = new ArrayList<District>(9);
 
@@ -18,11 +19,8 @@ public class Plateau {
     public void initPlateau(){
         initDistricts();
         initDetectives();
+        initPileAlibis();
         //toute la mise en place du jeu
-    }
-
-    public void initIdMrJack(){
-       // besoin init players
     }
 
     public void initDistricts(){
@@ -70,8 +68,30 @@ public class Plateau {
     public void initPileAlibis() {
         ArrayList<Integer> temp_IndicesPos = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9));
         CarteAlibi IL = new CarteAlibi("IL",0); CarteAlibi MS = new CarteAlibi("MS",1); CarteAlibi JB = new CarteAlibi("JB",1); CarteAlibi JP = new CarteAlibi("JP",1); CarteAlibi JS = new CarteAlibi("JS",1); CarteAlibi JL = new CarteAlibi("JL",1); CarteAlibi M = new CarteAlibi("M",2); CarteAlibi SG = new CarteAlibi("SG",0); CarteAlibi WG = new CarteAlibi("WG",1);
-        CarteAlibi[] temp_ListeAlibis = {IL,MS,JB,JP,JS,JL,M,SG,WG};
-        // besoin init id mr jack
+        ArrayList<CarteAlibi> temp_ListeAlibis = new ArrayList<CarteAlibi>(Arrays.asList(IL,MS,JB,JP,JS,JL,M,SG,WG));
+
+        int temp_randIndice = new Random().nextInt(9);
+        MisterJack mrjack = new MisterJack(temp_ListeAlibis.get(temp_randIndice),0);
+        temp_ListeAlibis.remove((CarteAlibi) temp_ListeAlibis.get(temp_randIndice));
+        temp_IndicesPos.remove(8);
+
+        for (int i = 0; i < 8; i++) {
+            System.out.println(temp_IndicesPos.get(i));
+        }
+        for (int i = 0; i < 8; i++) {
+            System.out.println(temp_ListeAlibis.get(i).nom);
+        }
+
+        System.out.println("lid de mrjack est " + mrjack.identité.nom);
+
+        for (int i = 0; i < 8; i++) {
+            temp_randIndice = 10;
+            while(!temp_IndicesPos.contains(temp_randIndice)){
+                temp_randIndice = new Random().nextInt(8)+1;
+            }
+            this.pile_Alibis.add(i, temp_ListeAlibis.get(temp_randIndice));
+            temp_IndicesPos.remove((Integer) temp_randIndice);
+        }
     }
 
 }
