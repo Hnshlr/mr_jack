@@ -5,6 +5,9 @@ public class District {
     int orientation;   // de 1 à 4 dans le sens horaire
     int face;          // 1 ou 2 : face suspect ou chemins
 
+    public District() {
+    }
+
     public District(String nom, int position, int orientation, int face) {
         this.nom = nom;
         this.position = position;
