@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Partie extends Application {
 
-    Plateau plateau = new Plateau();
+    static Plateau plateau = new Plateau();
     MisterJack misterJack = new MisterJack();
     Enqueteur enqueteur = new Enqueteur();
 
@@ -33,7 +33,7 @@ public class Partie extends Application {
     }
 
     public static void main(String[] args) {
-
+        plateau.initPlateau();
         launch(args);
     }
     public void menu(Stage stage,Scene scene,Pane root) throws FileNotFoundException {
@@ -112,6 +112,7 @@ public class Partie extends Application {
         root.getChildren().addAll(imageView);
 
     }
+
     public void jouer(){
         //déroulement de la partie
     }
