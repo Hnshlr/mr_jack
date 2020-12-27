@@ -4,11 +4,15 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class App /*extends Application*/ {
+public class Partie /*extends Application*/ {
 
-    static Plateau plateau = new Plateau();
+    public Joueur joueur1 = new Joueur();
+    public Joueur joueur2 = new Joueur();
+
     MisterJack misterJack = new MisterJack();
     Enqueteur enqueteur = new Enqueteur();
+
+    static Plateau plateau = new Plateau();
 
     /*
     @Override
