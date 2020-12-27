@@ -1,6 +1,6 @@
 public class MisterJack {
 
-    String identite;
+    CarteAlibi identité;
     int nbSabliers;
 
 }
