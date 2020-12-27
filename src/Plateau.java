@@ -128,6 +128,7 @@ public class Plateau {
 
     public void retournerDistrict(int position){
         this.districts.get(position-1).face=2;
+        // blabla
     }
 
     public void rotationDistrict(int position, int pivot){
