@@ -10,7 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class App extends Application {
+public class Partie extends Application {
 
     Plateau plateau = new Plateau();
     MisterJack misterJack = new MisterJack();
