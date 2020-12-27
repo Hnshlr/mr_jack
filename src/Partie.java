@@ -41,7 +41,17 @@ public class Partie extends Application {
     }
 
     public static void main(String[] args) {
-        //plateau.initPlateau();
+        plateau.initPlateau();
+        plateau.etatDePartie();
+
+        /*
+        plateau.echangerDistrict(1,3);
+        plateau.rotationDistrict(4,2);
+        plateau.rotationDistrict(6,1);
+        plateau.retournerDistrict(8);
+        plateau.etatDePartie();
+         */
+
         launch(args);
     }
     public void menu(Stage stage,Scene scene,Pane root) throws FileNotFoundException {
