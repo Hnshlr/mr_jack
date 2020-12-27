@@ -1,9 +1,15 @@
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
@@ -15,6 +21,8 @@ public class Partie extends Application {
     static Plateau plateau = new Plateau();
     MisterJack misterJack = new MisterJack();
     Enqueteur enqueteur = new Enqueteur();
+    Joueur joueur1 = new Joueur();
+    Joueur joueur2 = new Joueur();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -33,7 +41,7 @@ public class Partie extends Application {
     }
 
     public static void main(String[] args) {
-        plateau.initPlateau();
+        //plateau.initPlateau();
         launch(args);
     }
     public void menu(Stage stage,Scene scene,Pane root) throws FileNotFoundException {
@@ -66,6 +74,12 @@ public class Partie extends Application {
             }
             if(e.getCode().equals(KeyCode.ENTER) && count.get()==1){ // si Entrer sur play
                     //on lance la partie
+                scene.setOnMouseMoved(null); //On desactive le mouvement souris du menu
+                try {
+                    menuPlayers(scene, root);
+                } catch (FileNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
             }
             if(e.getCode().equals(KeyCode.ENTER) && count.get()==2){ // si Entrer sur Quit
                 stage.close();
@@ -97,9 +111,58 @@ public class Partie extends Application {
         scene.setOnMouseClicked(e -> {
             if(e.getX() > 240 && e.getX() < 395 && e.getY() > 140 && e.getY() < 285){
                 //on lance la partie
+                scene.setOnMouseMoved(null); //On desactive le mouvement souris du menu
+                try {
+                    menuPlayers(scene, root);
+                } catch (FileNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
             }
             if(e.getX() > 240 && e.getX() < 395 && e.getY() > 350 && e.getY() < 440){
                 stage.close();
+            }
+        });
+    }
+
+    public void menuPlayers(Scene scene,Pane root) throws FileNotFoundException {
+        loadImage(root,new FileInputStream("images\\Menu\\MenuRoles.png"));
+
+        TextField textField1 = new TextField("");
+        textField1.setFont(Font.font("Harrington", FontWeight.BOLD, 15));
+        textField1.setStyle("-fx-text-inner-color: white;-fx-background-color: #6d532f;");
+        textField1.setMinWidth(120);
+        textField1.setLayoutX(235);
+        textField1.setLayoutY(255);
+        root.getChildren().add(textField1);
+
+        TextField textField2 = new TextField("");
+        textField2.setFont(Font.font("Harrington", FontWeight.BOLD, 15));
+        textField2.setStyle("-fx-text-inner-color: white;-fx-background-color: #6d532f;");
+        textField2.setMinWidth(120);
+        textField2.setLayoutX(235);
+        textField2.setLayoutY(410);
+        root.getChildren().add(textField2);
+
+        Button valider = new Button("Valider");
+        valider.setMinWidth(100);
+        valider.setLayoutX(460);
+        valider.setLayoutY(335);
+        root.getChildren().add(valider);
+
+        valider.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                joueur1.nom = textField1.getText();
+                joueur1.role = "Mr Jack";
+
+                joueur2.nom = textField2.getText();
+                joueur2.role = "Enquêteur";
+
+                System.out.println(joueur1.nom + " " + joueur1.role);
+                System.out.println(joueur2.nom + " " + joueur2.role);
+
+                jouer(); // on lance le jeu
             }
         });
     }
