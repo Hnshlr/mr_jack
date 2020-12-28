@@ -59,7 +59,7 @@ public class Plateau {
 
     public void affichagePlateau(Scene scene, Pane root) throws FileNotFoundException {
         // Ajout fond de plateau
-        ImageView plateau = Partie.loadImage2(root,new FileInputStream("D:\\GITHUB\\Projects\\Mr Jack\\mr_jack\\images\\Menu\\plateau.png"));
+        ImageView plateau = Partie.loadImage2(root,new FileInputStream("images\\Menu\\plateau.png"));
         root.getChildren().add(plateau);
     }
 
@@ -125,7 +125,7 @@ public class Plateau {
             }
         }
         for (int i = 0; i < 9; i++) {
-            districts.get(i).image=new FileInputStream("D:\\GITHUB\\Projects\\Mr Jack\\mr_jack\\images\\Districts\\"+districts.get(i).nom+".png");
+            districts.get(i).image=new FileInputStream("images\\Districts\\"+districts.get(i).nom+".png");
         }
     }
     public void initDetectives() {
