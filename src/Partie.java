@@ -230,7 +230,6 @@ public class Partie extends Application {
         root.getChildren().addAll(imageView);
 
     }
-
     public static ImageView loadImage2(Pane root, FileInputStream inputstream) throws FileNotFoundException {
         //Charge l'image du fichier inputstream dans la fenetre
 
