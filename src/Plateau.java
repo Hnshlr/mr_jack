@@ -4,6 +4,7 @@ import javafx.scene.layout.Pane;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.sql.Array;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +33,7 @@ public class Plateau {
         initPileAlibis();
         affichagePlateau(scene,root);
         affichageDistricts(scene,root);
+        affichageDetectives(scene,root);
         //toute la mise en place du jeu
     }
 
@@ -62,8 +64,6 @@ public class Plateau {
         ImageView plateau = Partie.loadImage2(root,new FileInputStream("images\\Menu\\plateau.png"));
         root.getChildren().add(plateau);
     }
-
-
     public void affichageDistricts(Scene scene, Pane root) throws FileNotFoundException {
         // Ajout 9 districts
         for (int i = 0; i < 3; i++) {
@@ -71,11 +71,112 @@ public class Plateau {
                 ImageView img = Partie.loadImage2(root,districts.get(3*i+j).image);
                 img.setFitHeight(98);
                 img.setFitWidth(98);
-                int posx = 178+98*j;
-                int posy = 178+98*i;
-                img.setX(posx);
-                img.setY(posy);
+                img.setX(178+98*j);
+                img.setY(178+98*i);
+                switch(districts.get(3*i+j).orientation){
+                    case 2:
+                        img.setRotate(img.getRotate() + 90);
+                        break;
+                    case 3:
+                        img.setRotate(img.getRotate() + 180);
+                        break;
+                    case 4:
+                        img.setRotate(img.getRotate() + 270);
+                        break;
+                }
                 root.getChildren().add(img);
+            }
+        }
+    }
+    public void affichageDetectives(Scene scene, Pane root) throws FileNotFoundException {
+        ArrayList<JetonDetective> temp_jetonsDetectives = new ArrayList<JetonDetective>(Arrays.asList(Holmes,Watson,Toby));
+        for(JetonDetective jeton : temp_jetonsDetectives) {
+            ImageView img = Partie.loadImage2(root,jeton.image);
+            switch(jeton.position) {
+                case 1:
+                    img.setFitHeight(58);
+                    img.setFitWidth(58);
+                    img.setX(198);
+                    img.setY(100);
+                    root.getChildren().add(img);
+                    break;
+                case 2:
+                    img.setFitHeight(58);
+                    img.setFitWidth(58);
+                    img.setX(296);
+                    img.setY(100);
+                    root.getChildren().add(img);
+                    break;
+                case 3:
+                    img.setFitHeight(58);
+                    img.setFitWidth(58);
+                    img.setX(394);
+                    img.setY(100);
+                    root.getChildren().add(img);
+                    break;
+                case 4:
+                    img.setFitHeight(58);
+                    img.setFitWidth(58);
+                    img.setX(492);
+                    img.setY(198);
+                    root.getChildren().add(img);
+                    break;
+                case 5:
+                    img.setFitHeight(58);
+                    img.setFitWidth(58);
+                    img.setX(492);
+                    img.setY(296);
+                    root.getChildren().add(img);
+                    break;
+                case 6:
+                    img.setFitHeight(58);
+                    img.setFitWidth(58);
+                    img.setX(492);
+                    img.setY(394);
+                    root.getChildren().add(img);
+                    break;
+                case 7:
+                    img.setFitHeight(58);
+                    img.setFitWidth(58);
+                    img.setX(394);
+                    img.setY(492);
+                    root.getChildren().add(img);
+                    break;
+                case 8:
+                    img.setFitHeight(58);
+                    img.setFitWidth(58);
+                    img.setX(296);
+                    img.setY(492);
+                    root.getChildren().add(img);
+                    break;
+                case 9:
+                    img.setFitHeight(58);
+                    img.setFitWidth(58);
+                    img.setX(198);
+                    img.setY(492);
+                    root.getChildren().add(img);
+                    break;
+                case 10:
+                    img.setFitHeight(58);
+                    img.setFitWidth(58);
+                    img.setX(100);
+                    img.setY(394);
+                    root.getChildren().add(img);
+                    break;
+                case 11:
+                    img.setFitHeight(58);
+                    img.setFitWidth(58);
+                    img.setX(100);
+                    img.setY(292);
+                    root.getChildren().add(img);
+                    break;
+                case 12:
+                    img.setFitHeight(58);
+                    img.setFitWidth(58);
+                    img.setX(100);
+                    img.setY(198);
+                    root.getChildren().add(img);
+                    break;
             }
         }
     }
@@ -125,13 +226,16 @@ public class Plateau {
             }
         }
         for (int i = 0; i < 9; i++) {
-            districts.get(i).image=new FileInputStream("images\\Districts\\"+districts.get(i).nom+".png");
+            districts.get(i).image = new FileInputStream("images\\Districts\\"+districts.get(i).nom+".png");
         }
     }
-    public void initDetectives() {
+    public void initDetectives() throws FileNotFoundException {
         this.Holmes = new JetonDetective("Sherlock Holmes",12);
+        Holmes.image = new FileInputStream("images\\JetonsDetective\\Holmes.png");
         this.Watson = new JetonDetective("Dr Watson",4);
+        Watson.image = new FileInputStream("images\\JetonsDetective\\Watson.png");
         this.Toby = new JetonDetective("Toby",8);
+        Toby.image = new FileInputStream("images\\JetonsDetective\\Toby.png");
     }
     public void initPileAlibis() {
         ArrayList<Integer> temp_IndicesPos = new ArrayList<>(Arrays.asList(0,1,2,3,4,5,6,7,8));
@@ -152,6 +256,9 @@ public class Plateau {
             this.pile_Alibis.add(i, temp_ListeAlibis.get(temp_randIndice));
             temp_IndicesPos.remove((Integer) temp_randIndice);
         }
+    }
+    public void initJetonsAction() {
+
     }
 
     public void echangerDistrict(int position1, int position2) {
