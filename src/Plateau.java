@@ -31,6 +31,7 @@ public class Plateau {
         initDetectives();
         initPileAlibis();
         affichagePlateau(scene,root);
+        affichageDistricts(scene,root);
         //toute la mise en place du jeu
     }
 
@@ -57,17 +58,26 @@ public class Plateau {
     }
 
     public void affichagePlateau(Scene scene, Pane root) throws FileNotFoundException {
-
         // Ajout fond de plateau
-        ImageView temp_plateau = Partie.loadImage2(root,new FileInputStream("D:\\GITHUB\\Projects\\Mr Jack\\mr_jack\\images\\Menu\\temp_plateau.png"));
-        root.getChildren().add(temp_plateau);
+        ImageView plateau = Partie.loadImage2(root,new FileInputStream("D:\\GITHUB\\Projects\\Mr Jack\\mr_jack\\images\\Menu\\plateau.png"));
+        root.getChildren().add(plateau);
+    }
 
 
-
+    public void affichageDistricts(Scene scene, Pane root) throws FileNotFoundException {
         // Ajout 9 districts
-        //ImageView img0 = Partie.loadImage2(root,districts.get(1).image);
-        //root.getChildren().add(img0);
-
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                ImageView img = Partie.loadImage2(root,districts.get(3*i+j).image);
+                img.setFitHeight(98);
+                img.setFitWidth(98);
+                int posx = 178+98*j;
+                int posy = 178+98*i;
+                img.setX(posx);
+                img.setY(posy);
+                root.getChildren().add(img);
+            }
+        }
     }
 
     public void initDistricts() throws FileNotFoundException {

@@ -184,35 +184,14 @@ public class Partie extends Application {
 
     }
 
-
-
-    // Fonctions loadImages:
-    public static void loadImage(Pane root, FileInputStream inputstream) throws FileNotFoundException {
-        //Charge l'image du fichier inputstream dans la fenetre
-
-        Image img = new Image(inputstream);
-        ImageView imageView = new ImageView(img);
-        root.getChildren().addAll(imageView);
-
-    }
-
-    public static ImageView loadImage2(Pane root, FileInputStream inputstream) throws FileNotFoundException {
-        //Charge l'image du fichier inputstream dans la fenetre
-
-        Image img = new Image(inputstream);
-        ImageView imageView = new ImageView(img);
-
-        return imageView;
-    }
-
-
+    // Lancement de la partie
     public void jouer(Pane root) throws FileNotFoundException {
         //déroulement de la partie
 
         //initialisation du plateau
         plateau.initPlateau(scene,root);
 
-        //plateau.etatDePartie();
+        plateau.etatDePartie();
 
         // modifications de districts
         /*
@@ -234,5 +213,25 @@ public class Partie extends Application {
         plateau.etatDePartie();
         */
 
+    }
+
+
+    // Fonctions loadImages:
+    public static void loadImage(Pane root, FileInputStream inputstream) throws FileNotFoundException {
+        //Charge l'image du fichier inputstream dans la fenetre
+
+        Image img = new Image(inputstream);
+        ImageView imageView = new ImageView(img);
+        root.getChildren().addAll(imageView);
+
+    }
+
+    public static ImageView loadImage2(Pane root, FileInputStream inputstream) throws FileNotFoundException {
+        //Charge l'image du fichier inputstream dans la fenetre
+
+        Image img = new Image(inputstream);
+        ImageView imageView = new ImageView(img);
+
+        return imageView;
     }
 }
