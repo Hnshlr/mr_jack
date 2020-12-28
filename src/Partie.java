@@ -17,8 +17,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Partie extends Application {
 
     static Plateau plateau = new Plateau();
-    MisterJack misterJack = new MisterJack();
-    Enqueteur enqueteur = new Enqueteur();
     Joueur joueur1 = new Joueur();
     Joueur joueur2 = new Joueur();
 
