@@ -1,3 +1,4 @@
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -8,6 +9,7 @@ public class District {
     int orientation;   // de 1 à 4 dans le sens horaire
     int face;          // 1 ou 2 : face suspect ou chemins
     int nbChemins;
+    FileInputStream image;
 
     public District() {
     }

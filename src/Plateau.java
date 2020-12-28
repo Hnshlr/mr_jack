@@ -1,3 +1,9 @@
+import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,10 +26,11 @@ public class Plateau {
     public JetonAction[] jetonsActions = new JetonAction[4];
 
 
-    public void initPlateau(){
+    public void initPlateau(Scene scene, Pane root) throws FileNotFoundException {
         initDistricts();
         initDetectives();
         initPileAlibis();
+        affichagePlateau(scene,root);
         //toute la mise en place du jeu
     }
 
@@ -49,7 +56,21 @@ public class Plateau {
         System.out.println("Le detective: Toby est en position: "+Toby.position);
     }
 
-    public void initDistricts(){
+    public void affichagePlateau(Scene scene, Pane root) throws FileNotFoundException {
+
+        // Ajout fond de plateau
+        ImageView temp_plateau = Partie.loadImage2(root,new FileInputStream("D:\\GITHUB\\Projects\\Mr Jack\\mr_jack\\images\\Menu\\temp_plateau.png"));
+        root.getChildren().add(temp_plateau);
+
+
+
+        // Ajout 9 districts
+        //ImageView img0 = Partie.loadImage2(root,districts.get(1).image);
+        //root.getChildren().add(img0);
+
+    }
+
+    public void initDistricts() throws FileNotFoundException {
         ArrayList<Integer> temp_IndicesPos = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9));
         District IL = new District(); IL.nom = "IL"; IL.face = 1; District MS = new District(); MS.nom = "MS"; MS.face = 1; District JB = new District(); JB.nom = "JB"; JB.face = 1; District JP = new District(); JP.nom = "JP"; JP.face = 1; District JS = new District(); JS.nom = "JS"; JS.face = 1; District JL = new District(); JL.nom = "JL"; JL.face = 1; District M = new District(); M.nom = "M"; M.face = 1; District SG = new District(); SG.nom = "SG"; SG.face = 1; District WG = new District(); WG.nom = "WG"; WG.face = 1;
         District[] temp_ListeAlibis = {IL,MS,JB,JP,JS,JL,M,SG,WG};
@@ -92,6 +113,9 @@ public class Plateau {
                     this.districts.add(i, temp_ListeAlibis[j]);
                 }
             }
+        }
+        for (int i = 0; i < 9; i++) {
+            districts.get(i).image=new FileInputStream("D:\\GITHUB\\Projects\\Mr Jack\\mr_jack\\images\\Districts\\"+districts.get(i).nom+".png");
         }
     }
     public void initDetectives() {

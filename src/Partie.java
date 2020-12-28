@@ -20,10 +20,11 @@ public class Partie extends Application {
     Joueur joueur1 = new Joueur();
     Joueur joueur2 = new Joueur();
 
+    Pane root = new Pane();
+    Scene scene = new Scene(root,650,650);
+
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Pane root = new Pane();
-        Scene scene = new Scene(root,650,650);
 
         menu(primaryStage, scene, root);
 
@@ -39,6 +40,9 @@ public class Partie extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
+
+    // Jouer - Quitter
     public void menu(Stage stage,Scene scene,Pane root) throws FileNotFoundException {
         //Menu du jeu
 
@@ -119,6 +123,7 @@ public class Partie extends Application {
         });
     }
 
+    // Joueur 1 - Joueur 2 + Button valider
     public void menuPlayers(Scene scene,Pane root) throws FileNotFoundException {
         //Récupère noms et rôles des edux joueurs
 
@@ -165,14 +170,23 @@ public class Partie extends Application {
             joueur2.nom = textField2.getText();
             joueur2.role = "Enquêteur";
 
-            System.out.println(joueur1.nom + " " + joueur1.role);
-            System.out.println(joueur2.nom + " " + joueur2.role);
+            root.getChildren().remove(valider);
 
-            jouer(); // on lance le jeu
+            //System.out.println(joueur1.nom + " " + joueur1.role);
+            //System.out.println(joueur2.nom + " " + joueur2.role);
+
+            try {
+                jouer(root); // on lance le jeu
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
         });
 
     }
 
+
+
+    // Fonctions loadImages:
     public static void loadImage(Pane root, FileInputStream inputstream) throws FileNotFoundException {
         //Charge l'image du fichier inputstream dans la fenetre
 
@@ -182,21 +196,34 @@ public class Partie extends Application {
 
     }
 
-    public void jouer(){
+    public static ImageView loadImage2(Pane root, FileInputStream inputstream) throws FileNotFoundException {
+        //Charge l'image du fichier inputstream dans la fenetre
+
+        Image img = new Image(inputstream);
+        ImageView imageView = new ImageView(img);
+
+        return imageView;
+    }
+
+
+    public void jouer(Pane root) throws FileNotFoundException {
         //déroulement de la partie
 
         //initialisation du plateau
-        plateau.initPlateau();
-        plateau.etatDePartie();
+        plateau.initPlateau(scene,root);
 
-        /* modifications de districts
+        //plateau.etatDePartie();
+
+        // modifications de districts
+        /*
         plateau.echangerDistrict(1,3);
         plateau.rotationDistrict(6,1);
         plateau.retournerDistrict(8);
         plateau.etatDePartie();
          */
 
-        /* test de visibilité
+        // test de visibilité
+        /*
         plateau.districts.get(0).orientation=1;
         plateau.districts.get(2).orientation=1;
         plateau.districts.get(7).orientation=2;
@@ -206,5 +233,6 @@ public class Partie extends Application {
         System.out.println(plateau.isJackVisible());
         plateau.etatDePartie();
         */
+
     }
 }
