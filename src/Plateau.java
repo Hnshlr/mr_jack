@@ -190,6 +190,7 @@ public class Plateau {
                             }
                         }
                     }
+                    break;
                 case 2:
                     if (districts.get(1).orientation == 1 || districts.get(1).orientation == 2 || districts.get(1).orientation == 4) {
                         if(this.districts.get(1).face == 1) {
@@ -213,6 +214,7 @@ public class Plateau {
                             }
                         }
                     }
+                    break;
                 case 3:
                     if (districts.get(2).orientation == 1 || districts.get(2).orientation == 2 || districts.get(2).orientation == 4) {
                         if(this.districts.get(2).face == 1) {
@@ -236,6 +238,7 @@ public class Plateau {
                             }
                         }
                     }
+                    break;
                 case 4:
                     if (districts.get(2).orientation == 1 || districts.get(2).orientation == 2 || districts.get(2).orientation == 3) {
                         if(this.districts.get(2).face == 1) {
@@ -259,6 +262,7 @@ public class Plateau {
                             }
                         }
                     }
+                    break;
                 case 5:
                     if (districts.get(5).orientation == 1 || districts.get(5).orientation == 2 || districts.get(5).orientation == 3) {
                         if(this.districts.get(5).face == 1) {
@@ -282,6 +286,7 @@ public class Plateau {
                             }
                         }
                     }
+                    break;
                 case 6:
                     if (districts.get(8).orientation == 1 || districts.get(8).orientation == 2 || districts.get(8).orientation == 3) {
                         if(this.districts.get(8).face == 1) {
@@ -305,6 +310,7 @@ public class Plateau {
                             }
                         }
                     }
+                    break;
                 case 7:
                     if (districts.get(8).orientation == 2 || districts.get(8).orientation == 3 || districts.get(8).orientation == 4) {
                         if(this.districts.get(8).face == 1) {
@@ -328,6 +334,7 @@ public class Plateau {
                             }
                         }
                     }
+                    break;
                 case 8:
                     if (districts.get(7).orientation == 2 || districts.get(7).orientation == 3 || districts.get(7).orientation == 4) {
                         if(this.districts.get(7).face == 1) {
@@ -351,6 +358,7 @@ public class Plateau {
                             }
                         }
                     }
+                    break;
                 case 9:
                     if (districts.get(6).orientation == 2 || districts.get(6).orientation == 3 || districts.get(6).orientation == 4) {
                         if(this.districts.get(6).face == 1) {
@@ -374,6 +382,7 @@ public class Plateau {
                             }
                         }
                     }
+                    break;
                 case 10:
                     if (districts.get(6).orientation == 1 || districts.get(6).orientation == 3 || districts.get(6).orientation == 4) {
                         if(this.districts.get(6).face == 1) {
@@ -397,6 +406,7 @@ public class Plateau {
                             }
                         }
                     }
+                    break;
                 case 11:
                     if (districts.get(3).orientation == 1 || districts.get(3).orientation == 3 || districts.get(3).orientation == 4) {
                         if(this.districts.get(3).face == 1) {
@@ -420,6 +430,7 @@ public class Plateau {
                             }
                         }
                     }
+                    break;
                 case 12:
                     if (districts.get(0).orientation == 1 || districts.get(0).orientation == 3 || districts.get(0).orientation == 4) {
                         if(this.districts.get(0).face == 1) {
@@ -443,6 +454,7 @@ public class Plateau {
                             }
                         }
                     }
+                    break;
             }
         }
         int indiceVisibilité=0;

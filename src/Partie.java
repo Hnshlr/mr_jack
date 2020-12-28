@@ -177,20 +177,29 @@ public class Partie extends Application {
 
     public void jouer(){
         //déroulement de la partie
+
+        //initialisation du plateau
         plateau.initPlateau();
         plateau.etatDePartie();
-        /*
+
+        /* modifications de districts
         plateau.echangerDistrict(1,3);
         plateau.rotationDistrict(6,1);
         plateau.retournerDistrict(8);
         plateau.etatDePartie();
          */
-        /*
+
+        /* test de visibilité
         plateau.districts.get(0).orientation=1;
         plateau.districts.get(2).orientation=1;
         plateau.districts.get(7).orientation=2;
-         */
+        plateau.Holmes.position=1;
+        plateau.Watson.position=2;
+        plateau.Toby.position=3;
         System.out.println(plateau.isJackVisible());
+        plateau.etatDePartie();
+        */
+
 
     }
 }
