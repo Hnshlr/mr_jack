@@ -74,6 +74,9 @@ public class Partie extends Application {
             if(e.getCode().equals(KeyCode.ENTER) && count.get()==1){ // si Entrer sur play
                     //on lance la partie
                 scene.setOnMouseMoved(null); //On desactive le mouvement souris du menu
+                scene.setOnKeyPressed(null);
+                scene.setOnMouseClicked(null);
+                //root.getChildren().remove()
                 try {
                     menuPlayers(scene, root);
                 } catch (FileNotFoundException fileNotFoundException) {
@@ -111,6 +114,8 @@ public class Partie extends Application {
             if(e.getX() > 240 && e.getX() < 395 && e.getY() > 140 && e.getY() < 285){
                 //on lance la partie
                 scene.setOnMouseMoved(null); //On desactive le mouvement souris du menu
+                scene.setOnKeyPressed(null);
+                scene.setOnMouseClicked(null);
                 try {
                     menuPlayers(scene, root);
                 } catch (FileNotFoundException fileNotFoundException) {
