@@ -305,6 +305,47 @@ public class Plateau {
         }
     }
 
+    // méthodes jetons action
+    public void echangerDistrict(int position1, int position2) {
+        this.districts.get(position1-1).position=(position2);
+        this.districts.get(position2-1).position=(position1);
+        Collections.swap(this.districts,position1-1,position2-1);
+    }
+    public void retournerDistrict(int position){
+        this.districts.get(position-1).face=2;
+        // blabla
+    }
+    public void rotationDistrict(int position, int pivot){
+        switch(pivot){
+            case 0: // tourne 45deg horaire
+                if(this.districts.get(position-1).orientation==4) {
+                    this.districts.get(position-1).orientation=1;
+                }
+                else {
+                    this.districts.get(position-1).orientation+=1;
+                }
+            case 1: // tourne 45 deg anti-horaire
+                if(this.districts.get(position-1).orientation==1) {
+                    this.districts.get(position-1).orientation=4;
+                }
+                else {
+                    this.districts.get(position-1).orientation+=-1;
+                }
+            case 2: // tourne 90deg
+                if(this.districts.get(position-1).orientation==1) {
+                    this.districts.get(position-1).orientation=3;
+                }
+                if(this.districts.get(position-1).orientation==2) {
+                    this.districts.get(position-1).orientation=4;
+                }
+                if(this.districts.get(position-1).orientation==3) {
+                    this.districts.get(position-1).orientation=1;
+                }
+                if(this.districts.get(position-1).orientation==4) {
+                    this.districts.get(position-1).orientation=2;
+                }
+        }
+    }
     public void deplacerDetective(JetonDetective jeton){
 
         //Coordonnées initiales du jeton
@@ -414,47 +455,7 @@ public class Plateau {
         });
     }
 
-    public void echangerDistrict(int position1, int position2) {
-        this.districts.get(position1-1).position=(position2);
-        this.districts.get(position2-1).position=(position1);
-        Collections.swap(this.districts,position1-1,position2-1);
-    }
-    public void retournerDistrict(int position){
-        this.districts.get(position-1).face=2;
-        // blabla
-    }
-    public void rotationDistrict(int position, int pivot){
-        switch(pivot){
-            case 0: // tourne 45deg horaire
-                if(this.districts.get(position-1).orientation==4) {
-                    this.districts.get(position-1).orientation=1;
-                }
-                else {
-                    this.districts.get(position-1).orientation+=1;
-                }
-            case 1: // tourne 45 deg anti-horaire
-                if(this.districts.get(position-1).orientation==1) {
-                    this.districts.get(position-1).orientation=4;
-                }
-                else {
-                    this.districts.get(position-1).orientation+=-1;
-                }
-            case 2: // tourne 90deg
-                if(this.districts.get(position-1).orientation==1) {
-                    this.districts.get(position-1).orientation=3;
-                }
-                if(this.districts.get(position-1).orientation==2) {
-                    this.districts.get(position-1).orientation=4;
-                }
-                if(this.districts.get(position-1).orientation==3) {
-                    this.districts.get(position-1).orientation=1;
-                }
-                if(this.districts.get(position-1).orientation==4) {
-                    this.districts.get(position-1).orientation=2;
-                }
-        }
-    }
-
+    // méthodes de jeu
     public void lancerJetonsAction() {
 
         ArrayList<Integer> temp_IndicesPos = new ArrayList<>(Arrays.asList(0,1,2,3));
