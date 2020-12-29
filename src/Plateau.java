@@ -44,7 +44,7 @@ public class Plateau {
     }
 
     public void etatDePartie() {
-        System.out.println("mrjack.identité.nom="+mrjack.identité.nom+"\n");
+        System.out.println("mrjack.identité.nom="+mrjack.identite.nom+"\n");
 
         System.out.print("pile_Alibis=[");
         for (int i = 0; i < pile_Alibis.size()-1; i++) {
@@ -193,7 +193,7 @@ public class Plateau {
         ArrayList<JetonDetective> temp_jetonsDetectives = new ArrayList<JetonDetective>(Arrays.asList(Holmes,Watson,Toby));
         for(JetonDetective jeton : temp_jetonsDetectives) {
             //ImageView img = Partie.loadImage2(root,jeton.image);
-            ImageView img =jeton.img;
+            ImageView img = jeton.img;
             switch(jeton.position) {
                 case 1:
                     img.setFitHeight(58);
@@ -305,6 +305,7 @@ public class Plateau {
         }
     }
 
+
     // méthodes jetons action
     public void echangerDistrict(int position1, int position2) {
         this.districts.get(position1-1).position=(position2);
@@ -346,7 +347,251 @@ public class Plateau {
                 }
         }
     }
-    public void deplacerDetective(JetonDetective jeton){
+    public void deplacerDetective(JetonDetective jeton) {
+
+        //Coordonnées initiales du jeton
+        double initX = jeton.img.getX();
+        double initY = jeton.img.getY();
+
+        jeton.img.setOnMouseDragged(e -> {
+            //Le centre du jeton suis les mouvements de la souris
+            jeton.img.setX(e.getX() - 20);
+            jeton.img.setY(e.getY() - 20);
+
+        });
+        jeton.img.setOnMouseReleased(e -> {
+            if (jeton.position == 1) {
+                if ((280 < e.getX() && e.getX() < 382) && (0 < e.getY() && e.getY() < 178)) {
+                    jeton.img.setX(296);
+                    jeton.img.setY(100);
+                    jeton.position = 2;
+                    jeton.img.setOnMouseDragged(null);
+                    jeton.img.setOnMouseReleased(null);
+                } else if ((384 < e.getX() && e.getX() < 650) && (0 < e.getY() && e.getY() < 178)) {
+                    jeton.img.setX(394);
+                    jeton.img.setY(100);
+                    jeton.position = 3;
+                    jeton.img.setOnMouseDragged(null);
+                    jeton.img.setOnMouseReleased(null);
+                } else {
+                    jeton.img.setX(initX);
+                    jeton.img.setY(initY);
+                }
+            }
+
+            else if (jeton.position == 2) {
+                if ((384 < e.getX() && e.getX() < 650) && (0 < e.getY() && e.getY() < 178)) {
+                    jeton.img.setX(394);
+                    jeton.img.setY(100);
+                    jeton.position = 3;
+                    jeton.img.setOnMouseDragged(null);
+                    jeton.img.setOnMouseReleased(null);
+                }
+                if ((178 < e.getY() && e.getY() < 280) && (0 < e.getY() && e.getY() < 178)) {
+                    jeton.img.setX(492);
+                    jeton.img.setY(198);
+                    jeton.position = 4;
+                    jeton.img.setOnMouseDragged(null);
+                    jeton.img.setOnMouseReleased(null);
+                } else {
+                    jeton.img.setX(initX);
+                    jeton.img.setY(initY);
+                }
+            }
+
+            else if (jeton.position == 3) {
+                if ((178 < e.getY() && e.getY() < 280) && (384 < e.getX() && e.getX() < 650)) {
+                    jeton.img.setX(492);
+                    jeton.img.setY(198);
+                    jeton.position = 4;
+                    jeton.img.setOnMouseDragged(null);
+                    jeton.img.setOnMouseReleased(null);
+                } else if ((280 < e.getY() && e.getY() < 382) && (384 < e.getX() && e.getX() < 650)) {
+                    jeton.img.setX(492);
+                    jeton.img.setY(296);
+                    jeton.position = 5;
+                    jeton.img.setOnMouseDragged(null);
+                    jeton.img.setOnMouseReleased(null);
+                } else {
+                    jeton.img.setX(initX);
+                    jeton.img.setY(initY);
+                }
+            }
+
+            else if (jeton.position == 4) {
+                if ((280 < e.getY() && e.getY() < 382) && (384 < e.getX() && e.getX() < 650)) {
+                    jeton.img.setX(492);
+                    jeton.img.setY(296);
+                    jeton.position = 5;
+                    jeton.img.setOnMouseDragged(null);
+                    jeton.img.setOnMouseReleased(null);
+                } else if ((382 < e.getY() && e.getY() < 650) && (384 < e.getX() && e.getX() < 650)) {
+                    jeton.img.setX(492);
+                    jeton.img.setY(394);
+                    jeton.position = 6;
+                    jeton.img.setOnMouseDragged(null);
+                    jeton.img.setOnMouseReleased(null);
+                } else {
+                    jeton.img.setX(initX);
+                    jeton.img.setY(initY);
+                }
+            }
+
+            else if (jeton.position == 5) {
+                if ((382 < e.getY() && e.getY() < 650) && (384 < e.getX() && e.getX() < 650)) {
+                    jeton.img.setX(492);
+                    jeton.img.setY(394);
+                    jeton.position = 6;
+                    jeton.img.setOnMouseDragged(null);
+                    jeton.img.setOnMouseReleased(null);
+                } else if ((472 < e.getY() && e.getY() < 650) && (374 < e.getX() && e.getX() < 650)) {
+                    jeton.img.setX(394);
+                    jeton.img.setY(492);
+                    jeton.position = 7;
+                    jeton.img.setOnMouseDragged(null);
+                    jeton.img.setOnMouseReleased(null);
+                } else {
+                    jeton.img.setX(initX);
+                    jeton.img.setY(initY);
+                }
+            }
+
+            else if (jeton.position == 6) {
+                if ((472 < e.getY() && e.getY() < 650) && (374 < e.getX() && e.getX() < 650)) {
+                    jeton.img.setX(394);
+                    jeton.img.setY(492);
+                    jeton.position = 7;
+                    jeton.img.setOnMouseDragged(null);
+                    jeton.img.setOnMouseReleased(null);
+                } else if ((472 < e.getY() && e.getY() < 650) && (280 < e.getX() && e.getX() < 374)) {
+                    jeton.img.setX(296);
+                    jeton.img.setY(492);
+                    jeton.position = 8;
+                    jeton.img.setOnMouseDragged(null);
+                    jeton.img.setOnMouseReleased(null);
+                } else {
+                    jeton.img.setX(initX);
+                    jeton.img.setY(initY);
+                }
+            }
+
+            else if (jeton.position == 7) {
+                if ((472 < e.getY() && e.getY() < 650) && (280 < e.getX() && e.getX() < 374)) {
+                    jeton.img.setX(296);
+                    jeton.img.setY(492);
+                    jeton.position = 8;
+                    jeton.img.setOnMouseDragged(null);
+                    jeton.img.setOnMouseReleased(null);
+                } else if ((472 < e.getY() && e.getY() < 650) && (0 < e.getX() && e.getX() < 280)) {
+                    jeton.img.setX(198);
+                    jeton.img.setY(492);
+                    jeton.position = 9;
+                    jeton.img.setOnMouseDragged(null);
+                    jeton.img.setOnMouseReleased(null);
+                } else {
+                    jeton.img.setX(initX);
+                    jeton.img.setY(initY);
+                }
+            }
+
+            else if (jeton.position == 8) {
+                if ((472 < e.getY() && e.getY() < 650) && (0 < e.getX() && e.getX() < 280)) {
+                    jeton.img.setX(198);
+                    jeton.img.setY(492);
+                    jeton.position = 9;
+                    jeton.img.setOnMouseDragged(null);
+                    jeton.img.setOnMouseReleased(null);
+                } else if ((0 < e.getX() && e.getX() < 178) && (374 < e.getY() && e.getY() < 650)) {
+                    jeton.img.setX(100);
+                    jeton.img.setY(394);
+                    jeton.position = 10;
+                    jeton.img.setOnMouseDragged(null);
+                    jeton.img.setOnMouseReleased(null);
+                } else {
+                    jeton.img.setX(initX);
+                    jeton.img.setY(initY);
+                }
+            }
+
+            else if (jeton.position == 9) {
+                if ((0 < e.getX() && e.getX() < 178) && (374 < e.getY() && e.getY() < 650)) {
+                    jeton.img.setX(100);
+                    jeton.img.setY(394);
+                    jeton.position = 10;
+                    jeton.img.setOnMouseDragged(null);
+                    jeton.img.setOnMouseReleased(null);
+                } else if ((0 < e.getX() && e.getX() < 178) && (280 < e.getY() && e.getY() < 374)) {
+                    jeton.img.setX(100);
+                    jeton.img.setY(296);
+                    jeton.position = 11;
+                    jeton.img.setOnMouseDragged(null);
+                    jeton.img.setOnMouseReleased(null);
+                } else {
+                    jeton.img.setX(initX);
+                    jeton.img.setY(initY);
+                }
+            }
+
+            else if (jeton.position == 10) {
+                if ((0 < e.getX() && e.getX() < 178) && (280 < e.getY() && e.getY() < 374)) {
+                    jeton.img.setX(100);
+                    jeton.img.setY(296);
+                    jeton.position = 11;
+                    jeton.img.setOnMouseDragged(null);
+                    jeton.img.setOnMouseReleased(null);
+                } else if ((0 < e.getX() && e.getX() < 178) && (78 < e.getY() && e.getY() < 280)) {
+                    jeton.img.setX(100);
+                    jeton.img.setY(198);
+                    jeton.position = 12;
+                    jeton.img.setOnMouseDragged(null);
+                    jeton.img.setOnMouseReleased(null);
+                } else {
+                    jeton.img.setX(initX);
+                    jeton.img.setY(initY);
+                }
+            }
+
+            else if (jeton.position == 11) {
+                if ((0 < e.getX() && e.getX() < 178) && (78 < e.getY() && e.getY() < 280)) {
+                    jeton.img.setX(100);
+                    jeton.img.setY(198);
+                    jeton.position = 12;
+                    jeton.img.setOnMouseDragged(null);
+                    jeton.img.setOnMouseReleased(null);
+                } else if ((0 < e.getX() && e.getX() < 280) && (0 < e.getY() && e.getY() < 178)) {
+                    jeton.img.setX(198);
+                    jeton.img.setY(100);
+                    jeton.position = 1;
+                    jeton.img.setOnMouseDragged(null);
+                    jeton.img.setOnMouseReleased(null);
+                } else {
+                    jeton.img.setX(initX);
+                    jeton.img.setY(initY);
+                }
+            }
+
+            else if (jeton.position == 12) {
+                if ((0 < e.getX() && e.getX() < 280) && (0 < e.getY() && e.getY() < 178)) {
+                    jeton.img.setX(198);
+                    jeton.img.setY(100);
+                    jeton.position = 1;
+                    jeton.img.setOnMouseDragged(null);
+                    jeton.img.setOnMouseReleased(null);
+                } else if ((280 < e.getX() && e.getX() < 382) && (0 < e.getY() && e.getY() < 178)) {
+                    jeton.img.setX(296);
+                    jeton.img.setY(100);
+                    jeton.position = 2;
+                    jeton.img.setOnMouseDragged(null);
+                    jeton.img.setOnMouseReleased(null);
+                } else {
+                    jeton.img.setX(initX);
+                    jeton.img.setY(initY);
+                }
+            }
+        });
+    }
+
+    public void deplacerDetectiveOLD(JetonDetective jeton){
 
         //Coordonnées initiales du jeton
         double initX = jeton.img.getX();
@@ -454,6 +699,7 @@ public class Plateau {
 
         });
     }
+
 
     // méthodes de jeu
     public void lancerJetonsAction() {
@@ -774,7 +1020,7 @@ public class Plateau {
         }
         int indiceVisibilité=0;
         for (int i = 0; i < districtsVisibles.size(); i++) {
-            if(mrjack.identité.nom == districtsVisibles.get(i).nom) {
+            if(mrjack.identite.nom == districtsVisibles.get(i).nom) {
                 indiceVisibilité = 1;
             }
         }

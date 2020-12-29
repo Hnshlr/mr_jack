@@ -1,22 +1,22 @@
 public class MisterJack {
 
-    CarteAlibi identité;
+    CarteAlibi identite;
     int nbSabliers;
 
     public MisterJack() {
     }
 
     public MisterJack(CarteAlibi identité, int nbSabliers) {
-        this.identité = identité;
+        this.identite = identité;
         this.nbSabliers = nbSabliers;
     }
 
     public CarteAlibi getIdentité() {
-        return identité;
+        return identite;
     }
 
     public void setIdentité(CarteAlibi identité) {
-        this.identité = identité;
+        this.identite = identité;
     }
 
     public int getNbSabliers() {
