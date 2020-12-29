@@ -6,17 +6,17 @@ public class MisterJack {
     public MisterJack() {
     }
 
-    public MisterJack(CarteAlibi identité, int nbSabliers) {
-        this.identite = identité;
+    public MisterJack(CarteAlibi identite, int nbSabliers) {
+        this.identite = identite;
         this.nbSabliers = nbSabliers;
     }
 
-    public CarteAlibi getIdentité() {
+    public CarteAlibi getIdentite() {
         return identite;
     }
 
-    public void setIdentité(CarteAlibi identité) {
-        this.identite = identité;
+    public void setIdentite(CarteAlibi identite) {
+        this.identite = identite;
     }
 
     public int getNbSabliers() {
