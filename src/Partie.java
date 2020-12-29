@@ -202,6 +202,7 @@ public class Partie extends Application {
         plateau.Toby.position=3;
 
         plateau.affichagePlateau(scene,root);
+        plateau.voirIdentite(root,plateau.mrjack.identite);
         plateau.etatDePartie();
 
         System.out.println(plateau.isJackVisible());
