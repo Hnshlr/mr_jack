@@ -11,12 +11,12 @@ public class MisterJack {
         this.nbSabliers = nbSabliers;
     }
 
-    public CarteAlibi getIdentité() {
+    public CarteAlibi getIdentite() {
         return identite;
     }
 
-    public void setIdentité(CarteAlibi identité) {
-        this.identite = identité;
+    public void setIdentite(CarteAlibi identite) {
+        this.identite = identite;
     }
 
     public int getNbSabliers() {

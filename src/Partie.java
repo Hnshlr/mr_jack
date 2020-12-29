@@ -128,7 +128,7 @@ public class Partie extends Application {
         });
     }
 
-    // Joueur 1 - Joueur 2 + Button valider
+    // Joueur 1 - Joueur 2 +  Button valider
     public void menuPlayers(Scene scene,Pane root) throws FileNotFoundException {
         //Récupère noms et rôles des edux joueurs
 
@@ -193,20 +193,15 @@ public class Partie extends Application {
 
         //initialisation du plateau
         plateau.initPlateau(scene,root);
-
-        plateau.districts.get(0).orientation=2;
-        plateau.districts.get(1).orientation=2;
-        plateau.districts.get(2).orientation=2;
-        plateau.Holmes.position=1;
-        plateau.Watson.position=2;
-        plateau.Toby.position=3;
+        plateau.Holmes.position=4;
+        plateau.Watson.position=5;
 
         plateau.affichagePlateau(scene,root);
-        plateau.voirIdentite(root,plateau.mrjack.identite);
-        plateau.etatDePartie();
+        plateau.voirIdMrJack(root);
 
-        System.out.println(plateau.isJackVisible());
-        plateau.etatDePartie();
+        plateau.deplacerDetective(plateau.Holmes);
+        //plateau.joker(plateau.Holmes);
+
 
         // modifications de districts
         /*
