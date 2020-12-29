@@ -42,6 +42,8 @@ public class Plateau {
         affichageDistricts(scene,root);
         affichageDetectives(scene,root);
         affichageJetonsAction(scene,root);
+
+        voirIdentite(root, mrjack.identite);
     }
 
     public void etatDePartie() {
@@ -722,9 +724,9 @@ public class Plateau {
             jetonsAction.get(i).face = new Random().nextInt(2)+1;
         }
     }
-    public void voirIdentite(Pane root,CarteAlibi identite){
+    public void voirIdentite(Pane root){
 
-        ImageView img = identite.img;
+        ImageView img = mrjack.identite.img;
         Button voir = new Button("");
         voir.setLayoutX(10);
         voir.setLayoutY(10);
