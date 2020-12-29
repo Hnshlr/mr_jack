@@ -193,11 +193,14 @@ public class Partie extends Application {
 
         //initialisation du plateau
         plateau.initPlateau(scene,root);
-        plateau.Holmes.position=12;
+        plateau.Holmes.position=4;
+        plateau.Watson.position=5;
 
         plateau.affichagePlateau(scene,root);
+        plateau.voirIdMrJack(root);
 
         plateau.deplacerDetective(plateau.Holmes);
+        //plateau.joker(plateau.Holmes);
 
 
         // modifications de districts
