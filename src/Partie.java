@@ -221,7 +221,6 @@ public class Partie extends Application {
     public void round0(Pane root) throws FileNotFoundException {
 
         plateau.initPlateau(scene,root);
-        plateau.etatDePartie();
 
         plateau.affichagePlateau(scene,root);
 
@@ -251,7 +250,7 @@ public class Partie extends Application {
     }
 
     public void round1(Pane root) throws FileNotFoundException {
-
+        plateau.etatDePartie();
     }
 
     public static boolean doesJackWin() {
