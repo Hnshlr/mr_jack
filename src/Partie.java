@@ -17,8 +17,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Partie extends Application {
 
     static Plateau plateau = new Plateau();
-    Joueur joueur1 = new Joueur();
-    Joueur joueur2 = new Joueur();
+    public static Joueur joueur1 = new Joueur();
+    public static Joueur joueur2 = new Joueur();
 
     Pane root = new Pane();
     Scene scene = new Scene(root,650,650);
@@ -189,16 +189,10 @@ public class Partie extends Application {
 
     // Lancement de la partie
     public void jouer(Pane root) throws FileNotFoundException {
-        //déroulement de la partie
 
-        //initialisation du plateau
-        plateau.initPlateau(scene,root);
-        plateau.Holmes.position=12;
+        round0(root);
 
-        plateau.affichagePlateau(scene,root);
-
-        plateau.deplacerDetective(plateau.Holmes);
-
+        //plateau.deplacerDetective(plateau.Holmes);
 
         // modifications de districts
         /*
@@ -222,6 +216,64 @@ public class Partie extends Application {
 
         //plateau.deplacerDetective(plateau.Holmes);
 
+    }
+
+    public void round0(Pane root) throws FileNotFoundException {
+
+        plateau.initPlateau(scene,root);
+        plateau.etatDePartie();
+
+        plateau.affichagePlateau(scene,root);
+
+        ImageView lancerPartie = loadImage2(root, new FileInputStream("images\\Menu\\lancer_la_partie.png"));
+        root.getChildren().addAll(lancerPartie);
+
+        Button lancer = new Button("");
+        lancer.setStyle( "-fx-background-color: transparent ; -fx-border-color: transparent"); lancer.setMinHeight(45); lancer.setMinWidth(238); lancer.setLayoutX(207); lancer.setLayoutY(302);
+
+        root.getChildren().add(lancer);
+
+        plateau.voirIdMrJack(root);
+
+        lancer.setOnMouseClicked(e ->{
+            root.getChildren().remove(lancer);
+            root.getChildren().remove(lancerPartie);
+            try {
+                plateau.affichageDistricts(scene,root);
+                plateau.affichageJetonsTemps(scene,root);
+                plateau.affichageJetonsAction(scene,root);
+                plateau.affichageDetectives(scene,root);
+                round1(root);
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
+    }
+
+    public void round1(Pane root) throws FileNotFoundException {
+
+    }
+
+    public static boolean doesJackWin() {
+        if(plateau.mrjack.nbSabliers==6) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public static boolean doesEnqueteurWin() {
+        int compteur=0;
+        for (int i = 0; i < 9; i++) {
+            compteur+=plateau.districts.get(i).face;
+        }
+        if(compteur==1 & plateau.isJackVisible(plateau.districtsVus())) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 

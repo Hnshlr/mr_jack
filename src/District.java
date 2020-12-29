@@ -1,3 +1,4 @@
+import javafx.scene.image.ImageView;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,6 +11,7 @@ public class District {
     int face;          // 1 ou 2 : face suspect ou chemins
     int nbChemins;
     FileInputStream image;
+    ImageView img;
 
     public District() {
     }
