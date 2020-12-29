@@ -113,14 +113,14 @@ public class Partie extends Application {
         scene.setOnMouseClicked(e -> {
             if(e.getX() > 240 && e.getX() < 395 && e.getY() > 140 && e.getY() < 285){
                 //on lance la partie
-                scene.setOnMouseMoved(null); //On desactive le mouvement souris du menu
-                scene.setOnKeyPressed(null);
-                scene.setOnMouseClicked(null);
                 try {
                     menuPlayers(scene, root);
                 } catch (FileNotFoundException fileNotFoundException) {
                     fileNotFoundException.printStackTrace();
                 }
+                scene.setOnMouseMoved(null); //On desactive le mouvement souris du menu
+                scene.setOnKeyPressed(null);
+                scene.setOnMouseClicked(null);
             }
             if(e.getX() > 240 && e.getX() < 395 && e.getY() > 350 && e.getY() < 440){
                 stage.close();
@@ -160,13 +160,10 @@ public class Partie extends Application {
         // Gestion des évenements sur le bouton valider
 
         valider.setOnMouseEntered(e ->{
-            valider.setStyle( "-fx-background-color: #6d532f; -fx-font-family : Harrington; -fx-text-fill: white; -fx-font-size : 15;-fx-border-color: grey; -fx-border-radius: 5;" );
+            valider.setStyle( "-fx-background-color: #6d532f; -fx-font-family : Harrington; -fx-text-fill: white; -fx-font-size : 15;-fx-border-color: white; -fx-border-radius: 5;" );
         });
         valider.setOnMouseExited(e ->{
             valider.setStyle( "-fx-background-color: #6d532f; -fx-font-family : Harrington; -fx-text-fill: black; -fx-font-size : 15;-fx-border-color: grey; -fx-border-radius: 5;" );
-        });
-        valider.setOnMouseClicked(e ->{
-            valider.setStyle( "-fx-background-color: #6d532f; -fx-font-family : Harrington; -fx-border-width: 1; -fx-text-fill: white; -fx-font-size : 15;-fx-border-color: white; -fx-border-radius: 5;" );
         });
         valider.setOnMouseReleased(e ->{
             joueur1.nom = textField1.getText();
@@ -186,6 +183,7 @@ public class Partie extends Application {
                 fileNotFoundException.printStackTrace();
             }
         });
+
 
     }
 
@@ -217,7 +215,7 @@ public class Partie extends Application {
         System.out.println(plateau.isJackVisible());
         plateau.etatDePartie();
         */
-
+        plateau.deplacerDetective(plateau.Holmes);
     }
 
 

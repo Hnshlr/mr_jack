@@ -1,4 +1,5 @@
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
@@ -101,7 +102,8 @@ public class Plateau {
     public void affichageDetectives(Scene scene, Pane root) throws FileNotFoundException {
         ArrayList<JetonDetective> temp_jetonsDetectives = new ArrayList<JetonDetective>(Arrays.asList(Holmes,Watson,Toby));
         for(JetonDetective jeton : temp_jetonsDetectives) {
-            ImageView img = Partie.loadImage2(root,jeton.image);
+            //ImageView img = Partie.loadImage2(root,jeton.image);
+            ImageView img =jeton.img;
             switch(jeton.position) {
                 case 1:
                     img.setFitHeight(58);
@@ -264,10 +266,124 @@ public class Plateau {
     public void initDetectives() throws FileNotFoundException {
         this.Holmes = new JetonDetective("Sherlock Holmes",12);
         Holmes.image = new FileInputStream("images\\JetonsDetective\\Holmes.png");
+        Holmes.img = new ImageView(new Image(Holmes.image));
+
         this.Watson = new JetonDetective("Dr Watson",4);
         Watson.image = new FileInputStream("images\\JetonsDetective\\Watson.png");
+        Watson.img = new ImageView(new Image(Watson.image));
+
         this.Toby = new JetonDetective("Toby",8);
         Toby.image = new FileInputStream("images\\JetonsDetective\\Toby.png");
+        Toby.img = new ImageView(new Image(Toby.image));
+
+    }
+    public void deplacerDetective(JetonDetective jeton){
+
+        //Coordonnées initiales du jeton
+        double initX = jeton.img.getX();
+        double initY = jeton.img.getY();
+
+        jeton.img.setOnMouseDragged(e ->{
+
+            //Le centre du jeton suis les mouvements de la souris
+
+            jeton.img.setX(e.getX()-20);
+            jeton.img.setY(e.getY()-20);
+
+        });
+        jeton.img.setOnMouseReleased(e ->{
+            if(0 < e.getY() && e.getY()<178){          //S'il est laché en haut
+                if(0 < e.getX() && e.getX()<280){
+                    jeton.img.setX(198);
+                    jeton.img.setY(100);
+                    jeton.position = 1;
+                }
+                else if(280 < e.getX() && e.getX()<382){
+                    jeton.img.setX(296);
+                    jeton.img.setY(100);
+                    jeton.position = 2;
+                }
+                else if(384 < e.getX() && e.getX()<650){
+                    jeton.img.setX(394);
+                    jeton.img.setY(100);
+                    jeton.position = 3;
+                }
+            }
+            else if(384 < e.getX() && e.getX()<650){    //S'il est laché à droite
+                if(178 < e.getY() && e.getY()<280){
+                    jeton.img.setX(492);
+                    jeton.img.setY(198);
+                    jeton.position = 4;
+                }
+                else if(280 < e.getY() && e.getY()<382){
+                    jeton.img.setX(492);
+                    jeton.img.setY(296);
+                    jeton.position = 5;
+                }
+                else if(382 < e.getY() && e.getY()<650){
+                    jeton.img.setX(492);
+                    jeton.img.setY(394);
+                    jeton.position = 6;
+                }
+            }
+            else if(472 < e.getY() && e.getY()<650){    //S'il est laché en bas
+                if(374 < e.getX() && e.getX()<650){
+                    jeton.img.setX(394);
+                    jeton.img.setY(492);
+                    jeton.position = 7;
+                }
+                else if(280 < e.getX() && e.getX()<374){
+                    jeton.img.setX(296);
+                    jeton.img.setY(492);
+                    jeton.position = 8;
+                }
+                else if(0 < e.getX() && e.getX()<280){
+                    jeton.img.setX(198);
+                    jeton.img.setY(492);
+                    jeton.position = 9;
+                }
+            }
+            else if(0 < e.getX() && e.getX()<178){     //S'il est laché à gauche
+                if(374 < e.getY() && e.getY()<650){
+                    jeton.img.setX(100);
+                    jeton.img.setY(394);
+                    jeton.position = 10;
+                }
+                else if(280 < e.getY() && e.getY()<374){
+                    jeton.img.setX(100);
+                    jeton.img.setY(296);
+                    jeton.position = 11;
+                }
+                else if(78 < e.getY() && e.getY()<280){
+                    jeton.img.setX(100);
+                    jeton.img.setY(198);
+                    jeton.position = 12;
+                }
+            }
+            else if(178 < e.getY() && e.getY()<472){    //S'il est laché dans le carré central
+                if(178 < e.getX() && e.getX()<472){
+                    jeton.img.setX(initX);
+                    jeton.img.setY(initY);
+                }
+            }
+            //S'il est laché en dehors de la fenêtre
+
+            if(0 > jeton.img.getY() || e.getY()>650){
+                    jeton.img.setX(initX);
+                    jeton.img.setY(initY);
+            }
+            if(0 > jeton.img.getX() || e.getX()>650){
+                jeton.img.setX(initX);
+                jeton.img.setY(initY);
+
+            }
+
+            //Un seul déplacement permis
+
+            jeton.img.setOnMouseDragged(null);
+            jeton.img.setOnMouseReleased(null);
+
+        });
     }
     public void initPileAlibis() {
         ArrayList<Integer> temp_IndicesPos = new ArrayList<>(Arrays.asList(0,1,2,3,4,5,6,7,8));
