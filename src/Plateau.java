@@ -43,7 +43,7 @@ public class Plateau {
         affichageDetectives(scene,root);
         affichageJetonsAction(scene,root);
 
-        voirIdentite(root, mrjack.identite);
+        voirIdentite(root);
     }
 
     public void etatDePartie() {
