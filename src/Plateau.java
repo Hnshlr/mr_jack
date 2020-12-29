@@ -35,6 +35,8 @@ public class Plateau {
         initDetectives();
         initPileAlibis();
         initJetonsAction();
+
+        voirIdMrJack(root);
     }
 
     public void affichagePlateau(Scene scene, Pane root) throws FileNotFoundException {
@@ -42,8 +44,6 @@ public class Plateau {
         affichageDistricts(scene,root);
         affichageDetectives(scene,root);
         affichageJetonsAction(scene,root);
-
-        voirIdentite(root);
     }
 
     public void etatDePartie() {
@@ -724,7 +724,8 @@ public class Plateau {
             jetonsAction.get(i).face = new Random().nextInt(2)+1;
         }
     }
-    public void voirIdentite(Pane root){
+
+    public void voirIdMrJack(Pane root){
 
         ImageView img = mrjack.identite.img;
         Button voir = new Button("");
@@ -747,6 +748,7 @@ public class Plateau {
         });
 
     }
+
     public boolean isJackVisible() {
         int[] temp_positionsDetectives = {Holmes.position,Watson.position,Toby.position};
         ArrayList<District> districtsVisibles = new ArrayList<District>();
