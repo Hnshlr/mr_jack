@@ -35,6 +35,8 @@ public class Plateau {
         initDetectives();
         initPileAlibis();
         initJetonsAction();
+
+        voirIdMrJack(root);
     }
 
     public void affichagePlateau(Scene scene, Pane root) throws FileNotFoundException {
@@ -722,9 +724,9 @@ public class Plateau {
             jetonsAction.get(i).face = new Random().nextInt(2)+1;
         }
     }
-    public void voirIdentite(Pane root,CarteAlibi identite){
+    public void voirIdMrJack(Pane root){
 
-        ImageView img = identite.img;
+        ImageView img = mrjack.identite.img;
         Button voir = new Button("");
         voir.setLayoutX(10);
         voir.setLayoutY(10);
