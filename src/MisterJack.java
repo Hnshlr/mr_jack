@@ -6,7 +6,7 @@ public class MisterJack {
     public MisterJack() {
     }
 
-    public MisterJack(CarteAlibi identité, int nbSabliers) {
+    public MisterJack(CarteAlibi identite, int nbSabliers) {
         this.identite = identite;
         this.nbSabliers = nbSabliers;
     }
