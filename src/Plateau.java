@@ -724,6 +724,7 @@ public class Plateau {
             jetonsAction.get(i).face = new Random().nextInt(2)+1;
         }
     }
+
     public void voirIdMrJack(Pane root){
 
         ImageView img = mrjack.identite.img;
@@ -747,6 +748,7 @@ public class Plateau {
         });
 
     }
+
     public boolean isJackVisible() {
         int[] temp_positionsDetectives = {Holmes.position,Watson.position,Toby.position};
         ArrayList<District> districtsVisibles = new ArrayList<District>();
