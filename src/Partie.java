@@ -194,6 +194,17 @@ public class Partie extends Application {
         //initialisation du plateau
         plateau.initPlateau(scene,root);
 
+        plateau.districts.get(0).orientation=2;
+        plateau.districts.get(1).orientation=2;
+        plateau.districts.get(2).orientation=2;
+        plateau.Holmes.position=1;
+        plateau.Watson.position=2;
+        plateau.Toby.position=3;
+
+        plateau.affichagePlateau(scene,root);
+        plateau.etatDePartie();
+
+        System.out.println(plateau.isJackVisible());
         plateau.etatDePartie();
 
         // modifications de districts
@@ -215,7 +226,9 @@ public class Partie extends Application {
         System.out.println(plateau.isJackVisible());
         plateau.etatDePartie();
         */
-        plateau.deplacerDetective(plateau.Holmes);
+
+        //plateau.deplacerDetective(plateau.Holmes);
+
     }
 
 
