@@ -1,4 +1,5 @@
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -15,7 +16,7 @@ import java.util.Random;
 
 public class Plateau {
 
-    public static MisterJack mrjack = new MisterJack();
+    public  MisterJack mrjack = new MisterJack();
     public static Enqueteur enqueteur = new Enqueteur();
 
     public ArrayList<CarteAlibi> pile_Alibis = new ArrayList<CarteAlibi>(8);
@@ -133,9 +134,9 @@ public class Plateau {
         Toby.img = new ImageView(new Image(Toby.image));
 
     }
-    public void initPileAlibis() {
+    public void initPileAlibis() throws FileNotFoundException {
         ArrayList<Integer> temp_IndicesPos = new ArrayList<>(Arrays.asList(0,1,2,3,4,5,6,7,8));
-        CarteAlibi IL = new CarteAlibi("IL",0); CarteAlibi MS = new CarteAlibi("MS",1); CarteAlibi JB = new CarteAlibi("JB",1); CarteAlibi JP = new CarteAlibi("JP",1); CarteAlibi JS = new CarteAlibi("JS",1); CarteAlibi JL = new CarteAlibi("JL",1); CarteAlibi M = new CarteAlibi("M",2); CarteAlibi SG = new CarteAlibi("SG",0); CarteAlibi WG = new CarteAlibi("WG",1);
+        CarteAlibi IL = new CarteAlibi("IL",0,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\InspLestrade.png")))); CarteAlibi MS = new CarteAlibi("MS",1,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\MissStealthy.png")))); CarteAlibi JB = new CarteAlibi("JB",1,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\JeremyBert.png")))); CarteAlibi JP = new CarteAlibi("JP",1,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\JohnPizer.png")))); CarteAlibi JS = new CarteAlibi("JS",1,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\JohnSmith.png")))); CarteAlibi JL = new CarteAlibi("JL",1,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\JosephLane.png")))); CarteAlibi M = new CarteAlibi("M",2,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\Madame.png")))); CarteAlibi SG = new CarteAlibi("SG",0,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\SgtGoodley.png")))); CarteAlibi WG = new CarteAlibi("WG",1,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\WilliamGull.png"))));
         ArrayList<CarteAlibi> temp_ListeAlibis = new ArrayList<CarteAlibi>(Arrays.asList(IL,MS,JB,JP,JS,JL,M,SG,WG));
 
         int temp_randIndice = new Random().nextInt(9);
@@ -179,7 +180,7 @@ public class Plateau {
                         img.setRotate(img.getRotate() + 90);
                         break;
                     case 3:
-                        img.setRotate(img.getRotate() + 180);
+                        img.setRotate(img.getRotate() + 180                 );
                         break;
                     case 4:
                         img.setRotate(img.getRotate() + 270);
@@ -721,7 +722,29 @@ public class Plateau {
             jetonsAction.get(i).face = new Random().nextInt(2)+1;
         }
     }
+    public void voirIdentite(Pane root,CarteAlibi identite){
 
+        ImageView img = identite.img;
+        Button voir = new Button("");
+        voir.setLayoutX(10);
+        voir.setLayoutY(10);
+        voir.setMinSize(50,50);
+        voir.setStyle( "-fx-background-color: transparent ; -fx-border-color: transparent");
+        root.getChildren().add(voir);
+
+        voir.setOnMousePressed(e ->{
+            img.setX(10);
+            img.setY(10);
+            img.setFitHeight(325.0/5.5);
+            img.setFitWidth(200.0/5.5);
+            root.getChildren().add(img);
+
+        });
+        voir.setOnMouseReleased(e ->{
+            root.getChildren().remove(img);
+        });
+
+    }
     public boolean isJackVisible() {
         int[] temp_positionsDetectives = {Holmes.position,Watson.position,Toby.position};
         ArrayList<District> districtsVisibles = new ArrayList<District>();
