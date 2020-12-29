@@ -29,26 +29,30 @@ public class Plateau {
 
     public ArrayList<JetonAction> jetonsAction = new ArrayList<JetonAction>(4);
 
+    public ArrayList<JetonTemps> jetonsTemps = new ArrayList<JetonTemps>(8);
+
 
     public void initPlateau(Scene scene, Pane root) throws FileNotFoundException {
         initDistricts();
         initDetectives();
         initPileAlibis();
         initJetonsAction();
-
-
+        initJetonsTemps();
     }
 
     public void affichagePlateau(Scene scene, Pane root) throws FileNotFoundException {
         affichageFondPlateau(scene,root);
-        affichageDistricts(scene,root);
-        affichageDetectives(scene,root);
-        affichageJetonsAction(scene,root);
-
+        //affichageDistricts(scene,root);
+        //affichageJetonsTemps(scene,root);
+        //affichageDetectives(scene,root);
+        //affichageJetonsAction(scene,root);
 
     }
 
     public void etatDePartie() {
+
+        System.out.println("________________________________________________________________\n\n");
+
         System.out.println("mrjack.identité.nom="+mrjack.identite.nom+"\n");
 
         System.out.print("pile_Alibis=[");
@@ -74,6 +78,31 @@ public class Plateau {
         System.out.println("Le detective: Sherlock Holmes est en position: "+Holmes.position);
         System.out.println("Le detective: Dr Watson est en position: "+Watson.position);
         System.out.println("Le detective: Toby est en position: "+Toby.position);
+
+        System.out.print("\ndistrictsVisibles: [ ");
+        ArrayList<District> districtsVisibles = (ArrayList<District>) districtsVus().get(0);
+        for (int i = 0; i < (districtsVisibles.size()); i++) {
+            System.out.print(districtsVisibles.get(i).nom + "  ");
+        }
+        System.out.println("]");
+
+
+        System.out.print("districtsNonVisibles: [ ");
+        ArrayList<District> districtsNonVisibles = (ArrayList<District>) districtsVus().get(1);
+        for (int i = 0; i < (districtsNonVisibles.size()); i++) {
+            System.out.print(districtsNonVisibles.get(i).nom + "  ");
+        }
+        System.out.println("]");
+
+        System.out.println("\nisJackVisible: "+isJackVisible(districtsVus()));
+
+        System.out.println("doesJackWin(): "+Partie.doesJackWin());
+
+        System.out.println("doesEnqueteurWin(): "+Partie.doesEnqueteurWin());
+
+        System.out.println("________________________________________________________________");
+
+
     }
 
     public void initDistricts() throws FileNotFoundException {
@@ -122,6 +151,7 @@ public class Plateau {
         }
         for (int i = 0; i < 9; i++) {
             districts.get(i).image = new FileInputStream("images\\Districts\\"+districts.get(i).nom+".png");
+            districts.get(i).img = new ImageView(new Image(districts.get(i).image));
         }
     }
     public void initDetectives() throws FileNotFoundException {
@@ -164,6 +194,11 @@ public class Plateau {
         jetonsAction.add(0, J1); jetonsAction.add(1, J2); jetonsAction.add(2, J3); jetonsAction.add(3, J4);
         lancerJetonsAction();
     }
+    public void initJetonsTemps() throws FileNotFoundException {
+        JetonTemps T1 = new JetonTemps(1,Partie.joueur2,1); JetonTemps T2 = new JetonTemps(2,Partie.joueur1,1); JetonTemps T3 = new JetonTemps(3,Partie.joueur2,1); JetonTemps T4 = new JetonTemps(4,Partie.joueur1,1);  JetonTemps T5 = new JetonTemps(5,Partie.joueur2,1); JetonTemps T6 = new JetonTemps(6,Partie.joueur1,1); JetonTemps T7 = new JetonTemps(7,Partie.joueur2,1); JetonTemps T8 = new JetonTemps(8,Partie.joueur1,1);
+        T1.image1 = new FileInputStream("images\\JetonsTemps\\T1.png"); T1.image2 = new FileInputStream("images\\JetonsTemps\\Sablier.png"); T2.image1 = new FileInputStream("images\\JetonsTemps\\T2.png"); T2.image2 = new FileInputStream("images\\JetonsTemps\\Sablier.png"); T3.image1 = new FileInputStream("images\\JetonsTemps\\T3.png"); T3.image2 = new FileInputStream("images\\JetonsTemps\\Sablier.png"); T4.image1 = new FileInputStream("images\\JetonsTemps\\T4.png"); T4.image2 = new FileInputStream("images\\JetonsTemps\\Sablier.png"); T5.image1 = new FileInputStream("images\\JetonsTemps\\T5.png"); T5.image2 = new FileInputStream("images\\JetonsTemps\\Sablier.png"); T6.image1 = new FileInputStream("images\\JetonsTemps\\T6.png"); T6.image2 = new FileInputStream("images\\JetonsTemps\\Sablier.png"); T7.image1 = new FileInputStream("images\\JetonsTemps\\T7.png"); T7.image2 = new FileInputStream("images\\JetonsTemps\\Sablier.png"); T8.image1 = new FileInputStream("images\\JetonsTemps\\T8.png"); T8.image2 = new FileInputStream("images\\JetonsTemps\\Sablier.png");
+        jetonsTemps.add(0,T1); jetonsTemps.add(1,T2); jetonsTemps.add(2,T3); jetonsTemps.add(3,T4); jetonsTemps.add(4,T5); jetonsTemps.add(5,T6); jetonsTemps.add(6,T7); jetonsTemps.add(7,T8);
+    }
 
     public void affichageFondPlateau(Scene scene, Pane root) throws FileNotFoundException {
         // Ajout fond de plateau
@@ -174,7 +209,10 @@ public class Plateau {
         // Ajout 9 districts
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                ImageView img = Partie.loadImage2(root,districts.get(3*i+j).image);
+                //ImageView img = Partie.loadImage2(root,districts.get(3*i+j).image);
+
+                ImageView img = districts.get(3*i+j).img;
+
                 img.setFitHeight(98);
                 img.setFitWidth(98);
                 img.setX(178+98*j);
@@ -184,7 +222,7 @@ public class Plateau {
                         img.setRotate(img.getRotate() + 90);
                         break;
                     case 3:
-                        img.setRotate(img.getRotate() + 180                 );
+                        img.setRotate(img.getRotate() + 180);
                         break;
                     case 4:
                         img.setRotate(img.getRotate() + 270);
@@ -295,7 +333,7 @@ public class Plateau {
                     img1.setFitHeight(48);
                     img1.setFitWidth(48);
                     img1.setX(21);
-                    img1.setY(120+122*i);
+                    img1.setY(183+80*i);
                     root.getChildren().add(img1);
                     break;
                 case 2:
@@ -303,10 +341,20 @@ public class Plateau {
                     img2.setFitHeight(48);
                     img2.setFitWidth(48);
                     img2.setX(21);
-                    img2.setY(120+122*i);
+                    img2.setY(183+80*i);
                     root.getChildren().add(img2);
                     break;
             }
+        }
+    }
+    public void affichageJetonsTemps(Scene scene, Pane root) throws  FileNotFoundException {
+        for (int i = 0; i < 8; i++) {
+            ImageView img = Partie.loadImage2(root,jetonsTemps.get(i).image1);
+            img.setFitHeight(83);
+            img.setFitWidth(83);
+            img.setX(560);
+            img.setY(90+56*i);
+            root.getChildren().add(img);
         }
     }
 
@@ -1138,6 +1186,343 @@ public class Plateau {
 
     }
 
+    public ArrayList districtsVus() {
+        int[] temp_positionsDetectives = {Holmes.position,Watson.position,Toby.position};
+        ArrayList<District> districtsVisibles = new ArrayList<District>();
+        ArrayList<District> districtsNonVisibles = (ArrayList) districts.clone();
+        for (int position : temp_positionsDetectives) {
+            switch(position) {
+                case 1:
+                    if (districts.get(0).orientation == 1 || districts.get(0).orientation == 2 || districts.get(0).orientation == 4) {
+                        if(this.districts.get(0).face == 1) {
+                            districtsVisibles.add((District) districts.get(0));
+                            districtsNonVisibles.remove((District) districts.get(0));
+                        }
+                        if (districts.get(0).orientation == 2 || districts.get(0).orientation == 4) {
+                            if (districts.get(3).orientation == 1 || districts.get(3).orientation == 2 || districts.get(3).orientation == 4) {
+                                if (this.districts.get(3).face == 1) {
+                                    districtsVisibles.add((District) districts.get(3));
+                                    districtsNonVisibles.remove((District) districts.get(3));
+                                }
+                            }
+                            if (districts.get(3).orientation == 2 || districts.get(3).orientation == 4) {
+                                if (districts.get(6).orientation == 1 || districts.get(6).orientation == 2 || districts.get(6).orientation == 4) {
+                                    if (this.districts.get(6).face == 1) {
+                                        districtsVisibles.add((District) districts.get(6));
+                                        districtsNonVisibles.remove((District) districts.get(6));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case 2:
+                    if (districts.get(1).orientation == 1 || districts.get(1).orientation == 2 || districts.get(1).orientation == 4) {
+                        if(this.districts.get(1).face == 1) {
+                            districtsVisibles.add((District) districts.get(1));
+                            districtsNonVisibles.remove((District) districts.get(1));
+                        }
+                        if (districts.get(1).orientation == 2 || districts.get(1).orientation == 4) {
+                            if (districts.get(4).orientation == 1 || districts.get(4).orientation == 2 || districts.get(4).orientation == 4) {
+                                if (this.districts.get(4).face == 1) {
+                                    districtsVisibles.add((District) districts.get(4));
+                                    districtsNonVisibles.remove((District) districts.get(4));
+                                }
+                            }
+                            if (districts.get(4).orientation == 2 || districts.get(4).orientation == 4) {
+                                if (districts.get(7).orientation == 1 || districts.get(7).orientation == 2 || districts.get(7).orientation == 4) {
+                                    if (this.districts.get(7).face == 1) {
+                                        districtsVisibles.add((District) districts.get(7));
+                                        districtsNonVisibles.remove((District) districts.get(7));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case 3:
+                    if (districts.get(2).orientation == 1 || districts.get(2).orientation == 2 || districts.get(2).orientation == 4) {
+                        if(this.districts.get(2).face == 1) {
+                            districtsVisibles.add((District) districts.get(2));
+                            districtsNonVisibles.remove((District) districts.get(2));
+                        }
+                        if (districts.get(2).orientation == 2 || districts.get(2).orientation == 4) {
+                            if (districts.get(5).orientation == 1 || districts.get(5).orientation == 2 || districts.get(5).orientation == 4) {
+                                if (this.districts.get(5).face == 1) {
+                                    districtsVisibles.add((District) districts.get(5));
+                                    districtsNonVisibles.remove((District) districts.get(5));
+                                }
+                            }
+                            if (districts.get(5).orientation == 2 || districts.get(5).orientation == 4) {
+                                if (districts.get(8).orientation == 1 || districts.get(8).orientation == 2 || districts.get(8).orientation == 4) {
+                                    if (this.districts.get(8).face == 1) {
+                                        districtsVisibles.add((District) districts.get(8));
+                                        districtsNonVisibles.remove((District) districts.get(8));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case 4:
+                    if (districts.get(2).orientation == 1 || districts.get(2).orientation == 2 || districts.get(2).orientation == 3) {
+                        if(this.districts.get(2).face == 1) {
+                            districtsVisibles.add((District) districts.get(2));
+                            districtsNonVisibles.remove((District) districts.get(2));
+                        }
+                        if (districts.get(2).orientation == 1 || districts.get(2).orientation == 3) {
+                            if (districts.get(1).orientation == 1 || districts.get(1).orientation == 2 || districts.get(1).orientation == 3) {
+                                if (this.districts.get(1).face == 1) {
+                                    districtsVisibles.add((District) districts.get(1));
+                                    districtsNonVisibles.remove((District) districts.get(1));
+                                }
+                            }
+                            if (districts.get(1).orientation == 1 || districts.get(1).orientation == 3) {
+                                if (districts.get(0).orientation == 1 || districts.get(0).orientation == 2 || districts.get(0).orientation == 3) {
+                                    if (this.districts.get(0).face == 1) {
+                                        districtsVisibles.add((District) districts.get(0));
+                                        districtsNonVisibles.remove((District) districts.get(0));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case 5:
+                    if (districts.get(5).orientation == 1 || districts.get(5).orientation == 2 || districts.get(5).orientation == 3) {
+                        if(this.districts.get(5).face == 1) {
+                            districtsVisibles.add((District) districts.get(5));
+                            districtsNonVisibles.remove((District) districts.get(5));
+                        }
+                        if (districts.get(5).orientation == 1 || districts.get(5).orientation == 3) {
+                            if (districts.get(4).orientation == 1 || districts.get(4).orientation == 2 || districts.get(4).orientation == 3) {
+                                if (this.districts.get(4).face == 1) {
+                                    districtsVisibles.add((District) districts.get(4));
+                                    districtsNonVisibles.remove((District) districts.get(4));
+                                }
+                            }
+                            if (districts.get(4).orientation == 1 || districts.get(4).orientation == 3) {
+                                if (districts.get(3).orientation == 1 || districts.get(3).orientation == 2 || districts.get(3).orientation == 3) {
+                                    if (this.districts.get(3).face == 1) {
+                                        districtsVisibles.add((District) districts.get(3));
+                                        districtsNonVisibles.remove((District) districts.get(3));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case 6:
+                    if (districts.get(8).orientation == 1 || districts.get(8).orientation == 2 || districts.get(8).orientation == 3) {
+                        if(this.districts.get(8).face == 1) {
+                            districtsVisibles.add((District) districts.get(8));
+                            districtsNonVisibles.remove((District) districts.get(8));
+                        }
+                        if (districts.get(8).orientation == 1 || districts.get(8).orientation == 3) {
+                            if (districts.get(7).orientation == 1 || districts.get(7).orientation == 2 || districts.get(7).orientation == 3) {
+                                if (this.districts.get(7).face == 1) {
+                                    districtsVisibles.add((District) districts.get(7));
+                                    districtsNonVisibles.remove((District) districts.get(7));
+                                }
+                            }
+                            if (districts.get(7).orientation == 1 || districts.get(7).orientation == 3) {
+                                if (districts.get(6).orientation == 1 || districts.get(6).orientation == 2 || districts.get(6).orientation == 3) {
+                                    if (this.districts.get(6).face == 1) {
+                                        districtsVisibles.add((District) districts.get(6));
+                                        districtsNonVisibles.remove((District) districts.get(6));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case 7:
+                    if (districts.get(8).orientation == 2 || districts.get(8).orientation == 3 || districts.get(8).orientation == 4) {
+                        if(this.districts.get(8).face == 1) {
+                            districtsVisibles.add((District) districts.get(8));
+                            districtsNonVisibles.remove((District) districts.get(8));
+                        }
+                        if (districts.get(8).orientation == 2 || districts.get(8).orientation == 4) {
+                            if (districts.get(5).orientation == 2 || districts.get(5).orientation == 3 || districts.get(5).orientation == 4) {
+                                if (this.districts.get(5).face == 1) {
+                                    districtsVisibles.add((District) districts.get(5));
+                                    districtsNonVisibles.remove((District) districts.get(5));
+                                }
+                            }
+                            if (districts.get(5).orientation == 2 || districts.get(5).orientation == 4) {
+                                if (districts.get(2).orientation == 2 || districts.get(2).orientation == 3 || districts.get(2).orientation == 4) {
+                                    if (this.districts.get(2).face == 1) {
+                                        districtsVisibles.add((District) districts.get(2));
+                                        districtsNonVisibles.remove((District) districts.get(2));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case 8:
+                    if (districts.get(7).orientation == 2 || districts.get(7).orientation == 3 || districts.get(7).orientation == 4) {
+                        if(this.districts.get(7).face == 1) {
+                            districtsVisibles.add((District) districts.get(7));
+                            districtsNonVisibles.remove((District) districts.get(7));
+                        }
+                        if (districts.get(7).orientation == 2 || districts.get(7).orientation == 4) {
+                            if (districts.get(4).orientation == 2 || districts.get(4).orientation == 3 || districts.get(4).orientation == 4) {
+                                if (this.districts.get(4).face == 1) {
+                                    districtsVisibles.add((District) districts.get(4));
+                                    districtsNonVisibles.remove((District) districts.get(4));
+                                }
+                            }
+                            if (districts.get(4).orientation == 2 || districts.get(4).orientation == 4) {
+                                if (districts.get(1).orientation == 2 || districts.get(1).orientation == 3 || districts.get(1).orientation == 4) {
+                                    if (this.districts.get(1).face == 1) {
+                                        districtsVisibles.add((District) districts.get(1));
+                                        districtsNonVisibles.remove((District) districts.get(1));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case 9:
+                    if (districts.get(6).orientation == 2 || districts.get(6).orientation == 3 || districts.get(6).orientation == 4) {
+                        if(this.districts.get(6).face == 1) {
+                            districtsVisibles.add((District) districts.get(6));
+                            districtsNonVisibles.remove((District) districts.get(6));
+                        }
+                        if (districts.get(6).orientation == 2 || districts.get(6).orientation == 4) {
+                            if (districts.get(3).orientation == 2 || districts.get(3).orientation == 3 || districts.get(3).orientation == 4) {
+                                if (this.districts.get(3).face == 1) {
+                                    districtsVisibles.add((District) districts.get(3));
+                                    districtsNonVisibles.remove((District) districts.get(3));
+                                }
+                            }
+                            if (districts.get(3).orientation == 2 || districts.get(3).orientation == 4) {
+                                if (districts.get(0).orientation == 2 || districts.get(0).orientation == 3 || districts.get(0).orientation == 4) {
+                                    if (this.districts.get(0).face == 1) {
+                                        districtsVisibles.add((District) districts.get(0));
+                                        districtsNonVisibles.remove((District) districts.get(0));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case 10:
+                    if (districts.get(6).orientation == 1 || districts.get(6).orientation == 3 || districts.get(6).orientation == 4) {
+                        if(this.districts.get(6).face == 1) {
+                            districtsVisibles.add((District) districts.get(6));
+                            districtsNonVisibles.remove((District) districts.get(6));
+                        }
+                        if (districts.get(6).orientation == 1 || districts.get(6).orientation == 3) {
+                            if (districts.get(7).orientation == 1 || districts.get(7).orientation == 3 || districts.get(7).orientation == 4) {
+                                if (this.districts.get(7).face == 1) {
+                                    districtsVisibles.add((District) districts.get(7));
+                                    districtsNonVisibles.remove((District) districts.get(7));
+                                }
+                            }
+                            if (districts.get(7).orientation == 1 || districts.get(7).orientation == 3) {
+                                if (districts.get(8).orientation == 1 || districts.get(8).orientation == 3 || districts.get(8).orientation == 4) {
+                                    if (this.districts.get(8).face == 1) {
+                                        districtsVisibles.add((District) districts.get(8));
+                                        districtsNonVisibles.remove((District) districts.get(8));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case 11:
+                    if (districts.get(3).orientation == 1 || districts.get(3).orientation == 3 || districts.get(3).orientation == 4) {
+                        if(this.districts.get(3).face == 1) {
+                            districtsVisibles.add((District) districts.get(3));
+                            districtsNonVisibles.remove((District) districts.get(3));
+                        }
+                        if (districts.get(3).orientation == 1 || districts.get(3).orientation == 3) {
+                            if (districts.get(4).orientation == 1 || districts.get(4).orientation == 3 || districts.get(4).orientation == 4) {
+                                if (this.districts.get(4).face == 1) {
+                                    districtsVisibles.add((District) districts.get(4));
+                                    districtsNonVisibles.remove((District) districts.get(4));
+                                }
+                            }
+                            if (districts.get(4).orientation == 1 || districts.get(4).orientation == 3) {
+                                if (districts.get(5).orientation == 1 || districts.get(5).orientation == 3 || districts.get(5).orientation == 4) {
+                                    if (this.districts.get(5).face == 1) {
+                                        districtsVisibles.add((District) districts.get(5));
+                                        districtsNonVisibles.remove((District) districts.get(5));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case 12:
+                    if (districts.get(0).orientation == 1 || districts.get(0).orientation == 3 || districts.get(0).orientation == 4) {
+                        if(this.districts.get(0).face == 1) {
+                            districtsVisibles.add((District) districts.get(0));
+                            districtsNonVisibles.remove((District) districts.get(0));
+                        }
+                        if (districts.get(0).orientation == 1 || districts.get(0).orientation == 3) {
+                            if (districts.get(1).orientation == 1 || districts.get(1).orientation == 3 || districts.get(1).orientation == 4) {
+                                if (this.districts.get(1).face == 1) {
+                                    districtsVisibles.add((District) districts.get(1));
+                                    districtsNonVisibles.remove((District) districts.get(1));
+                                }
+                            }
+                            if (districts.get(1).orientation == 1 || districts.get(1).orientation == 3) {
+                                if (districts.get(2).orientation == 1 || districts.get(2).orientation == 3 || districts.get(2).orientation == 4) {
+                                    if (this.districts.get(2).face == 1) {
+                                        districtsVisibles.add((District) districts.get(2));
+                                        districtsNonVisibles.remove((District) districts.get(2));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
+
+        ArrayList<ArrayList<District>> districtsVus = new ArrayList<ArrayList<District>>(2);
+
+        districtsVus.add(districtsVisibles);
+        districtsVus.add(districtsNonVisibles);
+
+        return districtsVus;
+
+    }
+
+    public boolean isJackVisible(ArrayList<ArrayList<District>> districtsVus) {
+
+        ArrayList<District> districtsVisibles = districtsVus.get(0);
+        ArrayList<District> districtsNonVisibles = districtsVus.get(1);
+
+        int indiceVisibilité=0;
+        for (int i = 0; i < districtsVisibles.size(); i++) {
+            if(mrjack.identite.nom == districtsVisibles.get(i).nom) {
+                indiceVisibilité = 1;
+            }
+        }
+
+        switch(indiceVisibilité) {
+            case 0:
+                for(District district : districtsVisibles) {
+                    district.face=2;
+                }
+                return false;
+            case 1:
+                for(District district : districtsNonVisibles) {
+                    district.face=2;
+                }
+                return true;
+        }
+        return false;
+    }
+
+
+    // TRASH :
+
+    /*
     public boolean isJackVisible() {
         int[] temp_positionsDetectives = {Holmes.position,Watson.position,Toby.position};
         ArrayList<District> districtsVisibles = new ArrayList<District>();
@@ -1441,6 +1826,7 @@ public class Plateau {
             }
         }
 
+
         System.out.print("districtsVisibles:   ");
         for (int i = 0; i < districtsVisibles.size(); i++) {
             System.out.print(districtsVisibles.get(i).nom + "   ");
@@ -1451,6 +1837,7 @@ public class Plateau {
             System.out.print(districtsNonVisibles.get(i).nom + "   ");
         }
         System.out.println();
+
 
         switch(indiceVisibilité) {
             case 0:
@@ -1466,5 +1853,7 @@ public class Plateau {
         }
         return false;
     }
+
+     */
 
 }
