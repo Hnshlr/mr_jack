@@ -139,7 +139,7 @@ public class Plateau {
         ArrayList<CarteAlibi> temp_ListeAlibis = new ArrayList<CarteAlibi>(Arrays.asList(IL,MS,JB,JP,JS,JL,M,SG,WG));
 
         int temp_randIndice = new Random().nextInt(9);
-        mrjack.setIdentité(temp_ListeAlibis.get(temp_randIndice));
+        mrjack.setIdentite(temp_ListeAlibis.get(temp_randIndice));
         mrjack.setNbSabliers(0);
         temp_ListeAlibis.remove((CarteAlibi) temp_ListeAlibis.get(temp_randIndice));
         temp_IndicesPos.remove(8);
