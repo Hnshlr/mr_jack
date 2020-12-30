@@ -476,7 +476,7 @@ public class Partie extends Application {
             try {
                 plateau.affichageDistricts(scene,root);
                 ArrayList<Boolean> status = isGameOver();
-                System.out.println("Fin du round "+round+" - isGameOver(): " + status.get(0) + " | doesJackWin(): " + status.get(1) + " | doesEnqueteurWin(): " + status.get(2) + "\n________________________________________________________________");
+                System.out.println("Inspection: isJackVisible(): "+ plateau.isJackVisible(plateau.districtsVus())+"\nFin du round "+round+" - isGameOver(): " + status.get(0) + " | doesJackWin(): " + status.get(1) + " | doesEnqueteurWin(): " + status.get(2) + "\n________________________________________________________________");
                 if (doesJackWin()) {
                     ImageView win_jack = new ImageView(new Image(new FileInputStream("images\\Menu\\win_jack.png")));
 

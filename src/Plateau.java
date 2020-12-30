@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Plateau {
@@ -86,8 +87,14 @@ public class Plateau {
         System.out.println("Le detective: Dr Watson est en position: "+Watson.position);
         System.out.println("Le detective: Toby est en position: "+Toby.position);
 
+        System.out.println("________________________________________________________________");
+
+        /*
+
+        ArrayList<ArrayList<District>> districtsVus = districtsVus();
+
         System.out.print("\ndistrictsVisibles: [ ");
-        ArrayList<District> districtsVisibles = (ArrayList<District>) districtsVus().get(0);
+        ArrayList<District> districtsVisibles = districtsVus.get(0);
         for (int i = 0; i < (districtsVisibles.size()); i++) {
             System.out.print(districtsVisibles.get(i).nom + "  ");
         }
@@ -95,11 +102,12 @@ public class Plateau {
 
 
         System.out.print("districtsNonVisibles: [ ");
-        ArrayList<District> districtsNonVisibles = (ArrayList<District>) districtsVus().get(1);
+        ArrayList<District> districtsNonVisibles = districtsVus.get(1);
         for (int i = 0; i < (districtsNonVisibles.size()); i++) {
             System.out.print(districtsNonVisibles.get(i).nom + "  ");
         }
         System.out.println("]");
+
 
         System.out.println("\nisJackVisible: "+isJackVisible(districtsVus()));
 
@@ -107,7 +115,7 @@ public class Plateau {
 
         System.out.println("doesEnqueteurWin(): "+Partie.doesEnqueteurWin());
 
-        System.out.println("________________________________________________________________");
+         */
 
 
     }
