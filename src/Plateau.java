@@ -1,14 +1,20 @@
+import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.sql.Array;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,7 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Plateau {
 
     public  MisterJack mrjack = new MisterJack();
-    public static Enqueteur enqueteur = new Enqueteur();
+    public static Enqueteur enqueteur = new Enqueteur(0);
 
     public ArrayList<CarteAlibi> pile_Alibis = new ArrayList<CarteAlibi>(8);
 
@@ -123,7 +129,7 @@ public class Plateau {
 
             Alibi.face = 1;
 
-            if(Alibi==IL) {
+            if(Alibi==JL) {
                 Alibi.nbChemins=4;
             }
             else{
@@ -153,6 +159,15 @@ public class Plateau {
         for (int i = 0; i < 9; i++) {
             districts.get(i).image = new FileInputStream("images\\Districts\\"+districts.get(i).nom+".png");
             districts.get(i).img = new ImageView(new Image(districts.get(i).image));
+            if (districts.get(i).nbChemins==3) {
+                districts.get(i).image2 = new FileInputStream("images\\Districts\\3chemins.png");
+                districts.get(i).img2 = new ImageView(new Image(districts.get(i).image2));
+            }
+            else {
+                districts.get(i).image2 = new FileInputStream("images\\Districts\\4chemins.png");
+                districts.get(i).img2 = new ImageView(new Image(districts.get(i).image2));
+            }
+
         }
     }
     public void initDetectives() throws FileNotFoundException {
@@ -171,7 +186,7 @@ public class Plateau {
     }
     public void initPileAlibis() throws FileNotFoundException {
         ArrayList<Integer> temp_IndicesPos = new ArrayList<>(Arrays.asList(0,1,2,3,4,5,6,7,8));
-        CarteAlibi IL = new CarteAlibi("IL",0,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\InspLestrade.png")))); CarteAlibi MS = new CarteAlibi("MS",1,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\MissStealthy.png")))); CarteAlibi JB = new CarteAlibi("JB",1,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\JeremyBert.png")))); CarteAlibi JP = new CarteAlibi("JP",1,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\JohnPizer.png")))); CarteAlibi JS = new CarteAlibi("JS",1,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\JohnSmith.png")))); CarteAlibi JL = new CarteAlibi("JL",1,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\JosephLane.png")))); CarteAlibi M = new CarteAlibi("M",2,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\Madame.png")))); CarteAlibi SG = new CarteAlibi("SG",0,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\SgtGoodley.png")))); CarteAlibi WG = new CarteAlibi("WG",1,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\WilliamGull.png"))));
+        CarteAlibi IL = new CarteAlibi("IL",0,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\IL.png")))); CarteAlibi MS = new CarteAlibi("MS",1,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\MS.png")))); CarteAlibi JB = new CarteAlibi("JB",1,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\JB.png")))); CarteAlibi JP = new CarteAlibi("JP",1,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\JP.png")))); CarteAlibi JS = new CarteAlibi("JS",1,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\JS.png")))); CarteAlibi JL = new CarteAlibi("JL",1,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\JL.png")))); CarteAlibi M = new CarteAlibi("M",2,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\M.png")))); CarteAlibi SG = new CarteAlibi("SG",0,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\SG.png")))); CarteAlibi WG = new CarteAlibi("WG",1,new ImageView(new Image(new FileInputStream("images\\CartesAlibi\\WG.png"))));
         ArrayList<CarteAlibi> temp_ListeAlibis = new ArrayList<CarteAlibi>(Arrays.asList(IL,MS,JB,JP,JS,JL,M,SG,WG));
 
         int temp_randIndice = new Random().nextInt(9);
@@ -199,6 +214,7 @@ public class Plateau {
     public void initJetonsTemps() throws FileNotFoundException {
         JetonTemps T1 = new JetonTemps(1,Partie.joueur2,1); JetonTemps T2 = new JetonTemps(2,Partie.joueur1,1); JetonTemps T3 = new JetonTemps(3,Partie.joueur2,1); JetonTemps T4 = new JetonTemps(4,Partie.joueur1,1);  JetonTemps T5 = new JetonTemps(5,Partie.joueur2,1); JetonTemps T6 = new JetonTemps(6,Partie.joueur1,1); JetonTemps T7 = new JetonTemps(7,Partie.joueur2,1); JetonTemps T8 = new JetonTemps(8,Partie.joueur1,1);
         T1.image1 = new FileInputStream("images\\JetonsTemps\\T1.png"); T1.image2 = new FileInputStream("images\\JetonsTemps\\Sablier.png"); T2.image1 = new FileInputStream("images\\JetonsTemps\\T2.png"); T2.image2 = new FileInputStream("images\\JetonsTemps\\Sablier.png"); T3.image1 = new FileInputStream("images\\JetonsTemps\\T3.png"); T3.image2 = new FileInputStream("images\\JetonsTemps\\Sablier.png"); T4.image1 = new FileInputStream("images\\JetonsTemps\\T4.png"); T4.image2 = new FileInputStream("images\\JetonsTemps\\Sablier.png"); T5.image1 = new FileInputStream("images\\JetonsTemps\\T5.png"); T5.image2 = new FileInputStream("images\\JetonsTemps\\Sablier.png"); T6.image1 = new FileInputStream("images\\JetonsTemps\\T6.png"); T6.image2 = new FileInputStream("images\\JetonsTemps\\Sablier.png"); T7.image1 = new FileInputStream("images\\JetonsTemps\\T7.png"); T7.image2 = new FileInputStream("images\\JetonsTemps\\Sablier.png"); T8.image1 = new FileInputStream("images\\JetonsTemps\\T8.png"); T8.image2 = new FileInputStream("images\\JetonsTemps\\Sablier.png");
+        T1.img = new ImageView(new Image(T1.image1)); T2.img = new ImageView(new Image(T2.image1)); T3.img = new ImageView(new Image(T3.image1)); T4.img = new ImageView(new Image(T4.image1)); T5.img = new ImageView(new Image(T5.image1)); T6.img = new ImageView(new Image(T6.image1)); T7.img = new ImageView(new Image(T7.image1)); T8.img = new ImageView(new Image(T8.image1));
         jetonsTemps.add(0,T1); jetonsTemps.add(1,T2); jetonsTemps.add(2,T3); jetonsTemps.add(3,T4); jetonsTemps.add(4,T5); jetonsTemps.add(5,T6); jetonsTemps.add(6,T7); jetonsTemps.add(7,T8);
     }
 
@@ -213,26 +229,45 @@ public class Plateau {
             for (int j = 0; j < 3; j++) {
                 //ImageView img = Partie.loadImage2(root,districts.get(3*i+j).image);
 
-                ImageView img = districts.get(3*i+j).img;
+                if (districts.get(3*i+j).face==1) {
+                    districts.get(3*i+j).currentimg = districts.get(3*i+j).img;
+                }
+                else {
+                    districts.get(3*i+j).currentimg = districts.get(3*i+j).img2;
+                }
 
-                img.setFitHeight(98);
-                img.setFitWidth(98);
-                img.setX(178+98*j);
-                img.setY(178+98*i);
+                //districts.get(3*i+j).currentimg.setStyle(" -fx-background-color: white; -fx-padding: 10; -fx-background-radius: 5");
+
+                districts.get(3*i+j).currentimg.setFitHeight(98);
+                districts.get(3*i+j).currentimg.setFitWidth(98);
+                districts.get(3*i+j).currentimg.setX(178+98*j);
+                districts.get(3*i+j).currentimg.setY(178+98*i);
+
+                districts.get(3*i+j).currentimg.setEffect(new DropShadow(10, Color.WHITE));
+
                 switch(districts.get(3*i+j).orientation){
+                    case 1:
+                        districts.get(3*i+j).currentimg.setRotate(0);
+                        break;
                     case 2:
-                        img.setRotate(img.getRotate() + 90);
+                        districts.get(3*i+j).currentimg.setRotate(90);
                         break;
                     case 3:
-                        img.setRotate(img.getRotate() + 180);
+                        districts.get(3*i+j).currentimg.setRotate(180);
                         break;
                     case 4:
-                        img.setRotate(img.getRotate() + 270);
+                        districts.get(3*i+j).currentimg.setRotate(270);
                         break;
                 }
-                root.getChildren().add(img);
+
+                root.getChildren().remove(districts.get(3*i+j).currentimg);
+                root.getChildren().add(districts.get(3*i+j).currentimg);
+
             }
         }
+        root.getChildren().remove(districts.get(4).currentimg);
+        root.getChildren().add(districts.get(4).currentimg);
+        //districts.get(4).currentimg.setEffect(new DropShadow(20, Color.RED));
     }
     public void affichageDetectives(Scene scene, Pane root) throws FileNotFoundException {
         ArrayList<JetonDetective> temp_jetonsDetectives = new ArrayList<JetonDetective>(Arrays.asList(Holmes,Watson,Toby));
@@ -338,6 +373,13 @@ public class Plateau {
                     jetonsAction.get(i).currentimg.setX(21);
                     jetonsAction.get(i).currentimg.setY(183+80*i);
                     root.getChildren().add(jetonsAction.get(i).currentimg);
+                    FadeTransition fade = new FadeTransition();
+                    fade.setDuration(Duration.millis(1000));
+                    fade.setFromValue(0.1);
+                    fade.setToValue(10);
+                    fade.setCycleCount(1);
+                    fade.setNode(jetonsAction.get(i).currentimg);
+                    fade.play();
                     break;
                 case 2:
                     //ImageView img2 = Partie.loadImage2(root,jetonsAction.get(i).image2);
@@ -347,18 +389,40 @@ public class Plateau {
                     jetonsAction.get(i).currentimg.setX(21);
                     jetonsAction.get(i).currentimg.setY(183+80*i);
                     root.getChildren().add(jetonsAction.get(i).currentimg);
+                    FadeTransition fade2 = new FadeTransition();
+                    fade2.setDuration(Duration.millis(1000));
+                    fade2.setFromValue(0.1);
+                    fade2.setToValue(10);
+                    fade2.setCycleCount(1);
+                    fade2.setNode(jetonsAction.get(i).currentimg);
+                    fade2.play();
                     break;
             }
         }
     }
-    public void affichageJetonsTemps(Scene scene, Pane root) throws  FileNotFoundException {
+    public void affichageJetonsTemps(Scene scene, Pane root, int round) throws  FileNotFoundException {
+
         for (int i = 0; i < 8; i++) {
-            ImageView img = Partie.loadImage2(root,jetonsTemps.get(i).image1);
-            img.setFitHeight(83);
-            img.setFitWidth(83);
-            img.setX(560);
-            img.setY(90+56*i);
-            root.getChildren().add(img);
+            jetonsTemps.get(i).currentimg = jetonsTemps.get(i).img;
+            root.getChildren().remove(jetonsTemps.get(i).currentimg);
+        }
+        for (int i = round; i < 8; i++) {
+            jetonsTemps.get(i).currentimg.setFitHeight(83);
+            jetonsTemps.get(i).currentimg.setFitWidth(83);
+            jetonsTemps.get(i).currentimg.setX(560);
+            jetonsTemps.get(i).currentimg.setY(90+56*i);
+            root.getChildren().add(jetonsTemps.get(i).currentimg);
+        }
+    }
+    public void affichageSabliers(Scene scene, Pane root) throws  FileNotFoundException {
+        for (int i = 0; i < mrjack.nbSabliers; i++) {
+            ImageView sablier = Partie.loadImage2(root,new FileInputStream("images\\JetonsTemps\\Compteur_sablier.png"));
+            sablier.setFitHeight(50);
+            sablier.setFitWidth(50);
+            sablier.setX(80+50*i);
+            sablier.setY(10);
+            root.getChildren().remove(sablier);
+            root.getChildren().add(sablier);
         }
     }
 
@@ -433,7 +497,7 @@ public class Plateau {
                     compteur.set(0);
                 }
             }
-            System.out.println(districts.get(position-1).orientation);
+            //System.out.println(districts.get(position-1).orientation);
 
         });
         gcheck.setOnMouseClicked(e->{
@@ -442,7 +506,6 @@ public class Plateau {
             root.getChildren().remove(rcross);
         });
     }
-
     public void deplacerDetective(JetonDetective jeton) {
 
         //Coordonnées initiales du jeton
@@ -1204,7 +1267,6 @@ public class Plateau {
             jetonsAction.get(i).face = new Random().nextInt(2)+1;
         }
     }
-
 
     public void voirIdMrJack(Pane root){
 
