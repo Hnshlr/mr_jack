@@ -9,9 +9,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import jdk.jfr.events.ExceptionThrownEvent;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Partie extends Application {
@@ -251,6 +256,7 @@ public class Partie extends Application {
 
     public void round1(Pane root) throws FileNotFoundException {
         plateau.etatDePartie();
+
     }
 
     public static boolean doesJackWin() {

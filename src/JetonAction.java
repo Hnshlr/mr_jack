@@ -1,3 +1,6 @@
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 import java.io.FileInputStream;
 
 public class JetonAction {
@@ -6,6 +9,9 @@ public class JetonAction {
     int face;        // 1 ou 2
     FileInputStream image1;
     FileInputStream image2;
+    ImageView img1;
+    ImageView img2;
+    ImageView currentimg;
 
     public JetonAction() {
     }

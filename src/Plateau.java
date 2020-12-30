@@ -51,7 +51,7 @@ public class Plateau {
 
     public void etatDePartie() {
 
-        System.out.println("________________________________________________________________\n\n");
+        System.out.println("________________________________________________________________\n");
 
         System.out.println("mrjack.identité.nom="+mrjack.identite.nom+"\n");
 
@@ -191,6 +191,7 @@ public class Plateau {
     public void initJetonsAction() throws FileNotFoundException {
         JetonAction J1 = new JetonAction("Alibi - Holmes"); JetonAction J2 = new JetonAction("Toby - Watson"); JetonAction J3 = new JetonAction("Pivot - Echange"); JetonAction J4 = new JetonAction("Pivot - Joker");
         J1.image1 = new FileInputStream("images\\JetonsAction\\Alibi.png"); J1.image2 = new FileInputStream("images\\JetonsAction\\Holmes.png"); J2.image1 = new FileInputStream("images\\JetonsAction\\Toby.png"); J2.image2 = new FileInputStream("images\\JetonsAction\\Watson.png"); J3.image1 = new FileInputStream("images\\JetonsAction\\Pivot.png"); J3.image2 = new FileInputStream("images\\JetonsAction\\Echange.png"); J4.image1 = new FileInputStream("images\\JetonsAction\\Pivot.png"); J4.image2 = new FileInputStream("images\\JetonsAction\\Joker.png");
+        J1.img1= new ImageView(new Image(J1.image1)); J1.img2= new ImageView(new Image(J1.image2)); J2.img1= new ImageView(new Image(J2.image1)); J2.img2= new ImageView(new Image(J2.image2)); J3.img1= new ImageView(new Image(J3.image1)); J3.img2= new ImageView(new Image(J3.image2)); J4.img1= new ImageView(new Image(J4.image1)); J4.img2= new ImageView(new Image(J4.image2));
         jetonsAction.add(0, J1); jetonsAction.add(1, J2); jetonsAction.add(2, J3); jetonsAction.add(3, J4);
         lancerJetonsAction();
     }
@@ -329,20 +330,22 @@ public class Plateau {
         for (int i = 0; i < 4; i++) {
             switch(jetonsAction.get(i).face) {
                 case 1:
-                    ImageView img1 = Partie.loadImage2(root,jetonsAction.get(i).image1);
-                    img1.setFitHeight(48);
-                    img1.setFitWidth(48);
-                    img1.setX(21);
-                    img1.setY(183+80*i);
-                    root.getChildren().add(img1);
+                    //ImageView img1 = Partie.loadImage2(root,jetonsAction.get(i).image1);
+                    jetonsAction.get(i).currentimg = jetonsAction.get(i).img1;
+                    jetonsAction.get(i).currentimg.setFitHeight(48);
+                    jetonsAction.get(i).currentimg.setFitWidth(48);
+                    jetonsAction.get(i).currentimg.setX(21);
+                    jetonsAction.get(i).currentimg.setY(183+80*i);
+                    root.getChildren().add(jetonsAction.get(i).currentimg);
                     break;
                 case 2:
-                    ImageView img2 = Partie.loadImage2(root,jetonsAction.get(i).image2);
-                    img2.setFitHeight(48);
-                    img2.setFitWidth(48);
-                    img2.setX(21);
-                    img2.setY(183+80*i);
-                    root.getChildren().add(img2);
+                    //ImageView img2 = Partie.loadImage2(root,jetonsAction.get(i).image2);
+                    jetonsAction.get(i).currentimg = jetonsAction.get(i).img2;
+                    jetonsAction.get(i).currentimg.setFitHeight(48);
+                    jetonsAction.get(i).currentimg.setFitWidth(48);
+                    jetonsAction.get(i).currentimg.setX(21);
+                    jetonsAction.get(i).currentimg.setY(183+80*i);
+                    root.getChildren().add(jetonsAction.get(i).currentimg);
                     break;
             }
         }
