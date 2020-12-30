@@ -1,4 +1,6 @@
 import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
+import javafx.animation.PathTransition;
 import javafx.animation.RotateTransition;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -7,6 +9,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
@@ -396,28 +401,42 @@ public class Plateau {
         }
     }
     public void affichageJetonsTemps(Scene scene, Pane root, int round) throws  FileNotFoundException {
-
-        for (int i = 0; i < 8; i++) {
-            jetonsTemps.get(i).currentimg = jetonsTemps.get(i).img;
-            root.getChildren().remove(jetonsTemps.get(i).currentimg);
+        
+        if(round==0){
+            for (int i = round; i < 8; i++) {
+                jetonsTemps.get(i).currentimg = jetonsTemps.get(i).img;
+                jetonsTemps.get(i).currentimg.setFitHeight(83);
+                jetonsTemps.get(i).currentimg.setFitWidth(83);
+                jetonsTemps.get(i).currentimg.setX(560);
+                jetonsTemps.get(i).currentimg.setY(90+56*i);
+                root.getChildren().add(jetonsTemps.get(i).currentimg);
+            }
         }
-        for (int i = round; i < 8; i++) {
-            jetonsTemps.get(i).currentimg.setFitHeight(83);
-            jetonsTemps.get(i).currentimg.setFitWidth(83);
-            jetonsTemps.get(i).currentimg.setX(560);
-            jetonsTemps.get(i).currentimg.setY(90+56*i);
-            root.getChildren().add(jetonsTemps.get(i).currentimg);
+        else{
+            FadeTransition fade = new FadeTransition(Duration.millis(1000));
+            fade.setToValue(0);
+            fade.setCycleCount(1);
+            fade.setNode(jetonsTemps.get(round-1).currentimg);
+            fade.play();
         }
     }
     public void affichageSabliers(Scene scene, Pane root) throws  FileNotFoundException {
         for (int i = 0; i < mrjack.nbSabliers; i++) {
-            ImageView sablier = Partie.loadImage2(root,new FileInputStream("images\\JetonsTemps\\Compteur_sablier.png"));
+            //ImageView sablier = Partie.loadImage2(root,new FileInputStream("images\\JetonsTemps\\Compteur_sablier.png"));
+            ImageView sablier = new ImageView(new Image(new FileInputStream("images\\JetonsTemps\\Compteur_sablier.png")));
             sablier.setFitHeight(50);
             sablier.setFitWidth(50);
             sablier.setX(80+50*i);
             sablier.setY(10);
             root.getChildren().remove(sablier);
             root.getChildren().add(sablier);
+            FadeTransition fade = new FadeTransition();
+            fade.setDuration(Duration.millis(1000));
+            fade.setFromValue(0.1);
+            fade.setToValue(10);
+            fade.setCycleCount(1);
+            fade.setNode(sablier);
+            fade.play();
         }
     }
 

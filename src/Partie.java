@@ -166,7 +166,7 @@ public class Partie extends Application {
         // Gestion des évenements sur le bouton valider
 
         valider.setOnMouseEntered(e ->{
-            valider.setStyle( "-fx-background-color: #6d532f; -fx-font-family : Harrington; -fx-text-fill: white; -fx-font-size : 15;-fx-border-color: white; -fx-border-radius: 5;" );
+            valider.setStyle( "-fx-background-color: #6d532f; -fx-font-family : Harrington; -fx-text-fill: white; -fx-font-size : 18;-fx-border-color: white; -fx-border-radius: 5;" );
         });
         valider.setOnMouseExited(e ->{
             valider.setStyle( "-fx-background-color: #6d532f; -fx-font-family : Harrington; -fx-text-fill: black; -fx-font-size : 15;-fx-border-color: grey; -fx-border-radius: 5;" );
@@ -235,11 +235,11 @@ public class Partie extends Application {
 
         plateau.affichagePlateau(scene,root);
 
-        ImageView lancerPartie = loadImage2(root, new FileInputStream("images\\Menu\\lancer_la_partie.png"));
+        ImageView lancerPartie = loadImage2(root, new FileInputStream("images\\Menu\\Filtre.png"));
         root.getChildren().addAll(lancerPartie);
 
-        Button lancer = new Button("");
-        lancer.setStyle( "-fx-background-color: transparent ; -fx-border-color: transparent"); lancer.setMinHeight(45); lancer.setMinWidth(238); lancer.setLayoutX(207); lancer.setLayoutY(302);
+        Button lancer = new Button("Jouer");
+        lancer.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5"); lancer.setMinHeight(45); lancer.setMinWidth(100); lancer.setLayoutX(280); lancer.setLayoutY(300);
 
         root.getChildren().add(lancer);
 
@@ -248,6 +248,13 @@ public class Partie extends Application {
         lancer.setOnMouseClicked(e ->{
             root.getChildren().remove(lancer);
             root.getChildren().remove(lancerPartie);
+            FadeTransition fade = new FadeTransition();
+            fade.setDuration(Duration.millis(2000));
+            fade.setFromValue(0.8);
+            fade.setToValue(10);
+            fade.setCycleCount(1);
+            fade.setNode(root);
+            fade.play();
             try {
                 plateau.affichageDistricts(scene,root);
                 plateau.affichageJetonsTemps(scene,root,0);
@@ -257,6 +264,12 @@ public class Partie extends Application {
             } catch (FileNotFoundException fileNotFoundException) {
                 fileNotFoundException.printStackTrace();
             }
+        });
+        lancer.setOnMouseEntered(e->{
+            lancer.setStyle("-fx-background-color: #806237 ; -fx-border-color: white; -fx-font-family: Harrington; -fx-text-fill: white; -fx-font-size: 25; -fx-border-radius: 5");
+        });
+        lancer.setOnMouseExited(e->{
+            lancer.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5");
         });
     }
 
@@ -268,90 +281,6 @@ public class Partie extends Application {
 
         jetonjoues.set(0);
 
-        //Random random = new Random();
-        //int rand = jetonsDisponibles.get(random.nextInt(jetonsDisponibles.size()));
-
-        /*
-        // Jeton 1
-        plateau.jetonsAction.get(0).currentimg.setOnMousePressed(e -> {
-            System.out.println("jeton1 selectionné");
-            actionsJeton(0);
-            jetonjoues.addAndGet(1);
-            plateau.jetonsAction.get(0).currentimg.setOnMousePressed(null);
-        });
-        plateau.jetonsAction.get(0).currentimg.setOnMouseReleased(event -> {
-            if (jetonjoues.get() == 4) {
-                ArrayList<Boolean> status = isGameOver();
-                System.out.println("fin du round: isGameOver(): " + status.get(0) + " | doesJackWin(): " + status.get(1) + " | doesEnqueteurWin(): " + status.get(2));
-                try {
-                    prochainRound();
-                } catch (FileNotFoundException fileNotFoundException) {
-                    fileNotFoundException.printStackTrace();
-                }
-            }
-        });
-
-        // Jeton 2
-        plateau.jetonsAction.get(1).currentimg.setOnMousePressed(e -> {
-            System.out.println("jeton2 selectionné");
-            actionsJeton(1);
-            jetonjoues.addAndGet(1);
-            plateau.jetonsAction.get(1).currentimg.setOnMousePressed(null);
-        });
-        plateau.jetonsAction.get(1).currentimg.setOnMouseReleased(event -> {
-            if (jetonjoues.get() == 4) {
-                ArrayList<Boolean> status = isGameOver();
-                System.out.println("fin du round: isGameOver(): " + status.get(0) + " | doesJackWin(): " + status.get(1) + " | doesEnqueteurWin(): " + status.get(2));
-                try {
-                    prochainRound();
-                } catch (FileNotFoundException fileNotFoundException) {
-                    fileNotFoundException.printStackTrace();
-                }
-            }
-        });
-
-
-        // Jeton 3
-        plateau.jetonsAction.get(2).currentimg.setOnMousePressed(e -> {
-            System.out.println("jeton3 selectionné");
-            actionsJeton(2);
-            jetonjoues.addAndGet(1);
-            plateau.jetonsAction.get(2).currentimg.setOnMousePressed(null);
-        });
-        plateau.jetonsAction.get(2).currentimg.setOnMouseReleased(event -> {
-            if (jetonjoues.get() == 4) {
-                ArrayList<Boolean> status = isGameOver();
-                System.out.println("fin du round: isGameOver(): " + status.get(0) + " | doesJackWin(): " + status.get(1) + " | doesEnqueteurWin(): " + status.get(2));
-                try {
-                    prochainRound();
-                } catch (FileNotFoundException fileNotFoundException) {
-                    fileNotFoundException.printStackTrace();
-                }
-            }
-        });
-
-
-        // Jeton 4
-        plateau.jetonsAction.get(3).currentimg.setOnMousePressed(e -> {
-            System.out.println("jeton4 selectionné");
-            actionsJeton(3);
-            jetonjoues.addAndGet(1);
-            plateau.jetonsAction.get(3).currentimg.setOnMousePressed(null);
-        });
-
-        plateau.jetonsAction.get(3).currentimg.setOnMouseReleased(event -> {
-            if (jetonjoues.get() == 4) {
-                ArrayList<Boolean> status = isGameOver();
-                System.out.println("Fin du round:"+round+" isGameOver(): " + status.get(0) + " | doesJackWin(): " + status.get(1) + " | doesEnqueteurWin(): " + status.get(2));
-                try {
-                    prochainRound();
-                } catch (FileNotFoundException fileNotFoundException) {
-                    fileNotFoundException.printStackTrace();
-                }
-            }
-        });
-
-        */
 
         // Jeton j: 1 à 4 générés et prêts à être joués grâce à jetonjoues:
 
