@@ -226,6 +226,7 @@ public class Partie extends Application {
     public static int round=0;
     AtomicInteger jetonjoues = new AtomicInteger(0);
 
+
     public void round0(Pane root) throws FileNotFoundException {
 
         plateau.initPlateau(scene,root);
@@ -380,6 +381,66 @@ public class Partie extends Application {
 
     }
 
+    public void actionsJeton(int i) throws FileNotFoundException {
+
+        if (plateau.jetonsAction.get(i).nom.equals((String) "Alibi - Holmes")) { // Alibi OK | Holmes OK
+            if (plateau.jetonsAction.get(i).face==1) {
+                CarteAlibi cartePiochee = plateau.piocheAlibi();
+                if ((round%2==1 && (jetonjoues.get()==2 || jetonjoues.get()==2)) || (round%2==0 && (jetonjoues.get()==1 || jetonjoues.get()==4))) {
+                    plateau.mrjack.nbSabliers+=cartePiochee.nbSabliers;
+                    plateau.affichageSabliers(scene,root);
+                }
+                else {
+                    ImageView img = cartePiochee.img;
+                    img.setX(550-plateau.enqueteur.cartePiochees*7);
+                    img.setY(580-plateau.enqueteur.cartePiochees*7); plateau.enqueteur.cartePiochees+=1;
+                    img.setFitHeight(50);
+                    img.setFitWidth(30);
+                    root.getChildren().add(img);
+                    for (int j = 0; j < 9; j++) {
+                        if (plateau.districts.get(j).nom==cartePiochee.nom) {
+                            plateau.districts.get(j).face=2;
+                        }
+                    }
+                    plateau.affichageDistricts(scene,root);
+                }
+            }
+            if (plateau.jetonsAction.get(i).face==2) {
+                plateau.deplacerDetective(plateau.Holmes);
+            }
+        }
+        if (plateau.jetonsAction.get(i).nom.equals((String) "Toby - Watson")) { // Toby OK | Watson OK
+            if (plateau.jetonsAction.get(i).face==1) {
+                plateau.deplacerDetective(plateau.Toby);
+            }
+            if (plateau.jetonsAction.get(i).face==2) {
+                plateau.deplacerDetective(plateau.Watson);
+            }
+        }
+        if (plateau.jetonsAction.get(i).nom.equals((String) "Pivot - Echange")) { // Pivot OK |
+            if (plateau.jetonsAction.get(i).face==1) {
+                for (int j =1;j<10;j++) {
+                    plateau.rotationDistrict(root,j);
+                }
+            }
+            if (plateau.jetonsAction.get(i).face==2) {
+
+            }
+        }
+        if (plateau.jetonsAction.get(i).nom.equals((String) "Pivot - Joker")) { // Pivot OK |
+            if (plateau.jetonsAction.get(i).face==1) {
+                for(int j =1;j<10;j++){
+                    plateau.rotationDistrict(root,j);
+                }
+            }
+            if (plateau.jetonsAction.get(i).face==2) {
+                //plateau.joker();
+            }
+        }
+        plateau.isJackVisible(plateau.districtsVus());
+
+    }
+
     public void inspection() throws FileNotFoundException {
 
         ImageView loupe = new ImageView(new Image(new FileInputStream("images\\Divers\\loupe.png")));
@@ -482,66 +543,6 @@ public class Partie extends Application {
         }
 
         round1(root);
-
-    }
-
-    public void actionsJeton(int i) throws FileNotFoundException {
-
-        if (plateau.jetonsAction.get(i).nom.equals((String) "Alibi - Holmes")) { // Alibi OK | Holmes OK
-            if (plateau.jetonsAction.get(i).face==1) {
-                CarteAlibi cartePiochee = plateau.piocheAlibi();
-                if ((round%2==1 && (jetonjoues.get()==2 || jetonjoues.get()==2)) || (round%2==0 && (jetonjoues.get()==1 || jetonjoues.get()==4))) {
-                    plateau.mrjack.nbSabliers+=cartePiochee.nbSabliers;
-                    plateau.affichageSabliers(scene,root);
-                }
-                else {
-                    ImageView img = cartePiochee.img;
-                    img.setX(550-plateau.enqueteur.cartePiochees*7);
-                    img.setY(580-plateau.enqueteur.cartePiochees*7); plateau.enqueteur.cartePiochees+=1;
-                    img.setFitHeight(50);
-                    img.setFitWidth(30);
-                    root.getChildren().add(img);
-                    for (int j = 0; j < 9; j++) {
-                        if (plateau.districts.get(j).nom==cartePiochee.nom) {
-                            plateau.districts.get(j).face=2;
-                        }
-                    }
-                    plateau.affichageDistricts(scene,root);
-                }
-            }
-            if (plateau.jetonsAction.get(i).face==2) {
-                plateau.deplacerDetective(plateau.Holmes);
-            }
-        }
-        if (plateau.jetonsAction.get(i).nom.equals((String) "Toby - Watson")) { // Toby OK | Watson OK
-            if (plateau.jetonsAction.get(i).face==1) {
-                plateau.deplacerDetective(plateau.Toby);
-            }
-            if (plateau.jetonsAction.get(i).face==2) {
-                plateau.deplacerDetective(plateau.Watson);
-            }
-        }
-        if (plateau.jetonsAction.get(i).nom.equals((String) "Pivot - Echange")) { // Pivot OK |
-            if (plateau.jetonsAction.get(i).face==1) {
-                for (int j =1;j<10;j++) {
-                    plateau.rotationDistrict(root,j);
-                }
-            }
-            if (plateau.jetonsAction.get(i).face==2) {
-
-            }
-        }
-        if (plateau.jetonsAction.get(i).nom.equals((String) "Pivot - Joker")) { // Pivot OK |
-            if (plateau.jetonsAction.get(i).face==1) {
-                for(int j =1;j<10;j++){
-                    plateau.rotationDistrict(root,j);
-                }
-            }
-            if (plateau.jetonsAction.get(i).face==2) {
-                //plateau.joker();
-            }
-        }
-        plateau.isJackVisible(plateau.districtsVus());
 
     }
 
