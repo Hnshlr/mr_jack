@@ -1,18 +1,19 @@
+import javafx.animation.RotateTransition;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.transform.Rotate;
+import javafx.util.Duration;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.sql.Array;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Plateau {
 
@@ -363,6 +364,11 @@ public class Plateau {
 
 
     // méthodes jetons action
+    public CarteAlibi piocheAlibi() { // retourne carte alibi
+        CarteAlibi carteAlibiPiochee = pile_Alibis.get(pile_Alibis.size()-1);
+        pile_Alibis.remove(pile_Alibis.size()-1);
+        return carteAlibiPiochee;
+    }
     public void echangerDistrict(int position1, int position2) {
         this.districts.get(position1-1).position=(position2);
         this.districts.get(position2-1).position=(position1);
@@ -372,37 +378,71 @@ public class Plateau {
         this.districts.get(position-1).face=2;
         // blabla
     }
-    public void rotationDistrict(int position, int pivot){
-        switch(pivot){
-            case 0: // tourne 45deg horaire
-                if(this.districts.get(position-1).orientation==4) {
-                    this.districts.get(position-1).orientation=1;
+    public void rotationDistrict(Pane root,int position) throws FileNotFoundException {
+        int initOrientation = districts.get(position-1).orientation;
+
+
+        ImageView gcheck = new ImageView(new Image(new FileInputStream("images\\Divers\\greeCheck.png")));
+        gcheck.setFitHeight(350.0/15.0);
+        gcheck.setFitWidth(350.0/15.0);
+        gcheck.setX(districts.get(position-1).img.getX());
+        gcheck.setY(districts.get(position-1).img.getY());
+
+        ImageView rcross = new ImageView(new Image(new FileInputStream("images\\Divers\\redCross.png")));
+        rcross.setFitHeight(350.0/15.0);
+        rcross.setFitWidth(350.0/15.0);
+        rcross.setX(districts.get(position-1).img.getX());
+        rcross.setY(districts.get(position-1).img.getY());
+
+        AtomicInteger compteur = new AtomicInteger();
+
+        districts.get(position-1).img.setOnMousePressed(e ->{
+
+            for(District district : districts){
+                if(district != districts.get(position-1)){
+                    district.img.setOnMousePressed(null);
                 }
-                else {
-                    this.districts.get(position-1).orientation+=1;
+
+            }
+
+            compteur.addAndGet(1);
+
+            root.getChildren().remove(gcheck);
+            root.getChildren().remove(rcross);
+            if(e.getClickCount() == 1){
+
+                RotateTransition rotate = new RotateTransition();
+                rotate.setAxis(Rotate.Z_AXIS);
+                rotate.setByAngle(90);
+                rotate.setCycleCount(1);
+                rotate.setDuration(Duration.millis(500));
+                rotate.setNode(districts.get(position-1).img);
+                rotate.play();
+
+                if(districts.get(position-1).orientation == 4){
+                    districts.get(position-1).orientation = 1;
                 }
-            case 1: // tourne 45 deg anti-horaire
-                if(this.districts.get(position-1).orientation==1) {
-                    this.districts.get(position-1).orientation=4;
+                else{
+                    districts.get(position-1).orientation += 1;
                 }
-                else {
-                    this.districts.get(position-1).orientation+=-1;
+                if(compteur.get() != 4){
+                    root.getChildren().add(gcheck);
                 }
-            case 2: // tourne 90deg
-                if(this.districts.get(position-1).orientation==1) {
-                    this.districts.get(position-1).orientation=3;
+                else{
+                    root.getChildren().add(rcross);
+                    compteur.set(0);
                 }
-                if(this.districts.get(position-1).orientation==2) {
-                    this.districts.get(position-1).orientation=4;
-                }
-                if(this.districts.get(position-1).orientation==3) {
-                    this.districts.get(position-1).orientation=1;
-                }
-                if(this.districts.get(position-1).orientation==4) {
-                    this.districts.get(position-1).orientation=2;
-                }
-        }
+            }
+            System.out.println(districts.get(position-1).orientation);
+
+        });
+        gcheck.setOnMouseClicked(e->{
+            districts.get(position-1).img.setOnMousePressed(null);
+            root.getChildren().remove(gcheck);
+            root.getChildren().remove(rcross);
+        });
     }
+
     public void deplacerDetective(JetonDetective jeton) {
 
         //Coordonnées initiales du jeton
@@ -1164,6 +1204,7 @@ public class Plateau {
             jetonsAction.get(i).face = new Random().nextInt(2)+1;
         }
     }
+
 
     public void voirIdMrJack(Pane root){
 

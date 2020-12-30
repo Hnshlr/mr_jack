@@ -257,6 +257,12 @@ public class Partie extends Application {
     public void round1(Pane root) throws FileNotFoundException {
         plateau.etatDePartie();
 
+        for(int i =1;i<10;i++){
+            plateau.rotationDistrict(root,i);
+        }
+
+
+
     }
 
     public static boolean doesJackWin() {
