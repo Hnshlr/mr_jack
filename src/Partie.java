@@ -2,21 +2,20 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import jdk.jfr.events.ExceptionThrownEvent;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Partie extends Application {
@@ -195,6 +194,7 @@ public class Partie extends Application {
     // Lancement de la partie
     public void jouer(Pane root) throws FileNotFoundException {
 
+
         round0(root);
 
         //plateau.deplacerDetective(plateau.Holmes);
@@ -223,6 +223,9 @@ public class Partie extends Application {
 
     }
 
+    public static int round=0;
+    AtomicInteger jetonjoues = new AtomicInteger(0);
+
     public void round0(Pane root) throws FileNotFoundException {
 
         plateau.initPlateau(scene,root);
@@ -244,7 +247,7 @@ public class Partie extends Application {
             root.getChildren().remove(lancerPartie);
             try {
                 plateau.affichageDistricts(scene,root);
-                plateau.affichageJetonsTemps(scene,root);
+                plateau.affichageJetonsTemps(scene,root,0);
                 plateau.affichageJetonsAction(scene,root);
                 plateau.affichageDetectives(scene,root);
                 round1(root);
@@ -255,29 +258,344 @@ public class Partie extends Application {
     }
 
     public void round1(Pane root) throws FileNotFoundException {
+        round+=1;
         plateau.etatDePartie();
+
+        System.out.println("\nDébut du round "+round+":");
+
+        jetonjoues.set(0);
+
+        //Random random = new Random();
+        //int rand = jetonsDisponibles.get(random.nextInt(jetonsDisponibles.size()));
+
+        /*
+        // Jeton 1
+        plateau.jetonsAction.get(0).currentimg.setOnMousePressed(e -> {
+            System.out.println("jeton1 selectionné");
+            actionsJeton(0);
+            jetonjoues.addAndGet(1);
+            plateau.jetonsAction.get(0).currentimg.setOnMousePressed(null);
+        });
+        plateau.jetonsAction.get(0).currentimg.setOnMouseReleased(event -> {
+            if (jetonjoues.get() == 4) {
+                ArrayList<Boolean> status = isGameOver();
+                System.out.println("fin du round: isGameOver(): " + status.get(0) + " | doesJackWin(): " + status.get(1) + " | doesEnqueteurWin(): " + status.get(2));
+                try {
+                    prochainRound();
+                } catch (FileNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
+            }
+        });
+
+        // Jeton 2
+        plateau.jetonsAction.get(1).currentimg.setOnMousePressed(e -> {
+            System.out.println("jeton2 selectionné");
+            actionsJeton(1);
+            jetonjoues.addAndGet(1);
+            plateau.jetonsAction.get(1).currentimg.setOnMousePressed(null);
+        });
+        plateau.jetonsAction.get(1).currentimg.setOnMouseReleased(event -> {
+            if (jetonjoues.get() == 4) {
+                ArrayList<Boolean> status = isGameOver();
+                System.out.println("fin du round: isGameOver(): " + status.get(0) + " | doesJackWin(): " + status.get(1) + " | doesEnqueteurWin(): " + status.get(2));
+                try {
+                    prochainRound();
+                } catch (FileNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
+            }
+        });
+
+
+        // Jeton 3
+        plateau.jetonsAction.get(2).currentimg.setOnMousePressed(e -> {
+            System.out.println("jeton3 selectionné");
+            actionsJeton(2);
+            jetonjoues.addAndGet(1);
+            plateau.jetonsAction.get(2).currentimg.setOnMousePressed(null);
+        });
+        plateau.jetonsAction.get(2).currentimg.setOnMouseReleased(event -> {
+            if (jetonjoues.get() == 4) {
+                ArrayList<Boolean> status = isGameOver();
+                System.out.println("fin du round: isGameOver(): " + status.get(0) + " | doesJackWin(): " + status.get(1) + " | doesEnqueteurWin(): " + status.get(2));
+                try {
+                    prochainRound();
+                } catch (FileNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
+            }
+        });
+
+
+        // Jeton 4
+        plateau.jetonsAction.get(3).currentimg.setOnMousePressed(e -> {
+            System.out.println("jeton4 selectionné");
+            actionsJeton(3);
+            jetonjoues.addAndGet(1);
+            plateau.jetonsAction.get(3).currentimg.setOnMousePressed(null);
+        });
+
+        plateau.jetonsAction.get(3).currentimg.setOnMouseReleased(event -> {
+            if (jetonjoues.get() == 4) {
+                ArrayList<Boolean> status = isGameOver();
+                System.out.println("Fin du round:"+round+" isGameOver(): " + status.get(0) + " | doesJackWin(): " + status.get(1) + " | doesEnqueteurWin(): " + status.get(2));
+                try {
+                    prochainRound();
+                } catch (FileNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
+            }
+        });
+
+        */
+
+        // Jeton j: 1 à 4 générés et prêts à être joués grâce à jetonjoues:
+
+        for (int j = 0; j < 4; j++) {
+            int finalJ = j;
+            plateau.jetonsAction.get(j).currentimg.setOnMousePressed(e -> {
+                System.out.println("Jeton "+(finalJ+1)+" sélectionné/joué");
+                jetonjoues.addAndGet(1);
+                try {
+                    actionsJeton(finalJ);
+                } catch (FileNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
+                plateau.jetonsAction.get(finalJ).currentimg.setOnMousePressed(null);
+            });
+
+            plateau.jetonsAction.get(j).currentimg.setOnMouseReleased(event -> {
+                if (jetonjoues.get() == 4) {
+                    try {
+                        inspection();
+                    } catch (FileNotFoundException fileNotFoundException) {
+                        fileNotFoundException.printStackTrace();
+                    }
+                }
+                plateau.jetonsAction.get(finalJ).currentimg.setOnMousePressed(null);
+                plateau.jetonsAction.get(finalJ).currentimg.setOnMouseReleased(null);
+            });
+        }
 
     }
 
+    public void inspection() throws FileNotFoundException {
+
+        ImageView loupe = new ImageView(new Image(new FileInputStream("images\\Divers\\loupe.png")));
+        loupe.setFitHeight(50);
+        loupe.setFitWidth(50);
+        loupe.setX(307);
+        loupe.setY(575);
+        loupe.setEffect(new DropShadow(10, Color.WHITE));
+        root.getChildren().add(loupe);
+
+        loupe.setOnMousePressed(event -> {
+            try {
+                ArrayList<Boolean> status = isGameOver();
+                System.out.println("Fin du round "+round+" - isGameOver(): " + status.get(0) + " | doesJackWin(): " + status.get(1) + " | doesEnqueteurWin(): " + status.get(2) + "\n________________________________________________________________");
+
+                if (doesJackWin()) {
+                    ImageView win_jack = new ImageView(new Image(new FileInputStream("images\\Menu\\win_jack.png")));
+
+                    win_jack.setOnMousePressed(event2 -> {
+                        try {
+                            menuPlayers(scene,root);
+                            win_jack.setOnMousePressed(null);
+                        } catch (FileNotFoundException fileNotFoundException) {
+                            fileNotFoundException.printStackTrace();
+                        }
+                        win_jack.setOnMousePressed(null);
+                    });
+
+                    root.getChildren().add(win_jack);
+
+                    ImageView img = plateau.mrjack.identite.img ;
+                    img.setFitHeight(325.0);
+                    img.setFitWidth(200.0);
+                    img.setX(225);
+                    img.setY(50);
+                    root.getChildren().add(img);
+                }
+                if (doesEnqueteurWin()) {
+                    ImageView win_enqueteur = new ImageView(new Image(new FileInputStream("images\\Menu\\win_enqueteur.png")));
+
+                    win_enqueteur.setOnMousePressed(event3 -> {
+                        try {
+                            menuPlayers(scene,root);
+                            win_enqueteur.setOnMousePressed(null);
+                        } catch (FileNotFoundException fileNotFoundException) {
+                            fileNotFoundException.printStackTrace();
+                        }
+                        win_enqueteur.setOnMousePressed(null);
+                    });
+
+                    root.getChildren().add(win_enqueteur);
+
+                    ImageView img = new ImageView(new Image(new FileInputStream("images\\JetonsDetective\\Holmes.png")));
+                    img.setFitHeight(325.0);
+                    img.setFitWidth(325.0);
+                    img.setX(162.5);
+                    img.setY(50);
+                    root.getChildren().add(img);
+                }
+                else {
+                    plateau.isJackVisible(plateau.districtsVus());
+                    prochainRound();
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            root.getChildren().remove(loupe);
+        });
+    }
+
+    public void prochainRound() throws FileNotFoundException {
+
+        // Relancement des jetons
+        for (int i = 0; i < 4; i++) {
+            root.getChildren().remove(plateau.jetonsAction.get(i).currentimg);
+        }
+        if (round%2!=0) {
+            for (int i = 0; i < 4; i++) {
+                //plateau.jetonsAction.get(i).face=(plateau.jetonsAction.get(i).face+1)%2;
+                if(plateau.jetonsAction.get(i).face==1) {
+                    plateau.jetonsAction.get(i).face=2;
+                }
+                else {
+                    plateau.jetonsAction.get(i).face=1;
+                }
+            }
+        }
+        else {
+            plateau.lancerJetonsAction();
+        }
+        plateau.affichageJetonsAction(scene, root);
+
+
+        // Distribution des sabliers
+        plateau.affichageJetonsTemps(scene,root,round);
+
+        if (!plateau.isJackVisible(plateau.districtsVus())) {
+            plateau.mrjack.nbSabliers+=1;
+            plateau.affichageSabliers(scene,root);
+        }
+
+        round1(root);
+
+    }
+
+    public void actionsJeton(int i) throws FileNotFoundException {
+
+        if (plateau.jetonsAction.get(i).nom.equals((String) "Alibi - Holmes")) { // Alibi OK | Holmes OK
+            if (plateau.jetonsAction.get(i).face==1) {
+                CarteAlibi cartePiochee = plateau.piocheAlibi();
+                if ((round%2==1 && (jetonjoues.get()==2 || jetonjoues.get()==2)) || (round%2==0 && (jetonjoues.get()==1 || jetonjoues.get()==4))) {
+                    plateau.mrjack.nbSabliers+=cartePiochee.nbSabliers;
+                    plateau.affichageSabliers(scene,root);
+                }
+                else {
+                    ImageView img = cartePiochee.img;
+                    img.setX(550-plateau.enqueteur.cartePiochees*7);
+                    img.setY(580-plateau.enqueteur.cartePiochees*7); plateau.enqueteur.cartePiochees+=1;
+                    img.setFitHeight(50);
+                    img.setFitWidth(30);
+                    root.getChildren().add(img);
+                    for (int j = 0; j < 9; j++) {
+                        if (plateau.districts.get(j).nom==cartePiochee.nom) {
+                            plateau.districts.get(j).face=2;
+                        }
+                    }
+                    plateau.affichageDistricts(scene,root);
+                }
+            }
+            if (plateau.jetonsAction.get(i).face==2) {
+                plateau.deplacerDetective(plateau.Holmes);
+            }
+        }
+        if (plateau.jetonsAction.get(i).nom.equals((String) "Toby - Watson")) { // Toby OK | Watson OK
+            if (plateau.jetonsAction.get(i).face==1) {
+                plateau.deplacerDetective(plateau.Toby);
+            }
+            if (plateau.jetonsAction.get(i).face==2) {
+                plateau.deplacerDetective(plateau.Watson);
+            }
+        }
+        if (plateau.jetonsAction.get(i).nom.equals((String) "Pivot - Echange")) { // Pivot OK |
+            if (plateau.jetonsAction.get(i).face==1) {
+                for (int j =1;j<10;j++) {
+                    plateau.rotationDistrict(root,j);
+                }
+            }
+            if (plateau.jetonsAction.get(i).face==2) {
+
+            }
+        }
+        if (plateau.jetonsAction.get(i).nom.equals((String) "Pivot - Joker")) { // Pivot OK |
+            if (plateau.jetonsAction.get(i).face==1) {
+                for(int j =1;j<10;j++){
+                    plateau.rotationDistrict(root,j);
+                }
+            }
+            if (plateau.jetonsAction.get(i).face==2) {
+                //plateau.joker();
+            }
+        }
+        plateau.isJackVisible(plateau.districtsVus());
+
+    }
+
+
     public static boolean doesJackWin() {
-        if(plateau.mrjack.nbSabliers==6) {
+        if((plateau.mrjack.nbSabliers==6) || (round>=8 && !plateau.isJackVisible(plateau.districtsVus()))) {
             return true;
         }
         else {
             return false;
         }
     }
-
     public static boolean doesEnqueteurWin() {
         int compteur=0;
         for (int i = 0; i < 9; i++) {
-            compteur+=plateau.districts.get(i).face;
+            if (plateau.districts.get(i).face==1) {
+                compteur+=1;
+            }
         }
         if(compteur==1 & plateau.isJackVisible(plateau.districtsVus())) {
             return true;
         }
         else {
             return false;
+        }
+    }
+    public ArrayList<Boolean> isGameOver() {
+        ArrayList<Boolean> status = new ArrayList<Boolean>(3);
+
+        if (doesJackWin()) {
+            status.add(0, true);
+            status.add(1, true);
+            status.add(2, false);
+            return status;
+        }
+        else if (doesEnqueteurWin()) {
+            status.add(0, true);
+            status.add(1, false);
+            status.add(2, true);
+            return status;
+        }
+        else {
+            status.add(0, false);
+            status.add(1, false);
+            status.add(2, false);
+            return status;
+        }
+    }
+    public void gameOver(int indiceGagnant) {
+        if (indiceGagnant==0) {
+            System.out.println("Mr Jack gagne.");
+        }
+        else {
+            System.out.println("L'enqueteur gagne");
         }
     }
 

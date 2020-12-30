@@ -1,3 +1,5 @@
+import javafx.scene.image.ImageView;
+
 import java.io.FileInputStream;
 
 public class JetonTemps {
@@ -7,6 +9,8 @@ public class JetonTemps {
     int face;       // 1 ou 2
     FileInputStream image1;
     FileInputStream image2;
+    ImageView img;
+    ImageView currentimg;
 
     public JetonTemps() {
     }

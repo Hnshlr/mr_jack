@@ -11,7 +11,10 @@ public class District {
     int face;          // 1 ou 2 : face suspect ou chemins
     int nbChemins;
     FileInputStream image;
+    FileInputStream image2;
     ImageView img;
+    ImageView img2;
+    ImageView currentimg;
 
     public District() {
     }
