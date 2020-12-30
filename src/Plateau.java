@@ -442,26 +442,26 @@ public class Plateau {
         ImageView gcheck = new ImageView(new Image(new FileInputStream("images\\Divers\\greeCheck.png")));
         gcheck.setFitHeight(350.0/15.0);
         gcheck.setFitWidth(350.0/15.0);
-        gcheck.setX(districts.get(position-1).img.getX());
-        gcheck.setY(districts.get(position-1).img.getY());
+        gcheck.setX(districts.get(position-1).currentimg.getX());
+        gcheck.setY(districts.get(position-1).currentimg.getY());
 
         ImageView rcross = new ImageView(new Image(new FileInputStream("images\\Divers\\redCross.png")));
         rcross.setFitHeight(350.0/15.0);
         rcross.setFitWidth(350.0/15.0);
-        rcross.setX(districts.get(position-1).img.getX());
-        rcross.setY(districts.get(position-1).img.getY());
+        rcross.setX(districts.get(position-1).currentimg.getX());
+        rcross.setY(districts.get(position-1).currentimg.getY());
 
         AtomicInteger compteur = new AtomicInteger();
 
-        districts.get(position-1).img.setOnMousePressed(e ->{
+        districts.get(position-1).currentimg.setOnMousePressed(e ->{
 
-            districts.get(position-1).img.setEffect(new DropShadow(20, Color.RED));
+            districts.get(position-1).currentimg.setEffect(new DropShadow(20, Color.RED));
             
             for(District district : districts){
                 if(district != districts.get(position-1)){
-                    district.img.setOnMousePressed(null);
-                    district.img.setOnMouseEntered(null);
-                    district.img.setOnMouseExited(null);
+                    district.currentimg.setOnMousePressed(null);
+                    district.currentimg.setOnMouseEntered(null);
+                    district.currentimg.setOnMouseExited(null);
                 }
 
             }
@@ -477,7 +477,7 @@ public class Plateau {
                 rotate.setByAngle(90);
                 rotate.setCycleCount(1);
                 rotate.setDuration(Duration.millis(500));
-                rotate.setNode(districts.get(position-1).img);
+                rotate.setNode(districts.get(position-1).currentimg);
                 rotate.play();
 
                 if(districts.get(position-1).orientation == 4){
@@ -498,19 +498,19 @@ public class Plateau {
 
         });
 
-        districts.get(position-1).img.setOnMouseEntered(e ->{
-            districts.get(position-1).img.setEffect(new DropShadow(20, Color.RED));
+        districts.get(position-1).currentimg.setOnMouseEntered(e ->{
+            districts.get(position-1).currentimg.setEffect(new DropShadow(20, Color.RED));
         });
 
-        districts.get(position-1).img.setOnMouseExited(e ->{
-            districts.get(position-1).img.setEffect(new DropShadow(20, Color.WHITE));
+        districts.get(position-1).currentimg.setOnMouseExited(e ->{
+            districts.get(position-1).currentimg.setEffect(new DropShadow(20, Color.WHITE));
         });
 
         gcheck.setOnMouseClicked(e->{
-            districts.get(position-1).img.setOnMouseEntered(null);
-            districts.get(position-1).img.setOnMouseExited(null);
-            districts.get(position-1).img.setOnMouseExited(null);
-            districts.get(position-1).img.setEffect(new DropShadow(20, Color.WHITE));
+            districts.get(position-1).currentimg.setOnMouseEntered(null);
+            districts.get(position-1).currentimg.setOnMouseExited(null);
+            districts.get(position-1).currentimg.setOnMouseExited(null);
+            districts.get(position-1).currentimg.setEffect(new DropShadow(20, Color.WHITE));
             root.getChildren().remove(gcheck);
             root.getChildren().remove(rcross);
         });
