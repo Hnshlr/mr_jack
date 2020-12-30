@@ -406,10 +406,23 @@ public class Partie extends Application {
                     root.getChildren().add(img);
                     for (int j = 0; j < 9; j++) {
                         if (plateau.districts.get(j).nom.equals(cartePiochee.nom)) {
+
                             plateau.districts.get(j).face=2;
+
+                            double x = plateau.districts.get(j).currentimg.getX();
+                            double y = plateau.districts.get(j).currentimg.getY();
+                            root.getChildren().remove(plateau.districts.get(j).currentimg);
+
+                            plateau.districts.get(j).currentimg=plateau.districts.get(j).img2;
+                            plateau.districts.get(j).currentimg.setX(x);
+                            plateau.districts.get(j).currentimg.setY(y);
+                            plateau.districts.get(j).currentimg.setFitHeight(98);
+                            plateau.districts.get(j).currentimg.setFitWidth(98);
+                            plateau.districts.get(j).currentimg.setRotate(plateau.districts.get(j).orientation*90-90);
+
+                            root.getChildren().add(plateau.districts.get(j).currentimg);
                         }
                     }
-                    plateau.affichageDistricts(scene,root);
                 }
             }
             if (plateau.jetonsAction.get(i).face==2) {
@@ -450,6 +463,7 @@ public class Partie extends Application {
 
     public void inspection() throws FileNotFoundException {
 
+
         ImageView loupe = new ImageView(new Image(new FileInputStream("images\\Divers\\loupe.png")));
         loupe.setFitHeight(50);
         loupe.setFitWidth(50);
@@ -460,9 +474,9 @@ public class Partie extends Application {
 
         loupe.setOnMousePressed(event -> {
             try {
+                plateau.affichageDistricts(scene,root);
                 ArrayList<Boolean> status = isGameOver();
                 System.out.println("Fin du round "+round+" - isGameOver(): " + status.get(0) + " | doesJackWin(): " + status.get(1) + " | doesEnqueteurWin(): " + status.get(2) + "\n________________________________________________________________");
-
                 if (doesJackWin()) {
                     ImageView win_jack = new ImageView(new Image(new FileInputStream("images\\Menu\\win_jack.png")));
 
@@ -511,9 +525,11 @@ public class Partie extends Application {
                     plateau.isJackVisible(plateau.districtsVus());
                     prochainRound();
                 }
+
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+
             root.getChildren().remove(loupe);
         });
     }
