@@ -236,13 +236,10 @@ public class Plateau {
                     districts.get(3*i+j).currentimg = districts.get(3*i+j).img2;
                 }
 
-                //districts.get(3*i+j).currentimg.setStyle(" -fx-background-color: white; -fx-padding: 10; -fx-background-radius: 5");
-
                 districts.get(3*i+j).currentimg.setFitHeight(98);
                 districts.get(3*i+j).currentimg.setFitWidth(98);
                 districts.get(3*i+j).currentimg.setX(178+98*j);
                 districts.get(3*i+j).currentimg.setY(178+98*i);
-
                 districts.get(3*i+j).currentimg.setEffect(new DropShadow(10, Color.WHITE));
 
                 switch(districts.get(3*i+j).orientation){
@@ -265,9 +262,7 @@ public class Plateau {
 
             }
         }
-        root.getChildren().remove(districts.get(4).currentimg);
-        root.getChildren().add(districts.get(4).currentimg);
-        //districts.get(4).currentimg.setEffect(new DropShadow(20, Color.RED));
+
     }
     public void affichageDetectives(Scene scene, Pane root) throws FileNotFoundException {
         ArrayList<JetonDetective> temp_jetonsDetectives = new ArrayList<JetonDetective>(Arrays.asList(Holmes,Watson,Toby));
@@ -443,8 +438,6 @@ public class Plateau {
         // blabla
     }
     public void rotationDistrict(Pane root,int position) throws FileNotFoundException {
-        int initOrientation = districts.get(position-1).orientation;
-
 
         ImageView gcheck = new ImageView(new Image(new FileInputStream("images\\Divers\\greeCheck.png")));
         gcheck.setFitHeight(350.0/15.0);
@@ -462,9 +455,13 @@ public class Plateau {
 
         districts.get(position-1).img.setOnMousePressed(e ->{
 
+            districts.get(position-1).img.setEffect(new DropShadow(20, Color.RED));
+            
             for(District district : districts){
                 if(district != districts.get(position-1)){
                     district.img.setOnMousePressed(null);
+                    district.img.setOnMouseEntered(null);
+                    district.img.setOnMouseExited(null);
                 }
 
             }
@@ -500,8 +497,20 @@ public class Plateau {
             //System.out.println(districts.get(position-1).orientation);
 
         });
+
+        districts.get(position-1).img.setOnMouseEntered(e ->{
+            districts.get(position-1).img.setEffect(new DropShadow(20, Color.RED));
+        });
+
+        districts.get(position-1).img.setOnMouseExited(e ->{
+            districts.get(position-1).img.setEffect(new DropShadow(20, Color.WHITE));
+        });
+
         gcheck.setOnMouseClicked(e->{
-            districts.get(position-1).img.setOnMousePressed(null);
+            districts.get(position-1).img.setOnMouseEntered(null);
+            districts.get(position-1).img.setOnMouseExited(null);
+            districts.get(position-1).img.setOnMouseExited(null);
+            districts.get(position-1).img.setEffect(new DropShadow(20, Color.WHITE));
             root.getChildren().remove(gcheck);
             root.getChildren().remove(rcross);
         });

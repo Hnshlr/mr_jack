@@ -1,3 +1,4 @@
+import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -11,6 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -363,6 +365,11 @@ public class Partie extends Application {
                 } catch (FileNotFoundException fileNotFoundException) {
                     fileNotFoundException.printStackTrace();
                 }
+                FadeTransition hide = new FadeTransition(Duration.millis(500));
+                hide.setToValue(0.4);
+                hide.setCycleCount(1);
+                hide.setNode(plateau.jetonsAction.get(finalJ).currentimg);
+                hide.play();
                 plateau.jetonsAction.get(finalJ).currentimg.setOnMousePressed(null);
             });
 
@@ -398,7 +405,7 @@ public class Partie extends Application {
                     img.setFitWidth(30);
                     root.getChildren().add(img);
                     for (int j = 0; j < 9; j++) {
-                        if (plateau.districts.get(j).nom==cartePiochee.nom) {
+                        if (plateau.districts.get(j).nom.equals(cartePiochee.nom)) {
                             plateau.districts.get(j).face=2;
                         }
                     }
