@@ -225,7 +225,7 @@ public class Plateau {
 
     public void affichageFondPlateau(Scene scene, Pane root) throws FileNotFoundException {
         // Ajout fond de plateau
-        ImageView plateau = Partie.loadImage2(root,new FileInputStream("images\\Menu\\plateau.png"));
+        ImageView plateau = Partie.loadImage2(root,new FileInputStream("images\\Menu\\plateau2.png"));
         root.getChildren().add(plateau);
     }
     public void affichageDistricts(Scene scene, Pane root) throws FileNotFoundException {
@@ -401,7 +401,7 @@ public class Plateau {
         }
     }
     public void affichageJetonsTemps(Scene scene, Pane root, int round) throws  FileNotFoundException {
-        
+
         if(round==0){
             for (int i = round; i < 8; i++) {
                 jetonsTemps.get(i).currentimg = jetonsTemps.get(i).img;
