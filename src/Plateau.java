@@ -1,5 +1,4 @@
-import javafx.animation.FadeTransition;
-import javafx.animation.RotateTransition;
+import javafx.animation.*;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
@@ -7,6 +6,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
@@ -228,7 +230,7 @@ public class Plateau {
 
     public void affichageFondPlateau(Scene scene, Pane root) throws FileNotFoundException {
         // Ajout fond de plateau
-        ImageView plateau = Partie.loadImage2(root,new FileInputStream("images\\Menu\\plateau.png"));
+        ImageView plateau = Partie.loadImage2(root,new FileInputStream("images\\Menu\\plateau2.png"));
         root.getChildren().add(plateau);
     }
     public void affichageDistricts(Scene scene, Pane root) throws FileNotFoundException {
@@ -242,6 +244,7 @@ public class Plateau {
                 }
                 else {
                     districts.get(3*i+j).currentimg = districts.get(3*i+j).img2;
+
                 }
 
                 districts.get(3*i+j).currentimg.setFitHeight(98);
@@ -264,12 +267,36 @@ public class Plateau {
                         districts.get(3*i+j).currentimg.setRotate(270);
                         break;
                 }
-
                 root.getChildren().remove(districts.get(3*i+j).currentimg);
                 root.getChildren().add(districts.get(3*i+j).currentimg);
 
+
             }
         }
+
+        /*Animation rotation  --- à voir pcq jarrive pas à la mettre bien -----
+
+        root.getChildren().addAll(districts.get(3*i+j).img2,districts.get(3*i+j).img);
+        RotateTransition rotate = new RotateTransition();
+        rotate.setInterpolator(Interpolator.LINEAR);
+        rotate.setAxis(Rotate.X_AXIS);
+        rotate.setByAngle(-90);
+        rotate.setCycleCount(1);
+        rotate.setDuration(Duration.millis(5000));
+        rotate.setNode(districts.get(3*i+j).img);
+
+        RotateTransition rotate2 = new RotateTransition();
+        rotate2.setInterpolator(Interpolator.LINEAR);
+        rotate2.setAxis(Rotate.X_AXIS);
+        rotate2.setFromAngle(90);
+        rotate2.setByAngle(-90);
+        rotate2.setCycleCount(1);
+        rotate2.setDuration(Duration.millis(5000));
+        rotate2.setNode(districts.get(3*i+j).img2);
+
+        SequentialTransition rotation = new SequentialTransition(rotate,rotate2);
+        rotation.play();
+        */
 
     }
     public void affichageDetectives(Scene scene, Pane root) throws FileNotFoundException {
@@ -375,6 +402,7 @@ public class Plateau {
                     jetonsAction.get(i).currentimg.setFitWidth(48);
                     jetonsAction.get(i).currentimg.setX(21);
                     jetonsAction.get(i).currentimg.setY(183+80*i);
+
                     root.getChildren().add(jetonsAction.get(i).currentimg);
                     FadeTransition fade = new FadeTransition();
                     fade.setDuration(Duration.millis(1000));
@@ -384,6 +412,7 @@ public class Plateau {
                     fade.setNode(jetonsAction.get(i).currentimg);
                     fade.play();
                     break;
+
                 case 2:
                     //ImageView img2 = Partie.loadImage2(root,jetonsAction.get(i).image2);
                     jetonsAction.get(i).currentimg = jetonsAction.get(i).img2;
@@ -391,6 +420,7 @@ public class Plateau {
                     jetonsAction.get(i).currentimg.setFitWidth(48);
                     jetonsAction.get(i).currentimg.setX(21);
                     jetonsAction.get(i).currentimg.setY(183+80*i);
+
                     root.getChildren().add(jetonsAction.get(i).currentimg);
                     FadeTransition fade2 = new FadeTransition();
                     fade2.setDuration(Duration.millis(1000));
@@ -402,30 +432,45 @@ public class Plateau {
                     break;
             }
         }
+
     }
     public void affichageJetonsTemps(Scene scene, Pane root, int round) throws  FileNotFoundException {
 
-        for (int i = 0; i < 8; i++) {
-            jetonsTemps.get(i).currentimg = jetonsTemps.get(i).img;
-            root.getChildren().remove(jetonsTemps.get(i).currentimg);
+        if(round==0){
+            for (int i = round; i < 8; i++) {
+                jetonsTemps.get(i).currentimg = jetonsTemps.get(i).img;
+                jetonsTemps.get(i).currentimg.setFitHeight(83);
+                jetonsTemps.get(i).currentimg.setFitWidth(83);
+                jetonsTemps.get(i).currentimg.setX(560);
+                jetonsTemps.get(i).currentimg.setY(90+56*i);
+                root.getChildren().add(jetonsTemps.get(i).currentimg);
+            }
         }
-        for (int i = round; i < 8; i++) {
-            jetonsTemps.get(i).currentimg.setFitHeight(83);
-            jetonsTemps.get(i).currentimg.setFitWidth(83);
-            jetonsTemps.get(i).currentimg.setX(560);
-            jetonsTemps.get(i).currentimg.setY(90+56*i);
-            root.getChildren().add(jetonsTemps.get(i).currentimg);
+        else{
+            FadeTransition fade = new FadeTransition(Duration.millis(1000));
+            fade.setToValue(0);
+            fade.setCycleCount(1);
+            fade.setNode(jetonsTemps.get(round-1).currentimg);
+            fade.play();
         }
     }
     public void affichageSabliers(Scene scene, Pane root) throws  FileNotFoundException {
         for (int i = 0; i < mrjack.nbSabliers; i++) {
-            ImageView sablier = Partie.loadImage2(root,new FileInputStream("images\\JetonsTemps\\Compteur_sablier.png"));
+            //ImageView sablier = Partie.loadImage2(root,new FileInputStream("images\\JetonsTemps\\Compteur_sablier.png"));
+            ImageView sablier = new ImageView(new Image(new FileInputStream("images\\JetonsTemps\\Compteur_sablier.png")));
             sablier.setFitHeight(50);
             sablier.setFitWidth(50);
             sablier.setX(80+50*i);
             sablier.setY(10);
             root.getChildren().remove(sablier);
             root.getChildren().add(sablier);
+            FadeTransition fade = new FadeTransition();
+            fade.setDuration(Duration.millis(1000));
+            fade.setFromValue(0.1);
+            fade.setToValue(10);
+            fade.setCycleCount(1);
+            fade.setNode(sablier);
+            fade.play();
         }
     }
 
@@ -442,34 +487,36 @@ public class Plateau {
         Collections.swap(this.districts,position1-1,position2-1);
     }
     public void retournerDistrict(int position){
-        this.districts.get(position-1).face=2;
+        districts.get(position-1).face=2;
         // blabla
+
+
     }
     public void rotationDistrict(Pane root,int position) throws FileNotFoundException {
 
         ImageView gcheck = new ImageView(new Image(new FileInputStream("images\\Divers\\greeCheck.png")));
         gcheck.setFitHeight(350.0/15.0);
         gcheck.setFitWidth(350.0/15.0);
-        gcheck.setX(districts.get(position-1).img.getX());
-        gcheck.setY(districts.get(position-1).img.getY());
+        gcheck.setX(districts.get(position-1).currentimg.getX());
+        gcheck.setY(districts.get(position-1).currentimg.getY());
 
         ImageView rcross = new ImageView(new Image(new FileInputStream("images\\Divers\\redCross.png")));
         rcross.setFitHeight(350.0/15.0);
         rcross.setFitWidth(350.0/15.0);
-        rcross.setX(districts.get(position-1).img.getX());
-        rcross.setY(districts.get(position-1).img.getY());
+        rcross.setX(districts.get(position-1).currentimg.getX());
+        rcross.setY(districts.get(position-1).currentimg.getY());
 
         AtomicInteger compteur = new AtomicInteger();
 
-        districts.get(position-1).img.setOnMousePressed(e ->{
+        districts.get(position-1).currentimg.setOnMousePressed(e ->{
 
-            districts.get(position-1).img.setEffect(new DropShadow(20, Color.RED));
+            districts.get(position-1).currentimg.setEffect(new DropShadow(20, Color.ORANGE));
             
             for(District district : districts){
                 if(district != districts.get(position-1)){
-                    district.img.setOnMousePressed(null);
-                    district.img.setOnMouseEntered(null);
-                    district.img.setOnMouseExited(null);
+                    district.currentimg.setOnMousePressed(null);
+                    district.currentimg.setOnMouseEntered(null);
+                    district.currentimg.setOnMouseExited(null);
                 }
 
             }
@@ -485,7 +532,7 @@ public class Plateau {
                 rotate.setByAngle(90);
                 rotate.setCycleCount(1);
                 rotate.setDuration(Duration.millis(500));
-                rotate.setNode(districts.get(position-1).img);
+                rotate.setNode(districts.get(position-1).currentimg);
                 rotate.play();
 
                 if(districts.get(position-1).orientation == 4){
@@ -506,19 +553,19 @@ public class Plateau {
 
         });
 
-        districts.get(position-1).img.setOnMouseEntered(e ->{
-            districts.get(position-1).img.setEffect(new DropShadow(20, Color.RED));
+        districts.get(position-1).currentimg.setOnMouseEntered(e ->{
+            districts.get(position-1).currentimg.setEffect(new DropShadow(20, Color.ORANGE));
         });
 
-        districts.get(position-1).img.setOnMouseExited(e ->{
-            districts.get(position-1).img.setEffect(new DropShadow(20, Color.WHITE));
+        districts.get(position-1).currentimg.setOnMouseExited(e ->{
+            districts.get(position-1).currentimg.setEffect(new DropShadow(20, Color.WHITE));
         });
 
         gcheck.setOnMouseClicked(e->{
-            districts.get(position-1).img.setOnMouseEntered(null);
-            districts.get(position-1).img.setOnMouseExited(null);
-            districts.get(position-1).img.setOnMouseExited(null);
-            districts.get(position-1).img.setEffect(new DropShadow(20, Color.WHITE));
+            districts.get(position-1).currentimg.setOnMouseEntered(null);
+            districts.get(position-1).currentimg.setOnMouseExited(null);
+            districts.get(position-1).currentimg.setOnMouseExited(null);
+            districts.get(position-1).currentimg.setEffect(new DropShadow(20, Color.WHITE));
             root.getChildren().remove(gcheck);
             root.getChildren().remove(rcross);
         });
