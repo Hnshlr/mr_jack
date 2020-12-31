@@ -1,4 +1,5 @@
 import javafx.animation.FadeTransition;
+import javafx.animation.RotateTransition;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -11,6 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -333,6 +335,13 @@ public class Partie extends Application {
                     img.setFitHeight(50);
                     img.setFitWidth(30);
                     root.getChildren().add(img);
+                    FadeTransition fade = new FadeTransition();
+                    fade.setDuration(Duration.millis(1000));
+                    fade.setFromValue(0.1);
+                    fade.setToValue(10);
+                    fade.setCycleCount(1);
+                    fade.setNode(img);
+                    fade.play();
                     for (int j = 0; j < 9; j++) {
                         if (plateau.districts.get(j).nom.equals(cartePiochee.nom)) {
                             plateau.districts.get(j).face=2;

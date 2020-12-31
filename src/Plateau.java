@@ -1,7 +1,4 @@
-import javafx.animation.FadeTransition;
-import javafx.animation.Interpolator;
-import javafx.animation.PathTransition;
-import javafx.animation.RotateTransition;
+import javafx.animation.*;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
@@ -239,6 +236,7 @@ public class Plateau {
                 }
                 else {
                     districts.get(3*i+j).currentimg = districts.get(3*i+j).img2;
+
                 }
 
                 districts.get(3*i+j).currentimg.setFitHeight(98);
@@ -261,12 +259,36 @@ public class Plateau {
                         districts.get(3*i+j).currentimg.setRotate(270);
                         break;
                 }
-
                 root.getChildren().remove(districts.get(3*i+j).currentimg);
                 root.getChildren().add(districts.get(3*i+j).currentimg);
 
+
             }
         }
+
+        /*Animation rotation  --- à voir pcq jarrive pas à la mettre bien -----
+
+        root.getChildren().addAll(districts.get(3*i+j).img2,districts.get(3*i+j).img);
+        RotateTransition rotate = new RotateTransition();
+        rotate.setInterpolator(Interpolator.LINEAR);
+        rotate.setAxis(Rotate.X_AXIS);
+        rotate.setByAngle(-90);
+        rotate.setCycleCount(1);
+        rotate.setDuration(Duration.millis(5000));
+        rotate.setNode(districts.get(3*i+j).img);
+
+        RotateTransition rotate2 = new RotateTransition();
+        rotate2.setInterpolator(Interpolator.LINEAR);
+        rotate2.setAxis(Rotate.X_AXIS);
+        rotate2.setFromAngle(90);
+        rotate2.setByAngle(-90);
+        rotate2.setCycleCount(1);
+        rotate2.setDuration(Duration.millis(5000));
+        rotate2.setNode(districts.get(3*i+j).img2);
+
+        SequentialTransition rotation = new SequentialTransition(rotate,rotate2);
+        rotation.play();
+        */
 
     }
     public void affichageDetectives(Scene scene, Pane root) throws FileNotFoundException {
@@ -372,6 +394,7 @@ public class Plateau {
                     jetonsAction.get(i).currentimg.setFitWidth(48);
                     jetonsAction.get(i).currentimg.setX(21);
                     jetonsAction.get(i).currentimg.setY(183+80*i);
+
                     root.getChildren().add(jetonsAction.get(i).currentimg);
                     FadeTransition fade = new FadeTransition();
                     fade.setDuration(Duration.millis(1000));
@@ -381,6 +404,7 @@ public class Plateau {
                     fade.setNode(jetonsAction.get(i).currentimg);
                     fade.play();
                     break;
+
                 case 2:
                     //ImageView img2 = Partie.loadImage2(root,jetonsAction.get(i).image2);
                     jetonsAction.get(i).currentimg = jetonsAction.get(i).img2;
@@ -388,6 +412,7 @@ public class Plateau {
                     jetonsAction.get(i).currentimg.setFitWidth(48);
                     jetonsAction.get(i).currentimg.setX(21);
                     jetonsAction.get(i).currentimg.setY(183+80*i);
+
                     root.getChildren().add(jetonsAction.get(i).currentimg);
                     FadeTransition fade2 = new FadeTransition();
                     fade2.setDuration(Duration.millis(1000));
@@ -399,6 +424,7 @@ public class Plateau {
                     break;
             }
         }
+
     }
     public void affichageJetonsTemps(Scene scene, Pane root, int round) throws  FileNotFoundException {
 
@@ -453,8 +479,10 @@ public class Plateau {
         Collections.swap(this.districts,position1-1,position2-1);
     }
     public void retournerDistrict(int position){
-        this.districts.get(position-1).face=2;
+        districts.get(position-1).face=2;
         // blabla
+
+
     }
     public void rotationDistrict(Pane root,int position) throws FileNotFoundException {
 
@@ -474,7 +502,7 @@ public class Plateau {
 
         districts.get(position-1).currentimg.setOnMousePressed(e ->{
 
-            districts.get(position-1).currentimg.setEffect(new DropShadow(20, Color.RED));
+            districts.get(position-1).currentimg.setEffect(new DropShadow(20, Color.ORANGE));
             
             for(District district : districts){
                 if(district != districts.get(position-1)){
@@ -518,7 +546,7 @@ public class Plateau {
         });
 
         districts.get(position-1).currentimg.setOnMouseEntered(e ->{
-            districts.get(position-1).currentimg.setEffect(new DropShadow(20, Color.RED));
+            districts.get(position-1).currentimg.setEffect(new DropShadow(20, Color.ORANGE));
         });
 
         districts.get(position-1).currentimg.setOnMouseExited(e ->{
