@@ -84,36 +84,11 @@ public class Plateau {
 
         System.out.println("________________________________________________________________");
 
-        /*
-
-        ArrayList<ArrayList<District>> districtsVus = districtsVus();
-
-        System.out.print("\ndistrictsVisibles: [ ");
-        ArrayList<District> districtsVisibles = districtsVus.get(0);
-        for (int i = 0; i < (districtsVisibles.size()); i++) {
-            System.out.print(districtsVisibles.get(i).nom + "  ");
-        }
-        System.out.println("]");
-
-
-        System.out.print("districtsNonVisibles: [ ");
-        ArrayList<District> districtsNonVisibles = districtsVus.get(1);
-        for (int i = 0; i < (districtsNonVisibles.size()); i++) {
-            System.out.print(districtsNonVisibles.get(i).nom + "  ");
-        }
-        System.out.println("]");
-
-
-        System.out.println("\nisJackVisible: "+isJackVisible(districtsVus()));
-
-        System.out.println("doesJackWin(): "+Partie.doesJackWin());
-
-        System.out.println("doesEnqueteurWin(): "+Partie.doesEnqueteurWin());
-
-         */
 
 
     }
+
+    // Méthodes d'initialisation des variables
 
     public void initDistricts() throws FileNotFoundException {
         ArrayList<Integer> temp_IndicesPos = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9));
@@ -220,6 +195,8 @@ public class Plateau {
         T1.img = new ImageView(new Image(T1.image1)); T2.img = new ImageView(new Image(T2.image1)); T3.img = new ImageView(new Image(T3.image1)); T4.img = new ImageView(new Image(T4.image1)); T5.img = new ImageView(new Image(T5.image1)); T6.img = new ImageView(new Image(T6.image1)); T7.img = new ImageView(new Image(T7.image1)); T8.img = new ImageView(new Image(T8.image1));
         jetonsTemps.add(0,T1); jetonsTemps.add(1,T2); jetonsTemps.add(2,T3); jetonsTemps.add(3,T4); jetonsTemps.add(4,T5); jetonsTemps.add(5,T6); jetonsTemps.add(6,T7); jetonsTemps.add(7,T8);
     }
+
+    // Méthodes d'affichage des variables
 
     public void affichageFondPlateau(Scene scene, Pane root) throws FileNotFoundException {
         // Ajout fond de plateau
@@ -470,6 +447,7 @@ public class Plateau {
 
 
     // méthodes jetons action
+
     public CarteAlibi piocheAlibi() { // retourne carte alibi
         CarteAlibi carteAlibiPiochee = pile_Alibis.get(pile_Alibis.size()-1);
         pile_Alibis.remove(pile_Alibis.size()-1);
@@ -485,7 +463,7 @@ public class Plateau {
 
         for(District district : districts){
             district.currentimg.setOnMouseEntered(e-> {
-                district.currentimg.setEffect(new DropShadow(20, Color.ORANGE));
+                district.currentimg.setEffect(new DropShadow(25, Color.ORANGE));
             });
             district.currentimg.setOnMouseExited(e-> {
                 district.currentimg.setEffect(new DropShadow(20, Color.WHITE));
@@ -493,7 +471,7 @@ public class Plateau {
             district.currentimg.setOnMouseClicked(e-> {
                 if(cliques.get() <= 2){
                     cliques.getAndIncrement();
-                    district.currentimg.setEffect(new DropShadow(20, Color.ORANGE));
+                    district.currentimg.setEffect(new DropShadow(25, Color.ORANGE));
                     district.currentimg.setOnMouseEntered(null);
                     district.currentimg.setOnMouseExited(null);
                     district.currentimg.setOnMouseClicked(null);
@@ -520,7 +498,8 @@ public class Plateau {
                     districts.get(selec.get(1).position-1).currentimg.setX(tx);
                     districts.get(selec.get(1).position-1).currentimg.setY(ty);
 
-
+                    districts.get(selec.get(0).position-1).currentimg.setEffect(new DropShadow(20, Color.WHITE));
+                    districts.get(selec.get(1).position-1).currentimg.setEffect(new DropShadow(20, Color.WHITE));
 
                 }
             });
@@ -552,7 +531,7 @@ public class Plateau {
 
         districts.get(position-1).currentimg.setOnMousePressed(e ->{
 
-            districts.get(position-1).currentimg.setEffect(new DropShadow(20, Color.ORANGE));
+            districts.get(position-1).currentimg.setEffect(new DropShadow(25, Color.ORANGE));
             
             for(District district : districts){
                 if(district != districts.get(position-1)){
@@ -596,7 +575,7 @@ public class Plateau {
         });
 
         districts.get(position-1).currentimg.setOnMouseEntered(e ->{
-            districts.get(position-1).currentimg.setEffect(new DropShadow(20, Color.ORANGE));
+            districts.get(position-1).currentimg.setEffect(new DropShadow(25, Color.ORANGE));
         });
 
         districts.get(position-1).currentimg.setOnMouseExited(e ->{
@@ -1807,342 +1786,5 @@ public class Plateau {
         }
         return false;
     }
-
-
-    // TRASH :
-
-    /*
-    public boolean isJackVisible() {
-        int[] temp_positionsDetectives = {Holmes.position,Watson.position,Toby.position};
-        ArrayList<District> districtsVisibles = new ArrayList<District>();
-        ArrayList<District> districtsNonVisibles = (ArrayList) districts.clone();
-        for (int position : temp_positionsDetectives) {
-            switch(position) {
-                case 1:
-                    if (districts.get(0).orientation == 1 || districts.get(0).orientation == 2 || districts.get(0).orientation == 4) {
-                        if(this.districts.get(0).face == 1) {
-                            districtsVisibles.add((District) districts.get(0));
-                            districtsNonVisibles.remove((District) districts.get(0));
-                        }
-                        if (districts.get(0).orientation == 2 || districts.get(0).orientation == 4) {
-                            if (districts.get(3).orientation == 1 || districts.get(3).orientation == 2 || districts.get(3).orientation == 4) {
-                                if (this.districts.get(3).face == 1) {
-                                    districtsVisibles.add((District) districts.get(3));
-                                    districtsNonVisibles.remove((District) districts.get(3));
-                                }
-                            }
-                            if (districts.get(3).orientation == 2 || districts.get(3).orientation == 4) {
-                                if (districts.get(6).orientation == 1 || districts.get(6).orientation == 2 || districts.get(6).orientation == 4) {
-                                    if (this.districts.get(6).face == 1) {
-                                        districtsVisibles.add((District) districts.get(6));
-                                        districtsNonVisibles.remove((District) districts.get(6));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    break;
-                case 2:
-                    if (districts.get(1).orientation == 1 || districts.get(1).orientation == 2 || districts.get(1).orientation == 4) {
-                        if(this.districts.get(1).face == 1) {
-                            districtsVisibles.add((District) districts.get(1));
-                            districtsNonVisibles.remove((District) districts.get(1));
-                        }
-                        if (districts.get(1).orientation == 2 || districts.get(1).orientation == 4) {
-                            if (districts.get(4).orientation == 1 || districts.get(4).orientation == 2 || districts.get(4).orientation == 4) {
-                                if (this.districts.get(4).face == 1) {
-                                    districtsVisibles.add((District) districts.get(4));
-                                    districtsNonVisibles.remove((District) districts.get(4));
-                                }
-                            }
-                            if (districts.get(4).orientation == 2 || districts.get(4).orientation == 4) {
-                                if (districts.get(7).orientation == 1 || districts.get(7).orientation == 2 || districts.get(7).orientation == 4) {
-                                    if (this.districts.get(7).face == 1) {
-                                        districtsVisibles.add((District) districts.get(7));
-                                        districtsNonVisibles.remove((District) districts.get(7));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    break;
-                case 3:
-                    if (districts.get(2).orientation == 1 || districts.get(2).orientation == 2 || districts.get(2).orientation == 4) {
-                        if(this.districts.get(2).face == 1) {
-                            districtsVisibles.add((District) districts.get(2));
-                            districtsNonVisibles.remove((District) districts.get(2));
-                        }
-                        if (districts.get(2).orientation == 2 || districts.get(2).orientation == 4) {
-                            if (districts.get(5).orientation == 1 || districts.get(5).orientation == 2 || districts.get(5).orientation == 4) {
-                                if (this.districts.get(5).face == 1) {
-                                    districtsVisibles.add((District) districts.get(5));
-                                    districtsNonVisibles.remove((District) districts.get(5));
-                                }
-                            }
-                            if (districts.get(5).orientation == 2 || districts.get(5).orientation == 4) {
-                                if (districts.get(8).orientation == 1 || districts.get(8).orientation == 2 || districts.get(8).orientation == 4) {
-                                    if (this.districts.get(8).face == 1) {
-                                        districtsVisibles.add((District) districts.get(8));
-                                        districtsNonVisibles.remove((District) districts.get(8));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    break;
-                case 4:
-                    if (districts.get(2).orientation == 1 || districts.get(2).orientation == 2 || districts.get(2).orientation == 3) {
-                        if(this.districts.get(2).face == 1) {
-                            districtsVisibles.add((District) districts.get(2));
-                            districtsNonVisibles.remove((District) districts.get(2));
-                        }
-                        if (districts.get(2).orientation == 1 || districts.get(2).orientation == 3) {
-                            if (districts.get(1).orientation == 1 || districts.get(1).orientation == 2 || districts.get(1).orientation == 3) {
-                                if (this.districts.get(1).face == 1) {
-                                    districtsVisibles.add((District) districts.get(1));
-                                    districtsNonVisibles.remove((District) districts.get(1));
-                                }
-                            }
-                            if (districts.get(1).orientation == 1 || districts.get(1).orientation == 3) {
-                                if (districts.get(0).orientation == 1 || districts.get(0).orientation == 2 || districts.get(0).orientation == 3) {
-                                    if (this.districts.get(0).face == 1) {
-                                        districtsVisibles.add((District) districts.get(0));
-                                        districtsNonVisibles.remove((District) districts.get(0));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    break;
-                case 5:
-                    if (districts.get(5).orientation == 1 || districts.get(5).orientation == 2 || districts.get(5).orientation == 3) {
-                        if(this.districts.get(5).face == 1) {
-                            districtsVisibles.add((District) districts.get(5));
-                            districtsNonVisibles.remove((District) districts.get(5));
-                        }
-                        if (districts.get(5).orientation == 1 || districts.get(5).orientation == 3) {
-                            if (districts.get(4).orientation == 1 || districts.get(4).orientation == 2 || districts.get(4).orientation == 3) {
-                                if (this.districts.get(4).face == 1) {
-                                    districtsVisibles.add((District) districts.get(4));
-                                    districtsNonVisibles.remove((District) districts.get(4));
-                                }
-                            }
-                            if (districts.get(4).orientation == 1 || districts.get(4).orientation == 3) {
-                                if (districts.get(3).orientation == 1 || districts.get(3).orientation == 2 || districts.get(3).orientation == 3) {
-                                    if (this.districts.get(3).face == 1) {
-                                        districtsVisibles.add((District) districts.get(3));
-                                        districtsNonVisibles.remove((District) districts.get(3));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    break;
-                case 6:
-                    if (districts.get(8).orientation == 1 || districts.get(8).orientation == 2 || districts.get(8).orientation == 3) {
-                        if(this.districts.get(8).face == 1) {
-                            districtsVisibles.add((District) districts.get(8));
-                            districtsNonVisibles.remove((District) districts.get(8));
-                        }
-                        if (districts.get(8).orientation == 1 || districts.get(8).orientation == 3) {
-                            if (districts.get(7).orientation == 1 || districts.get(7).orientation == 2 || districts.get(7).orientation == 3) {
-                                if (this.districts.get(7).face == 1) {
-                                    districtsVisibles.add((District) districts.get(7));
-                                    districtsNonVisibles.remove((District) districts.get(7));
-                                }
-                            }
-                            if (districts.get(7).orientation == 1 || districts.get(7).orientation == 3) {
-                                if (districts.get(6).orientation == 1 || districts.get(6).orientation == 2 || districts.get(6).orientation == 3) {
-                                    if (this.districts.get(6).face == 1) {
-                                        districtsVisibles.add((District) districts.get(6));
-                                        districtsNonVisibles.remove((District) districts.get(6));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    break;
-                case 7:
-                    if (districts.get(8).orientation == 2 || districts.get(8).orientation == 3 || districts.get(8).orientation == 4) {
-                        if(this.districts.get(8).face == 1) {
-                            districtsVisibles.add((District) districts.get(8));
-                            districtsNonVisibles.remove((District) districts.get(8));
-                        }
-                        if (districts.get(8).orientation == 2 || districts.get(8).orientation == 4) {
-                            if (districts.get(5).orientation == 2 || districts.get(5).orientation == 3 || districts.get(5).orientation == 4) {
-                                if (this.districts.get(5).face == 1) {
-                                    districtsVisibles.add((District) districts.get(5));
-                                    districtsNonVisibles.remove((District) districts.get(5));
-                                }
-                            }
-                            if (districts.get(5).orientation == 2 || districts.get(5).orientation == 4) {
-                                if (districts.get(2).orientation == 2 || districts.get(2).orientation == 3 || districts.get(2).orientation == 4) {
-                                    if (this.districts.get(2).face == 1) {
-                                        districtsVisibles.add((District) districts.get(2));
-                                        districtsNonVisibles.remove((District) districts.get(2));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    break;
-                case 8:
-                    if (districts.get(7).orientation == 2 || districts.get(7).orientation == 3 || districts.get(7).orientation == 4) {
-                        if(this.districts.get(7).face == 1) {
-                            districtsVisibles.add((District) districts.get(7));
-                            districtsNonVisibles.remove((District) districts.get(7));
-                        }
-                        if (districts.get(7).orientation == 2 || districts.get(7).orientation == 4) {
-                            if (districts.get(4).orientation == 2 || districts.get(4).orientation == 3 || districts.get(4).orientation == 4) {
-                                if (this.districts.get(4).face == 1) {
-                                    districtsVisibles.add((District) districts.get(4));
-                                    districtsNonVisibles.remove((District) districts.get(4));
-                                }
-                            }
-                            if (districts.get(4).orientation == 2 || districts.get(4).orientation == 4) {
-                                if (districts.get(1).orientation == 2 || districts.get(1).orientation == 3 || districts.get(1).orientation == 4) {
-                                    if (this.districts.get(1).face == 1) {
-                                        districtsVisibles.add((District) districts.get(1));
-                                        districtsNonVisibles.remove((District) districts.get(1));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    break;
-                case 9:
-                    if (districts.get(6).orientation == 2 || districts.get(6).orientation == 3 || districts.get(6).orientation == 4) {
-                        if(this.districts.get(6).face == 1) {
-                            districtsVisibles.add((District) districts.get(6));
-                            districtsNonVisibles.remove((District) districts.get(6));
-                        }
-                        if (districts.get(6).orientation == 2 || districts.get(6).orientation == 4) {
-                            if (districts.get(3).orientation == 2 || districts.get(3).orientation == 3 || districts.get(3).orientation == 4) {
-                                if (this.districts.get(3).face == 1) {
-                                    districtsVisibles.add((District) districts.get(3));
-                                    districtsNonVisibles.remove((District) districts.get(3));
-                                }
-                            }
-                            if (districts.get(3).orientation == 2 || districts.get(3).orientation == 4) {
-                                if (districts.get(0).orientation == 2 || districts.get(0).orientation == 3 || districts.get(0).orientation == 4) {
-                                    if (this.districts.get(0).face == 1) {
-                                        districtsVisibles.add((District) districts.get(0));
-                                        districtsNonVisibles.remove((District) districts.get(0));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    break;
-                case 10:
-                    if (districts.get(6).orientation == 1 || districts.get(6).orientation == 3 || districts.get(6).orientation == 4) {
-                        if(this.districts.get(6).face == 1) {
-                            districtsVisibles.add((District) districts.get(6));
-                            districtsNonVisibles.remove((District) districts.get(6));
-                        }
-                        if (districts.get(6).orientation == 1 || districts.get(6).orientation == 3) {
-                            if (districts.get(7).orientation == 1 || districts.get(7).orientation == 3 || districts.get(7).orientation == 4) {
-                                if (this.districts.get(7).face == 1) {
-                                    districtsVisibles.add((District) districts.get(7));
-                                    districtsNonVisibles.remove((District) districts.get(7));
-                                }
-                            }
-                            if (districts.get(7).orientation == 1 || districts.get(7).orientation == 3) {
-                                if (districts.get(8).orientation == 1 || districts.get(8).orientation == 3 || districts.get(8).orientation == 4) {
-                                    if (this.districts.get(8).face == 1) {
-                                        districtsVisibles.add((District) districts.get(8));
-                                        districtsNonVisibles.remove((District) districts.get(8));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    break;
-                case 11:
-                    if (districts.get(3).orientation == 1 || districts.get(3).orientation == 3 || districts.get(3).orientation == 4) {
-                        if(this.districts.get(3).face == 1) {
-                            districtsVisibles.add((District) districts.get(3));
-                            districtsNonVisibles.remove((District) districts.get(3));
-                        }
-                        if (districts.get(3).orientation == 1 || districts.get(3).orientation == 3) {
-                            if (districts.get(4).orientation == 1 || districts.get(4).orientation == 3 || districts.get(4).orientation == 4) {
-                                if (this.districts.get(4).face == 1) {
-                                    districtsVisibles.add((District) districts.get(4));
-                                    districtsNonVisibles.remove((District) districts.get(4));
-                                }
-                            }
-                            if (districts.get(4).orientation == 1 || districts.get(4).orientation == 3) {
-                                if (districts.get(5).orientation == 1 || districts.get(5).orientation == 3 || districts.get(5).orientation == 4) {
-                                    if (this.districts.get(5).face == 1) {
-                                        districtsVisibles.add((District) districts.get(5));
-                                        districtsNonVisibles.remove((District) districts.get(5));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    break;
-                case 12:
-                    if (districts.get(0).orientation == 1 || districts.get(0).orientation == 3 || districts.get(0).orientation == 4) {
-                        if(this.districts.get(0).face == 1) {
-                            districtsVisibles.add((District) districts.get(0));
-                            districtsNonVisibles.remove((District) districts.get(0));
-                        }
-                        if (districts.get(0).orientation == 1 || districts.get(0).orientation == 3) {
-                            if (districts.get(1).orientation == 1 || districts.get(1).orientation == 3 || districts.get(1).orientation == 4) {
-                                if (this.districts.get(1).face == 1) {
-                                    districtsVisibles.add((District) districts.get(1));
-                                    districtsNonVisibles.remove((District) districts.get(1));
-                                }
-                            }
-                            if (districts.get(1).orientation == 1 || districts.get(1).orientation == 3) {
-                                if (districts.get(2).orientation == 1 || districts.get(2).orientation == 3 || districts.get(2).orientation == 4) {
-                                    if (this.districts.get(2).face == 1) {
-                                        districtsVisibles.add((District) districts.get(2));
-                                        districtsNonVisibles.remove((District) districts.get(2));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    break;
-            }
-        }
-        int indiceVisibilité=0;
-        for (int i = 0; i < districtsVisibles.size(); i++) {
-            if(mrjack.identite.nom == districtsVisibles.get(i).nom) {
-                indiceVisibilité = 1;
-            }
-        }
-
-
-        System.out.print("districtsVisibles:   ");
-        for (int i = 0; i < districtsVisibles.size(); i++) {
-            System.out.print(districtsVisibles.get(i).nom + "   ");
-        }
-        System.out.println();
-        System.out.print("districtsNonVisibles:   ");
-        for (int i = 0; i < districtsNonVisibles.size(); i++) {
-            System.out.print(districtsNonVisibles.get(i).nom + "   ");
-        }
-        System.out.println();
-
-
-        switch(indiceVisibilité) {
-            case 0:
-                for(District district : districtsVisibles) {
-                    district.face=2;
-                }
-                return false;
-            case 1:
-                for(District district : districtsNonVisibles) {
-                    district.face=2;
-                }
-                return true;
-        }
-        return false;
-    }
-
-     */
 
 }
