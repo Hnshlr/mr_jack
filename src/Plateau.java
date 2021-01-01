@@ -20,8 +20,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class Plateau {
 
-    public  MisterJack mrjack = new MisterJack();
-    public static Enqueteur enqueteur = new Enqueteur(0);
+    public MisterJack mrjack = new MisterJack();
+    public Enqueteur enqueteur = new Enqueteur(0,0);
 
     public ArrayList<CarteAlibi> pile_Alibis = new ArrayList<CarteAlibi>(8);
 
