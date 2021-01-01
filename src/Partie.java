@@ -18,6 +18,7 @@ import javafx.util.Duration;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FilterInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -280,6 +281,9 @@ public class Partie extends Application {
     }
 
     public void round1(Pane root) throws FileNotFoundException {
+
+        isGameOver();
+
         round+=1;
         plateau.etatDePartie();
 
@@ -460,6 +464,24 @@ public class Partie extends Application {
         if (!plateau.isJackVisible(plateau.districtsVus())) {
             plateau.mrjack.nbSabliers+=1;
             plateau.affichageSabliers(scene,root);
+        }
+
+        else {
+            plateau.enqueteur.sabliersRecuperes+=1;
+
+            ImageView img = new ImageView(new Image(new FileInputStream("images\\JetonsTemps\\T"+round+".png")));
+            img.setFitHeight(83);
+            img.setFitWidth(83);
+            img.setX(477-plateau.enqueteur.sabliersRecuperes*17);
+            img.setY(564);
+            root.getChildren().add(img);
+            FadeTransition fade = new FadeTransition();
+            fade.setDuration(Duration.millis(1000));
+            fade.setFromValue(0.1);
+            fade.setToValue(10);
+            fade.setCycleCount(1);
+            fade.setNode(img);
+            fade.play();
         }
 
         round1(root);
