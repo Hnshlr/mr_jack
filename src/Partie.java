@@ -512,7 +512,6 @@ public class Partie extends Application {
             img.setFitWidth(200.0);
             img.setX(225);
             img.setY(25);
-            root.getChildren().remove(img);
             root.getChildren().add(img);
 
             Button playAgain = new Button("Inverser les rôles");
