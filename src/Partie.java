@@ -143,6 +143,8 @@ public class Partie extends Application {
     public void menuPlayers(Scene scene,Pane root) throws FileNotFoundException {
         //Récupère noms et rôles des edux joueurs
 
+        root.getChildren().clear();
+
         loadImage(root,new FileInputStream("images\\Menu\\MenuRoles.png"));
 
         TextField textField1 = new TextField("");
@@ -171,7 +173,7 @@ public class Partie extends Application {
         // Gestion des évenements sur le bouton valider
 
         valider.setOnMouseEntered(e ->{
-            valider.setStyle( "-fx-background-color: #6d532f; -fx-font-family : Harrington; -fx-text-fill: white; -fx-font-size : 18;-fx-border-color: white; -fx-border-radius: 5;" );
+            valider.setStyle( "-fx-background-color: #6d532f; -fx-font-family : Harrington; -fx-text-fill: white; -fx-font-size : 15;-fx-border-color: white; -fx-border-radius: 5;" );
         });
         valider.setOnMouseExited(e ->{
             valider.setStyle( "-fx-background-color: #6d532f; -fx-font-family : Harrington; -fx-text-fill: black; -fx-font-size : 15;-fx-border-color: grey; -fx-border-radius: 5;" );
@@ -222,8 +224,8 @@ public class Partie extends Application {
         fade.setNode(lancerPartie);
         fade.play();
 
-        Button lancer = new Button("Jouer");
-        lancer.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5"); lancer.setMinHeight(45); lancer.setMinWidth(100); lancer.setLayoutX(280); lancer.setLayoutY(300);
+        Button lancer = new Button("Lancer");
+        lancer.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5"); lancer.setMinHeight(45); lancer.setMinWidth(100); lancer.setLayoutX(275); lancer.setLayoutY(300);
 
         root.getChildren().add(lancer);
 
@@ -232,13 +234,7 @@ public class Partie extends Application {
         lancer.setOnMouseClicked(e ->{
             root.getChildren().remove(lancer);
             root.getChildren().remove(lancerPartie);
-            FadeTransition fade2 = new FadeTransition();
-            fade2.setDuration(Duration.millis(2000));
-            fade2.setFromValue(0.8);
-            fade2.setToValue(10);
-            fade2.setCycleCount(1);
-            fade2.setNode(root);
-            fade2.play();
+
             try {
                 plateau.affichageDistricts(scene,root);
                 plateau.affichageJetonsTemps(scene,root,0);
@@ -250,7 +246,7 @@ public class Partie extends Application {
             }
         });
         lancer.setOnMouseEntered(e->{
-            lancer.setStyle("-fx-background-color: #806237 ; -fx-border-color: white; -fx-font-family: Harrington; -fx-text-fill: white; -fx-font-size: 25; -fx-border-radius: 5");
+            lancer.setStyle("-fx-background-color: #806237 ; -fx-border-color: white; -fx-font-family: Harrington; -fx-text-fill: white; -fx-font-size: 20; -fx-border-radius: 5");
         });
         lancer.setOnMouseExited(e->{
             lancer.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5");
@@ -258,8 +254,6 @@ public class Partie extends Application {
     }
 
     public void round1(Pane root) throws FileNotFoundException {
-
-        isGameOver();
 
         round+=1;
         plateau.etatDePartie();
@@ -395,11 +389,36 @@ public class Partie extends Application {
         loupe.setOnMousePressed(event -> {
             try {
                 plateau.isJackVisible(plateau.districtsVus());
+
+                // Distribution des Jetons Temps:
+                plateau.affichageJetonsTemps(scene,root,round);
+                if (!plateau.isJackVisible(plateau.districtsVus())) {
+                    plateau.mrjack.nbSabliers+=1;
+                    plateau.affichageSabliers(scene,root);
+                }
+                else {
+                    plateau.enqueteur.sabliersRecuperes+=1;
+
+                    ImageView img = new ImageView(new Image(new FileInputStream("images\\JetonsTemps\\T"+round+".png")));
+                    img.setFitHeight(83);
+                    img.setFitWidth(83);
+                    img.setX(477-plateau.enqueteur.sabliersRecuperes*17);
+                    img.setY(564);
+                    root.getChildren().add(img);
+                    FadeTransition fade = new FadeTransition();
+                    fade.setDuration(Duration.millis(1000));
+                    fade.setFromValue(0.1);
+                    fade.setToValue(10);
+                    fade.setCycleCount(1);
+                    fade.setNode(img);
+                    fade.play();
+                }
+
                 plateau.affichageDistricts(scene,root);
                 ArrayList<Boolean> status = isGameOver();
                 System.out.println("Inspection: isJackVisible(): "+ plateau.isJackVisible(plateau.districtsVus())+"\nFin du round "+round+" - isGameOver(): " + status.get(0) + " | doesJackWin(): " + status.get(1) + " | doesEnqueteurWin(): " + status.get(2) + "\n________________________________________________________________");
 
-                if (!isGameOver().get(0)) {
+                if (!status.get(0)) {
                     plateau.isJackVisible(plateau.districtsVus());
                     prochainRound();
                 }
@@ -433,33 +452,6 @@ public class Partie extends Application {
             plateau.lancerJetonsAction();
         }
         plateau.affichageJetonsAction(scene, root);
-
-
-        // Distribution des sabliers
-        plateau.affichageJetonsTemps(scene,root,round);
-
-        if (!plateau.isJackVisible(plateau.districtsVus())) {
-            plateau.mrjack.nbSabliers+=1;
-            plateau.affichageSabliers(scene,root);
-        }
-
-        else {
-            plateau.enqueteur.sabliersRecuperes+=1;
-
-            ImageView img = new ImageView(new Image(new FileInputStream("images\\JetonsTemps\\T"+round+".png")));
-            img.setFitHeight(83);
-            img.setFitWidth(83);
-            img.setX(477-plateau.enqueteur.sabliersRecuperes*17);
-            img.setY(564);
-            root.getChildren().add(img);
-            FadeTransition fade = new FadeTransition();
-            fade.setDuration(Duration.millis(1000));
-            fade.setFromValue(0.1);
-            fade.setToValue(10);
-            fade.setCycleCount(1);
-            fade.setNode(img);
-            fade.play();
-        }
 
         round1(root);
 
@@ -497,28 +489,32 @@ public class Partie extends Application {
             status.add(1, true);
             status.add(2, false);
 
+            ImageView filtre = new ImageView(new Image(new FileInputStream("images\\Menu\\filtre.png")));
+            root.getChildren().remove(filtre);
+            root.getChildren().add(filtre);
+            FadeTransition fade0 = new FadeTransition(); fade0.setDuration(Duration.millis(1000)); fade0.setFromValue(0.1); fade0.setToValue(10); fade0.setCycleCount(1); fade0.setNode(filtre); fade0.play();
+
             ImageView win_jack = new ImageView(new Image(new FileInputStream("images\\Menu\\win_jack.png")));
+            root.getChildren().remove(win_jack);
             root.getChildren().add(win_jack);
-            FadeTransition fade = new FadeTransition();
-            fade.setDuration(Duration.millis(1000));
-            fade.setFromValue(0.1);
-            fade.setToValue(10);
-            fade.setCycleCount(1);
-            fade.setNode(win_jack);
-            fade.play();
+            FadeTransition fade = new FadeTransition(); fade.setDuration(Duration.millis(1000)); fade.setFromValue(0.1); fade.setToValue(10); fade.setCycleCount(1); fade.setNode(win_jack); fade.play();
+
 
             ImageView img = plateau.mrjack.identite.img ;
-            img.setFitHeight(325.0);
-            img.setFitWidth(200.0);
-            img.setX(225);
-            img.setY(25);
+            img.setFitHeight(295.0);
+            img.setFitWidth(180.0);
+            img.setX(231.5);
+            img.setY(35);
+            root.getChildren().remove(img);
             root.getChildren().add(img);
+            FadeTransition fade2 = new FadeTransition(); fade2.setDuration(Duration.millis(1000)); fade2.setFromValue(0.1); fade2.setToValue(10); fade2.setCycleCount(1); fade2.setNode(img); fade2.play();
+
 
             Button playAgain = new Button("Inverser les rôles");
             Button quitter = new Button("Quitter");
             playAgain.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5");
             quitter.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5");
-            playAgain.setLayoutX(245);
+            playAgain.setLayoutX(235);
             playAgain.setLayoutY(500);
             quitter.setLayoutX(285);
             quitter.setLayoutY(560);
@@ -526,7 +522,6 @@ public class Partie extends Application {
             root.getChildren().add(quitter);
 
             playAgain.setOnMousePressed(event2 -> {
-                root.getChildren().clear();
                 try {
                     menuPlayers(scene,root);
                 } catch (FileNotFoundException fileNotFoundException) {
@@ -535,7 +530,7 @@ public class Partie extends Application {
             });
 
             playAgain.setOnMouseEntered(event2 -> {
-                playAgain.setStyle( "-fx-background-color: #806237 ; -fx-border-color: white; -fx-font-family: Harrington; -fx-text-fill: white; -fx-font-size: 22; -fx-border-radius: 7");
+                playAgain.setStyle( "-fx-background-color: #806237 ; -fx-border-color: white; -fx-font-family: Harrington; -fx-text-fill: white; -fx-font-size: 20; -fx-border-radius: 7");
             });
 
             playAgain.setOnMouseExited(event2 -> {
@@ -547,7 +542,7 @@ public class Partie extends Application {
             });
 
             quitter.setOnMouseEntered(event2 -> {
-                quitter.setStyle( "-fx-background-color: #806237 ; -fx-border-color: white; -fx-font-family: Harrington; -fx-text-fill: white; -fx-font-size: 22; -fx-border-radius: 7");
+                quitter.setStyle( "-fx-background-color: #806237 ; -fx-border-color: white; -fx-font-family: Harrington; -fx-text-fill: white; -fx-font-size: 20; -fx-border-radius: 7");
             });
 
             quitter.setOnMouseExited(event2 -> {
@@ -559,21 +554,30 @@ public class Partie extends Application {
         }
         else if (doesEnqueteurWin()) {
 
+            ImageView filtre = new ImageView(new Image(new FileInputStream("images\\Menu\\filtre.png")));
+            root.getChildren().remove(filtre);
+            root.getChildren().add(filtre);
+            FadeTransition fade0 = new FadeTransition(); fade0.setDuration(Duration.millis(1000)); fade0.setFromValue(0.1); fade0.setToValue(10); fade0.setCycleCount(1); fade0.setNode(filtre); fade0.play();
+
             ImageView win_enqueteur = new ImageView(new Image(new FileInputStream("images\\Menu\\win_enqueteur.png")));
+            root.getChildren().remove(win_enqueteur);
             root.getChildren().add(win_enqueteur);
-            FadeTransition fade = new FadeTransition();
-            fade.setDuration(Duration.millis(1000));
-            fade.setFromValue(0.1);
-            fade.setToValue(10);
-            fade.setCycleCount(1);
-            fade.setNode(win_enqueteur);
-            fade.play();
+            FadeTransition fade = new FadeTransition(); fade.setDuration(Duration.millis(1000)); fade.setFromValue(0.1); fade.setToValue(10); fade.setCycleCount(1); fade.setNode(win_enqueteur); fade.play();
+
+
+            ImageView img = new ImageView(new Image(new FileInputStream("images\\JetonsDetective\\Holmes.png")));
+            img.setX(245);
+            img.setY(100);
+            root.getChildren().remove(img);
+            root.getChildren().add(img);
+            FadeTransition fade2 = new FadeTransition(); fade2.setDuration(Duration.millis(1000)); fade2.setFromValue(0.1); fade2.setToValue(10); fade2.setCycleCount(1); fade2.setNode(img); fade2.play();
+
 
             Button playAgain = new Button("Inverser les rôles");
             Button quitter = new Button("Quitter");
             playAgain.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5");
             quitter.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5");
-            playAgain.setLayoutX(245);
+            playAgain.setLayoutX(235);
             playAgain.setLayoutY(500);
             quitter.setLayoutX(285);
             quitter.setLayoutY(560);
@@ -581,7 +585,6 @@ public class Partie extends Application {
             root.getChildren().add(quitter);
 
             playAgain.setOnMousePressed(event2 -> {
-                root.getChildren().clear();
                 try {
                     menuPlayers(scene,root);
                 } catch (FileNotFoundException fileNotFoundException) {
@@ -590,7 +593,7 @@ public class Partie extends Application {
             });
 
             playAgain.setOnMouseEntered(event2 -> {
-                playAgain.setStyle( "-fx-background-color: #806237 ; -fx-border-color: white; -fx-font-family: Harrington; -fx-text-fill: white; -fx-font-size: 22; -fx-border-radius: 7");
+                playAgain.setStyle( "-fx-background-color: #806237 ; -fx-border-color: white; -fx-font-family: Harrington; -fx-text-fill: white; -fx-font-size: 20; -fx-border-radius: 7");
             });
 
             playAgain.setOnMouseExited(event2 -> {
@@ -602,7 +605,7 @@ public class Partie extends Application {
             });
 
             quitter.setOnMouseEntered(event2 -> {
-                quitter.setStyle( "-fx-background-color: #806237 ; -fx-border-color: white; -fx-font-family: Harrington; -fx-text-fill: white; -fx-font-size: 22; -fx-border-radius: 7");
+                quitter.setStyle( "-fx-background-color: #806237 ; -fx-border-color: white; -fx-font-family: Harrington; -fx-text-fill: white; -fx-font-size: 20; -fx-border-radius: 7");
             });
 
             quitter.setOnMouseExited(event2 -> {
@@ -610,10 +613,7 @@ public class Partie extends Application {
             });
 
 
-            ImageView img = new ImageView(new Image(new FileInputStream("images\\JetonsDetective\\Holmes.png")));
-            img.setX(245);
-            img.setY(100);
-            root.getChildren().add(img);
+
 
             status.add(0, true);
             status.add(1, false);
