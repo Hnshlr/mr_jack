@@ -6,23 +6,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.sql.Array;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Plateau {
 
@@ -481,10 +475,59 @@ public class Plateau {
         pile_Alibis.remove(pile_Alibis.size()-1);
         return carteAlibiPiochee;
     }
-    public void echangerDistrict(int position1, int position2) {
-        this.districts.get(position1-1).position=(position2);
+
+    public void echangerDistrict() {
+        /*this.districts.get(position1-1).position=(position2);
         this.districts.get(position2-1).position=(position1);
-        Collections.swap(this.districts,position1-1,position2-1);
+        Collections.swap(this.districts,position1-1,position2-1);*/
+
+        ArrayList<District> selec = new ArrayList<District>(2);
+        AtomicInteger cliques = new AtomicInteger();
+
+        for(District district : districts){
+            district.currentimg.setOnMouseEntered(e-> {
+                district.currentimg.setEffect(new DropShadow(20, Color.ORANGE));
+            });
+            district.currentimg.setOnMouseExited(e-> {
+                district.currentimg.setEffect(new DropShadow(20, Color.WHITE));
+            });
+            district.currentimg.setOnMouseClicked(e-> {
+                if(cliques.get() <= 2){
+                    cliques.getAndIncrement();
+                    district.currentimg.setEffect(new DropShadow(20, Color.ORANGE));
+                    district.currentimg.setOnMouseEntered(null);
+                    district.currentimg.setOnMouseExited(null);
+                    district.currentimg.setOnMouseClicked(null);
+
+                    selec.add(district);
+
+                }
+                if(cliques.get() == 2){
+                    for(District dis : districts){
+                        dis.currentimg.setOnMouseEntered(null);
+                        dis.currentimg.setOnMouseExited(null);
+                        dis.currentimg.setOnMouseClicked(null);
+                    }
+                    int tpos = selec.get(0).position;
+                    districts.get(selec.get(0).position-1).position = selec.get(1).position;
+                    districts.get(selec.get(1).position-1).position = tpos;
+                    Collections.swap(districts,selec.get(0).position-1,selec.get(1).position-1);
+
+                    double tx = selec.get(0).currentimg.getX();
+                    double ty = selec.get(0).currentimg.getY();
+                    districts.get(selec.get(0).position-1).currentimg.setX(selec.get(1).currentimg.getX());
+                    districts.get(selec.get(0).position-1).currentimg.setY(selec.get(1).currentimg.getY());
+
+                    districts.get(selec.get(1).position-1).currentimg.setX(tx);
+                    districts.get(selec.get(1).position-1).currentimg.setY(ty);
+
+
+
+                }
+            });
+        }
+
+
     }
     public void retournerDistrict(int position){
         districts.get(position-1).face=2;

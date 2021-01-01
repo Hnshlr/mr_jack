@@ -382,7 +382,7 @@ public class Partie extends Application {
                 }
             }
             if (plateau.jetonsAction.get(i).face==2) {
-
+                plateau.echangerDistrict();
             }
         }
         if (plateau.jetonsAction.get(i).nom.equals((String) "Pivot - Joker")) { // Pivot OK |
