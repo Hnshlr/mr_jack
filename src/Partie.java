@@ -237,6 +237,8 @@ public class Partie extends Application {
 
         plateau.affichagePlateau(scene,root);
 
+        round=0;
+
         ImageView lancerPartie = loadImage2(root, new FileInputStream("images\\Menu\\Filtre.png"));
         root.getChildren().addAll(lancerPartie);
 
@@ -324,7 +326,7 @@ public class Partie extends Application {
         if (plateau.jetonsAction.get(i).nom.equals((String) "Alibi - Holmes")) { // Alibi OK | Holmes OK
             if (plateau.jetonsAction.get(i).face==1) {
                 CarteAlibi cartePiochee = plateau.piocheAlibi();
-                if ((round%2==1 && (jetonjoues.get()==2 || jetonjoues.get()==2)) || (round%2==0 && (jetonjoues.get()==1 || jetonjoues.get()==4))) {
+                if ((round%2==1 && (jetonjoues.get()==2 || jetonjoues.get()==3)) || (round%2==0 && (jetonjoues.get()==1 || jetonjoues.get()==4))) {
                     plateau.mrjack.nbSabliers+=cartePiochee.nbSabliers;
                     plateau.affichageSabliers(scene,root);
                 }
@@ -392,15 +394,12 @@ public class Partie extends Application {
                 }
             }
             if (plateau.jetonsAction.get(i).face==2) {
-                //plateau.joker();
+                plateau.joker();
             }
         }
-        plateau.isJackVisible(plateau.districtsVus());
-
     }
 
     public void inspection() throws FileNotFoundException {
-
 
         ImageView loupe = new ImageView(new Image(new FileInputStream("images\\Divers\\loupe.png")));
         loupe.setFitHeight(50);
@@ -412,54 +411,12 @@ public class Partie extends Application {
 
         loupe.setOnMousePressed(event -> {
             try {
+                plateau.isJackVisible(plateau.districtsVus());
                 plateau.affichageDistricts(scene,root);
                 ArrayList<Boolean> status = isGameOver();
                 System.out.println("Inspection: isJackVisible(): "+ plateau.isJackVisible(plateau.districtsVus())+"\nFin du round "+round+" - isGameOver(): " + status.get(0) + " | doesJackWin(): " + status.get(1) + " | doesEnqueteurWin(): " + status.get(2) + "\n________________________________________________________________");
-                if (doesJackWin()) {
-                    ImageView win_jack = new ImageView(new Image(new FileInputStream("images\\Menu\\win_jack.png")));
 
-                    win_jack.setOnMousePressed(event2 -> {
-                        try {
-                            menuPlayers(scene,root);
-                            win_jack.setOnMousePressed(null);
-                        } catch (FileNotFoundException fileNotFoundException) {
-                            fileNotFoundException.printStackTrace();
-                        }
-                        win_jack.setOnMousePressed(null);
-                    });
-
-                    root.getChildren().add(win_jack);
-
-                    ImageView img = plateau.mrjack.identite.img ;
-                    img.setFitHeight(325.0);
-                    img.setFitWidth(200.0);
-                    img.setX(225);
-                    img.setY(50);
-                    root.getChildren().add(img);
-                }
-                if (doesEnqueteurWin()) {
-                    ImageView win_enqueteur = new ImageView(new Image(new FileInputStream("images\\Menu\\win_enqueteur.png")));
-
-                    win_enqueteur.setOnMousePressed(event3 -> {
-                        try {
-                            menuPlayers(scene,root);
-                            win_enqueteur.setOnMousePressed(null);
-                        } catch (FileNotFoundException fileNotFoundException) {
-                            fileNotFoundException.printStackTrace();
-                        }
-                        win_enqueteur.setOnMousePressed(null);
-                    });
-
-                    root.getChildren().add(win_enqueteur);
-
-                    ImageView img = new ImageView(new Image(new FileInputStream("images\\JetonsDetective\\Holmes.png")));
-                    img.setFitHeight(325.0);
-                    img.setFitWidth(325.0);
-                    img.setX(162.5);
-                    img.setY(50);
-                    root.getChildren().add(img);
-                }
-                else {
+                if (!isGameOver().get(0)) {
                     plateau.isJackVisible(plateau.districtsVus());
                     prochainRound();
                 }
@@ -509,7 +466,7 @@ public class Partie extends Application {
 
 
     public static boolean doesJackWin() {
-        if((plateau.mrjack.nbSabliers==6) || (round>=8 && !plateau.isJackVisible(plateau.districtsVus()))) {
+        if((plateau.mrjack.nbSabliers>=6) || (round>=8 && !plateau.isJackVisible(plateau.districtsVus()))) {
             return true;
         }
         else {
@@ -530,16 +487,61 @@ public class Partie extends Application {
             return false;
         }
     }
-    public ArrayList<Boolean> isGameOver() {
+    public ArrayList<Boolean> isGameOver() throws FileNotFoundException {
         ArrayList<Boolean> status = new ArrayList<Boolean>(3);
 
         if (doesJackWin()) {
             status.add(0, true);
             status.add(1, true);
             status.add(2, false);
+
+            ImageView win_jack = new ImageView(new Image(new FileInputStream("images\\Menu\\win_jack.png")));
+
+            win_jack.setOnMousePressed(event2 -> {
+                try {
+                    menuPlayers(scene,root);
+                    win_jack.setOnMousePressed(null);
+                } catch (FileNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
+                win_jack.setOnMousePressed(null);
+            });
+
+            root.getChildren().add(win_jack);
+
+            ImageView img = plateau.mrjack.identite.img ;
+            img.setFitHeight(325.0);
+            img.setFitWidth(200.0);
+            img.setX(225);
+            img.setY(50);
+            root.getChildren().remove(img);
+            root.getChildren().add(img);
+
             return status;
         }
         else if (doesEnqueteurWin()) {
+
+            ImageView win_enqueteur = new ImageView(new Image(new FileInputStream("images\\Menu\\win_enqueteur.png")));
+
+            win_enqueteur.setOnMousePressed(event3 -> {
+                try {
+                    menuPlayers(scene,root);
+                    win_enqueteur.setOnMousePressed(null);
+                } catch (FileNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
+                win_enqueteur.setOnMousePressed(null);
+            });
+
+            root.getChildren().add(win_enqueteur);
+
+            ImageView img = new ImageView(new Image(new FileInputStream("images\\JetonsDetective\\Holmes.png")));
+            img.setFitHeight(325.0);
+            img.setFitWidth(325.0);
+            img.setX(162.5);
+            img.setY(50);
+            root.getChildren().add(img);
+
             status.add(0, true);
             status.add(1, false);
             status.add(2, true);
@@ -550,14 +552,6 @@ public class Partie extends Application {
             status.add(1, false);
             status.add(2, false);
             return status;
-        }
-    }
-    public void gameOver(int indiceGagnant) {
-        if (indiceGagnant==0) {
-            System.out.println("Mr Jack gagne.");
-        }
-        else {
-            System.out.println("L'enqueteur gagne");
         }
     }
 
