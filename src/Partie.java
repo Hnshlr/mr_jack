@@ -257,9 +257,10 @@ public class Partie extends Application {
 
         round+=1;
         plateau.etatDePartie();
-
         System.out.println("\nDébut du round "+round+":");
 
+        ImageView inspTurn = new ImageView(new Image(new FileInputStream("images\\Menu\\plateau_insp.png")));
+        ImageView jackTurn = new ImageView(new Image(new FileInputStream("images\\Menu\\plateau_jack.png")));
         jetonjoues.set(0);
 
 
@@ -270,6 +271,28 @@ public class Partie extends Application {
             plateau.jetonsAction.get(j).currentimg.setOnMousePressed(e -> {
                 System.out.println("Jeton "+(finalJ+1)+" sélectionné/joué");
                 jetonjoues.addAndGet(1);
+
+                if(jetonjoues.get()==1 || jetonjoues.get()==4){
+                   if(round%2==1){
+                       root.getChildren().remove(jackTurn);
+                       root.getChildren().add(inspTurn);
+                   }
+                   else{
+                       root.getChildren().remove(inspTurn);
+                       root.getChildren().add(jackTurn);
+                   }
+                }
+                else if(jetonjoues.get()==2 || jetonjoues.get()==3){
+                    if(round%2==1){
+                        root.getChildren().remove(inspTurn);
+                        root.getChildren().add(jackTurn);
+                    }
+                    else{
+                        root.getChildren().remove(jackTurn);
+                        root.getChildren().add(inspTurn);
+                    }
+                }
+
                 try {
                     actionsJeton(finalJ);
                 } catch (FileNotFoundException fileNotFoundException) {
@@ -280,6 +303,7 @@ public class Partie extends Application {
                 hide.setCycleCount(1);
                 hide.setNode(plateau.jetonsAction.get(finalJ).currentimg);
                 hide.play();
+
                 plateau.jetonsAction.get(finalJ).currentimg.setOnMousePressed(null);
             });
 
@@ -299,6 +323,7 @@ public class Partie extends Application {
     }
 
     public void actionsJeton(int i) throws FileNotFoundException {
+
 
         if (plateau.jetonsAction.get(i).nom.equals((String) "Alibi - Holmes")) { // Alibi OK | Holmes OK
             if (plateau.jetonsAction.get(i).face==1) {
