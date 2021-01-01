@@ -28,12 +28,14 @@ public class Partie extends Application {
     public static Joueur joueur1 = new Joueur();
     public static Joueur joueur2 = new Joueur();
 
+    Stage stage = new Stage();
     Pane root = new Pane();
     Scene scene = new Scene(root,650,650);
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+        primaryStage = stage;
         menu(primaryStage, scene, root);
 
         primaryStage.setTitle("Mister Jack's Pocket");
@@ -496,26 +498,64 @@ public class Partie extends Application {
             status.add(2, false);
 
             ImageView win_jack = new ImageView(new Image(new FileInputStream("images\\Menu\\win_jack.png")));
+            root.getChildren().add(win_jack);
+            FadeTransition fade = new FadeTransition();
+            fade.setDuration(Duration.millis(1000));
+            fade.setFromValue(0.1);
+            fade.setToValue(10);
+            fade.setCycleCount(1);
+            fade.setNode(win_jack);
+            fade.play();
 
-            win_jack.setOnMousePressed(event2 -> {
+            ImageView img = plateau.mrjack.identite.img ;
+            img.setFitHeight(325.0);
+            img.setFitWidth(200.0);
+            img.setX(225);
+            img.setY(25);
+            root.getChildren().remove(img);
+            root.getChildren().add(img);
+
+            Button playAgain = new Button("Inverser les rôles");
+            Button quitter = new Button("Quitter");
+            playAgain.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5");
+            quitter.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5");
+            playAgain.setLayoutX(245);
+            playAgain.setLayoutY(500);
+            quitter.setLayoutX(285);
+            quitter.setLayoutY(560);
+            root.getChildren().add(playAgain);
+            root.getChildren().add(quitter);
+
+            playAgain.setOnMousePressed(event2 -> {
                 try {
                     menuPlayers(scene,root);
                     win_jack.setOnMousePressed(null);
                 } catch (FileNotFoundException fileNotFoundException) {
                     fileNotFoundException.printStackTrace();
                 }
-                win_jack.setOnMousePressed(null);
+                root.getChildren().remove(playAgain);
             });
 
-            root.getChildren().add(win_jack);
+            playAgain.setOnMouseEntered(event2 -> {
+                playAgain.setStyle( "-fx-background-color: #806237 ; -fx-border-color: white; -fx-font-family: Harrington; -fx-text-fill: white; -fx-font-size: 22; -fx-border-radius: 7");
+            });
 
-            ImageView img = plateau.mrjack.identite.img ;
-            img.setFitHeight(325.0);
-            img.setFitWidth(200.0);
-            img.setX(225);
-            img.setY(50);
-            root.getChildren().remove(img);
-            root.getChildren().add(img);
+            playAgain.setOnMouseExited(event2 -> {
+                playAgain.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5");
+            });
+
+            quitter.setOnMousePressed(event2 -> {
+                stage.close();
+            });
+
+            quitter.setOnMouseEntered(event2 -> {
+                quitter.setStyle( "-fx-background-color: #806237 ; -fx-border-color: white; -fx-font-family: Harrington; -fx-text-fill: white; -fx-font-size: 22; -fx-border-radius: 7");
+            });
+
+            quitter.setOnMouseExited(event2 -> {
+                quitter.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5");
+            });
+
 
             return status;
         }
