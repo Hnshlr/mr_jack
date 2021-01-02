@@ -259,10 +259,23 @@ public class Partie extends Application {
         plateau.etatDePartie();
         System.out.println("\nDébut du round "+round+":");
 
+
         ImageView inspTurn = new ImageView(new Image(new FileInputStream("images\\Menu\\plateau_insp.png")));
         ImageView jackTurn = new ImageView(new Image(new FileInputStream("images\\Menu\\plateau_jack.png")));
-        jetonjoues.set(0);
 
+
+        jetonjoues.set(0);
+        if(jetonjoues.get()==0){
+            if(round%2==1){
+                root.getChildren().remove(jackTurn);
+                root.getChildren().add(inspTurn);
+            }
+            else{
+                root.getChildren().remove(inspTurn);
+                root.getChildren().add(jackTurn);
+
+            }
+        }
 
         // Jeton j: 1 à 4 générés et prêts à être joués grâce à jetonjoues:
 
@@ -271,44 +284,43 @@ public class Partie extends Application {
             plateau.jetonsAction.get(j).currentimg.setOnMousePressed(e -> {
                 System.out.println("Jeton "+(finalJ+1)+" sélectionné/joué");
                 jetonjoues.addAndGet(1);
+
                 if(jetonjoues.get()==1){
                    if(round%2==1){
-                       root.getChildren().remove(jackTurn);
-                       root.getChildren().add(inspTurn);
-                   }
-                   else{
                        root.getChildren().remove(inspTurn);
                        root.getChildren().add(jackTurn);
+                   }
+                   else{
+                       root.getChildren().remove(jackTurn);
+                       root.getChildren().add(inspTurn);
 
                    }
                 }
                 else if(jetonjoues.get()==2){
                     if(round%2==1){
-                        root.getChildren().remove(inspTurn);
-                        root.getChildren().add(inspTurn);
-                    }
-                    else{
                         root.getChildren().remove(jackTurn);
                         root.getChildren().add(jackTurn);
+                    }
+                    else{
+                        root.getChildren().remove(inspTurn);
+                        root.getChildren().add(inspTurn);
                     }
                 }
                 else if(jetonjoues.get()==3){
                     if(round%2==1){
-                        root.getChildren().remove(inspTurn);
-                        root.getChildren().add(jackTurn);
-                    }
-                    else{
                         root.getChildren().remove(jackTurn);
                         root.getChildren().add(inspTurn);
+                    }
+                    else{
+                        root.getChildren().remove(inspTurn);
+                        root.getChildren().add(jackTurn);
                     }
                 }
                 else if (jetonjoues.get() == 4) {
                     if (round % 2 == 1) {
-                        root.getChildren().remove(jackTurn);
-                        root.getChildren().add(inspTurn);
-                    } else {
                         root.getChildren().remove(inspTurn);
-                        root.getChildren().add(jackTurn);
+                    } else {
+                        root.getChildren().remove(jackTurn);
                     }
                 }
                 try {
