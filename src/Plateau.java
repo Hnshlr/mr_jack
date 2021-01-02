@@ -200,7 +200,7 @@ public class Plateau {
 
     public void affichageFondPlateau(Scene scene, Pane root) throws FileNotFoundException {
         // Ajout fond de plateau
-        ImageView plateau = Partie.loadImage2(root,new FileInputStream("images\\Menu\\plateau_jack.png"));
+        ImageView plateau = Partie.loadImage2(root,new FileInputStream("images\\Menu\\plateau2.png"));
         root.getChildren().add(plateau);
     }
     public void affichageDistricts(Scene scene, Pane root) throws FileNotFoundException {

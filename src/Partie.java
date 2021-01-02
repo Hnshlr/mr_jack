@@ -271,8 +271,7 @@ public class Partie extends Application {
             plateau.jetonsAction.get(j).currentimg.setOnMousePressed(e -> {
                 System.out.println("Jeton "+(finalJ+1)+" sélectionné/joué");
                 jetonjoues.addAndGet(1);
-
-                if(jetonjoues.get()==1 || jetonjoues.get()==4){
+                if(jetonjoues.get()==1){
                    if(round%2==1){
                        root.getChildren().remove(jackTurn);
                        root.getChildren().add(inspTurn);
@@ -280,9 +279,20 @@ public class Partie extends Application {
                    else{
                        root.getChildren().remove(inspTurn);
                        root.getChildren().add(jackTurn);
+
                    }
                 }
-                else if(jetonjoues.get()==2 || jetonjoues.get()==3){
+                else if(jetonjoues.get()==2){
+                    if(round%2==1){
+                        root.getChildren().remove(inspTurn);
+                        root.getChildren().add(inspTurn);
+                    }
+                    else{
+                        root.getChildren().remove(jackTurn);
+                        root.getChildren().add(jackTurn);
+                    }
+                }
+                else if(jetonjoues.get()==3){
                     if(round%2==1){
                         root.getChildren().remove(inspTurn);
                         root.getChildren().add(jackTurn);
@@ -292,7 +302,15 @@ public class Partie extends Application {
                         root.getChildren().add(inspTurn);
                     }
                 }
-
+                else if (jetonjoues.get() == 4) {
+                    if (round % 2 == 1) {
+                        root.getChildren().remove(jackTurn);
+                        root.getChildren().add(inspTurn);
+                    } else {
+                        root.getChildren().remove(inspTurn);
+                        root.getChildren().add(jackTurn);
+                    }
+                }
                 try {
                     actionsJeton(finalJ);
                 } catch (FileNotFoundException fileNotFoundException) {
@@ -309,6 +327,7 @@ public class Partie extends Application {
 
             plateau.jetonsAction.get(j).currentimg.setOnMouseReleased(event -> {
                 if (jetonjoues.get() == 4) {
+
                     try {
                         inspection();
                     } catch (FileNotFoundException fileNotFoundException) {
@@ -660,7 +679,7 @@ public class Partie extends Application {
 
         Image img = new Image(inputstream);
         ImageView imageView = new ImageView(img);
-        root.getChildren().addAll(imageView);
+        root.getChildren().add(imageView);
 
     }
     public static ImageView loadImage2(Pane root, FileInputStream inputstream) throws FileNotFoundException {
