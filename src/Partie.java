@@ -181,7 +181,9 @@ public class Partie extends Application {
         valider.setOnMouseExited(e ->{
             valider.setStyle( "-fx-background-color: #6d532f; -fx-font-family : Harrington; -fx-text-fill: black; -fx-font-size : 15;-fx-border-color: grey; -fx-border-radius: 5;" );
         });
-        valider.setOnMouseReleased(e ->{
+        valider.setOnMousePressed(e ->{
+            playSound("audio\\click.wav");
+
             joueur1.nom = textField1.getText();
             joueur1.role = "Mr Jack";
 
@@ -235,6 +237,8 @@ public class Partie extends Application {
         plateau.voirIdMrJack(root);
 
         lancer.setOnMouseClicked(e ->{
+            playSound("audio\\click.wav");
+            
             root.getChildren().remove(lancer);
             root.getChildren().remove(lancerPartie);
 
@@ -446,6 +450,7 @@ public class Partie extends Application {
         root.getChildren().add(loupe);
 
         loupe.setOnMousePressed(event -> {
+            playSound("audio\\bell.wav");
             try {
                 plateau.isJackVisible(plateau.districtsVus());
 
