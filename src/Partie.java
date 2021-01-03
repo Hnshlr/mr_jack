@@ -450,7 +450,7 @@ public class Partie extends Application {
         root.getChildren().add(loupe);
 
         loupe.setOnMousePressed(event -> {
-            playSound("audio\\bell.wav");
+            playSound("audio\\bell.mp3");
             try {
                 plateau.isJackVisible(plateau.districtsVus());
 
