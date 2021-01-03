@@ -5,10 +5,13 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -530,7 +533,6 @@ public class Plateau {
         AtomicInteger compteur = new AtomicInteger();
 
         districts.get(position-1).currentimg.setOnMousePressed(e ->{
-
             districts.get(position-1).currentimg.setEffect(new DropShadow(25, Color.ORANGE));
             
             for(District district : districts){
@@ -547,7 +549,7 @@ public class Plateau {
             root.getChildren().remove(gcheck);
             root.getChildren().remove(rcross);
             if(e.getClickCount() == 1){
-
+                playSound("audio\\rotation.mp3");
                 RotateTransition rotate = new RotateTransition();
                 rotate.setAxis(Rotate.Z_AXIS);
                 rotate.setByAngle(90);
@@ -621,10 +623,13 @@ public class Plateau {
                     if(jetons.get(0).position == 2 || jetons.get(1).position == 2){
                         jeton.img.setX(296);
                         jeton.img.setY(100-8*finalIndiceSuperposition);
+                        playSound("audio\\place.mp3");
+
                     }
                     else{
                         jeton.img.setX(296);
                         jeton.img.setY(100);
+                        playSound("audio\\place.mp3");
                     }
                     jeton.position = 2;
                     jeton.img.setOnMouseDragged(null);
@@ -633,10 +638,12 @@ public class Plateau {
                     if(jetons.get(0).position == 3 || jetons.get(1).position == 3){
                         jeton.img.setX(394);
                         jeton.img.setY(100-8*finalIndiceSuperposition);
+                        playSound("audio\\place.mp3");
                     }
                     else{
                         jeton.img.setX(394);
                         jeton.img.setY(100);
+                        playSound("audio\\place.mp3");
                     }
                     jeton.position = 3;
                     jeton.img.setOnMouseDragged(null);
@@ -644,6 +651,7 @@ public class Plateau {
                 } else {
                     jeton.img.setX(initX);
                     jeton.img.setY(initY);
+                    playSound("audio\\place.mp3");
                 }
             }
 
@@ -652,10 +660,12 @@ public class Plateau {
                     if(jetons.get(0).position == 3 || jetons.get(1).position == 3){
                         jeton.img.setX(394);
                         jeton.img.setY(100-8*finalIndiceSuperposition);
+                        playSound("audio\\place.mp3");
                     }
                     else{
                         jeton.img.setX(394);
                         jeton.img.setY(100);
+                        playSound("audio\\place.mp3");
                     }
                     jeton.position = 3;
                     jeton.img.setOnMouseDragged(null);
@@ -665,10 +675,12 @@ public class Plateau {
                     if(jetons.get(0).position == 4 || jetons.get(1).position == 4){
                         jeton.img.setX(492+8*finalIndiceSuperposition);
                         jeton.img.setY(198);
+                        playSound("audio\\place.mp3");
                     }
                     else{
                         jeton.img.setX(492);
                         jeton.img.setY(198);
+                        playSound("audio\\place.mp3");
                     }
                     jeton.position = 4;
                     jeton.img.setOnMouseDragged(null);
@@ -676,6 +688,7 @@ public class Plateau {
                 } else {
                     jeton.img.setX(initX);
                     jeton.img.setY(initY);
+                    playSound("audio\\place.mp3");
                 }
             }
 
@@ -684,10 +697,12 @@ public class Plateau {
                     if(jetons.get(0).position == 4 || jetons.get(1).position == 4){
                         jeton.img.setX(492+8*finalIndiceSuperposition);
                         jeton.img.setY(198);
+                        playSound("audio\\place.mp3");
                     }
                     else{
                         jeton.img.setX(492);
                         jeton.img.setY(198);
+                        playSound("audio\\place.mp3");
                     }
                     jeton.position = 4;
                     jeton.img.setOnMouseDragged(null);
@@ -696,10 +711,12 @@ public class Plateau {
                     if(jetons.get(0).position == 5 || jetons.get(1).position == 5){
                         jeton.img.setX(492+8*finalIndiceSuperposition);
                         jeton.img.setY(296);
+                        playSound("audio\\place.mp3");
                     }
                     else{
                         jeton.img.setX(492);
                         jeton.img.setY(296);
+                        playSound("audio\\place.mp3");
                     }
                     jeton.position = 5;
                     jeton.img.setOnMouseDragged(null);
@@ -707,6 +724,7 @@ public class Plateau {
                 } else {
                     jeton.img.setX(initX);
                     jeton.img.setY(initY);
+                    playSound("audio\\place.mp3");
                 }
             }
 
@@ -715,10 +733,12 @@ public class Plateau {
                     if(jetons.get(0).position == 5 || jetons.get(1).position == 5){
                         jeton.img.setX(492+8*finalIndiceSuperposition);
                         jeton.img.setY(296);
+                        playSound("audio\\place.mp3");
                     }
                     else{
                         jeton.img.setX(492);
                         jeton.img.setY(296);
+                        playSound("audio\\place.mp3");
                     }
                     jeton.position = 5;
                     jeton.img.setOnMouseDragged(null);
@@ -727,10 +747,12 @@ public class Plateau {
                     if(jetons.get(0).position == 6 || jetons.get(1).position == 6){
                         jeton.img.setX(492+8*finalIndiceSuperposition);
                         jeton.img.setY(394);
+                        playSound("audio\\place.mp3");
                     }
                     else{
                         jeton.img.setX(492);
                         jeton.img.setY(394);
+                        playSound("audio\\place.mp3");
                     }
                     jeton.position = 6;
                     jeton.img.setOnMouseDragged(null);
@@ -738,6 +760,7 @@ public class Plateau {
                 } else {
                     jeton.img.setX(initX);
                     jeton.img.setY(initY);
+                    playSound("audio\\place.mp3");
                 }
             }
 
@@ -746,10 +769,12 @@ public class Plateau {
                     if(jetons.get(0).position == 6 || jetons.get(1).position == 6){
                         jeton.img.setX(492+8*finalIndiceSuperposition);
                         jeton.img.setY(394);
+                        playSound("audio\\place.mp3");
                     }
                     else{
                         jeton.img.setX(492);
                         jeton.img.setY(394);
+                        playSound("audio\\place.mp3");
                     }
                     jeton.position = 6;
                     jeton.img.setOnMouseDragged(null);
@@ -758,10 +783,12 @@ public class Plateau {
                     if(jetons.get(0).position == 7 || jetons.get(1).position == 7){
                         jeton.img.setX(394);
                         jeton.img.setY(492+8*finalIndiceSuperposition);
+                        playSound("audio\\place.mp3");
                     }
                     else{
                         jeton.img.setX(394);
                         jeton.img.setY(492);
+                        playSound("audio\\place.mp3");
                     }
                     jeton.position = 7;
                     jeton.img.setOnMouseDragged(null);
@@ -769,6 +796,7 @@ public class Plateau {
                 } else {
                     jeton.img.setX(initX);
                     jeton.img.setY(initY);
+                    playSound("audio\\place.mp3");
                 }
             }
 
@@ -777,10 +805,12 @@ public class Plateau {
                     if(jetons.get(0).position == 7 || jetons.get(1).position == 7){
                         jeton.img.setX(394);
                         jeton.img.setY(492+8*finalIndiceSuperposition);
+                        playSound("audio\\place.mp3");
                     }
                     else{
                         jeton.img.setX(394);
                         jeton.img.setY(492);
+                        playSound("audio\\place.mp3");
                     }
                     jeton.position = 7;
                     jeton.img.setOnMouseDragged(null);
@@ -789,10 +819,12 @@ public class Plateau {
                     if(jetons.get(0).position == 8 || jetons.get(1).position == 8){
                         jeton.img.setX(296);
                         jeton.img.setY(492+8*finalIndiceSuperposition);
+                        playSound("audio\\place.mp3");
                     }
                     else{
                         jeton.img.setX(296);
                         jeton.img.setY(492);
+                        playSound("audio\\place.mp3");
                     }
                     jeton.position = 8;
                     jeton.img.setOnMouseDragged(null);
@@ -800,6 +832,7 @@ public class Plateau {
                 } else {
                     jeton.img.setX(initX);
                     jeton.img.setY(initY);
+                    playSound("audio\\place.mp3");
                 }
             }
 
@@ -808,10 +841,12 @@ public class Plateau {
                     if(jetons.get(0).position == 8 || jetons.get(1).position == 8){
                         jeton.img.setX(296);
                         jeton.img.setY(492+8*finalIndiceSuperposition);
+                        playSound("audio\\place.mp3");
                     }
                     else{
                         jeton.img.setX(296);
                         jeton.img.setY(492);
+                        playSound("audio\\place.mp3");
                     }
                     jeton.position = 8;
                     jeton.img.setOnMouseDragged(null);
@@ -820,10 +855,12 @@ public class Plateau {
                     if(jetons.get(0).position == 9 || jetons.get(1).position == 9){
                         jeton.img.setX(198);
                         jeton.img.setY(492+8*finalIndiceSuperposition);
+                        playSound("audio\\place.mp3");
                     }
                     else{
                         jeton.img.setX(198);
                         jeton.img.setY(492);
+                        playSound("audio\\place.mp3");
                     }
                     jeton.position = 9;
                     jeton.img.setOnMouseDragged(null);
@@ -831,6 +868,7 @@ public class Plateau {
                 } else {
                     jeton.img.setX(initX);
                     jeton.img.setY(initY);
+                    playSound("audio\\place.mp3");
                 }
             }
 
@@ -839,10 +877,12 @@ public class Plateau {
                     if(jetons.get(0).position == 9 || jetons.get(1).position == 9){
                         jeton.img.setX(198);
                         jeton.img.setY(492+8*finalIndiceSuperposition);
+                        playSound("audio\\place.mp3");
                     }
                     else{
                         jeton.img.setX(198);
                         jeton.img.setY(492);
+                        playSound("audio\\place.mp3");
                     }
                     jeton.position = 9;
                     jeton.img.setOnMouseDragged(null);
@@ -851,10 +891,12 @@ public class Plateau {
                     if(jetons.get(0).position == 10 || jetons.get(1).position == 10){
                         jeton.img.setX(100-8*finalIndiceSuperposition);
                         jeton.img.setY(394);
+                        playSound("audio\\place.mp3");
                     }
                     else{
                         jeton.img.setX(100);
                         jeton.img.setY(394);
+                        playSound("audio\\place.mp3");
                     }
                     jeton.position = 10;
                     jeton.img.setOnMouseDragged(null);
@@ -862,6 +904,7 @@ public class Plateau {
                 } else {
                     jeton.img.setX(initX);
                     jeton.img.setY(initY);
+                    playSound("audio\\place.mp3");
                 }
             }
 
@@ -870,10 +913,12 @@ public class Plateau {
                     if(jetons.get(0).position == 10 || jetons.get(1).position == 10){
                         jeton.img.setX(100-8*finalIndiceSuperposition);
                         jeton.img.setY(394);
+                        playSound("audio\\place.mp3");
                     }
                     else{
                         jeton.img.setX(100);
                         jeton.img.setY(394);
+                        playSound("audio\\place.mp3");
                     }
                     jeton.position = 10;
                     jeton.img.setOnMouseDragged(null);
@@ -882,10 +927,12 @@ public class Plateau {
                     if(jetons.get(0).position == 11 || jetons.get(1).position == 11){
                         jeton.img.setX(100-8*finalIndiceSuperposition);
                         jeton.img.setY(296);
+                        playSound("audio\\place.mp3");
                     }
                     else{
                         jeton.img.setX(100);
                         jeton.img.setY(296);
+                        playSound("audio\\place.mp3");
                     }
                     jeton.position = 11;
                     jeton.img.setOnMouseDragged(null);
@@ -893,6 +940,7 @@ public class Plateau {
                 } else {
                     jeton.img.setX(initX);
                     jeton.img.setY(initY);
+                    playSound("audio\\place.mp3");
                 }
             }
 
@@ -901,10 +949,12 @@ public class Plateau {
                     if(jetons.get(0).position == 11 || jetons.get(1).position == 11){
                         jeton.img.setX(100-8*finalIndiceSuperposition);
                         jeton.img.setY(296);
+                        playSound("audio\\place.mp3");
                     }
                     else{
                         jeton.img.setX(100);
                         jeton.img.setY(296);
+                        playSound("audio\\place.mp3");
                     }
                     jeton.position = 11;
                     jeton.img.setOnMouseDragged(null);
@@ -913,10 +963,12 @@ public class Plateau {
                     if(jetons.get(0).position == 12 || jetons.get(1).position == 12){
                         jeton.img.setX(100-8*finalIndiceSuperposition);
                         jeton.img.setY(198);
+                        playSound("audio\\place.mp3");
                     }
                     else{
                         jeton.img.setX(100);
                         jeton.img.setY(198);
+                        playSound("audio\\place.mp3");
                     }
                     jeton.position = 12;
                     jeton.img.setOnMouseDragged(null);
@@ -924,6 +976,7 @@ public class Plateau {
                 } else {
                     jeton.img.setX(initX);
                     jeton.img.setY(initY);
+                    playSound("audio\\place.mp3");
                 }
             }
 
@@ -932,10 +985,12 @@ public class Plateau {
                     if(jetons.get(0).position == 12 || jetons.get(1).position == 12){
                         jeton.img.setX(100-8*finalIndiceSuperposition);
                         jeton.img.setY(198);
+                        playSound("audio\\place.mp3");
                     }
                     else{
                         jeton.img.setX(100);
                         jeton.img.setY(198);
+                        playSound("audio\\place.mp3");
                     }
                     jeton.position = 12;
                     jeton.img.setOnMouseDragged(null);
@@ -944,10 +999,12 @@ public class Plateau {
                     if(jetons.get(0).position == 1 || jetons.get(1).position == 1){
                         jeton.img.setX(198);
                         jeton.img.setY(100-8*finalIndiceSuperposition);
+                        playSound("audio\\place.mp3");
                     }
                     else{
                         jeton.img.setX(198);
                         jeton.img.setY(100);
+                        playSound("audio\\place.mp3");
                     }
                     jeton.position = 1;
                     jeton.img.setOnMouseDragged(null);
@@ -955,6 +1012,7 @@ public class Plateau {
                 } else {
                     jeton.img.setX(initX);
                     jeton.img.setY(initY);
+                    playSound("audio\\place.mp3");
                 }
             }
 
@@ -963,10 +1021,12 @@ public class Plateau {
                     if(jetons.get(0).position == 1 || jetons.get(1).position == 1){
                         jeton.img.setX(198);
                         jeton.img.setY(100-8*finalIndiceSuperposition);
+                        playSound("audio\\place.mp3");
                     }
                     else{
                         jeton.img.setX(198);
                         jeton.img.setY(100);
+                        playSound("audio\\place.mp3");
                     }
                     jeton.position = 1;
                     jeton.img.setOnMouseDragged(null);
@@ -975,10 +1035,12 @@ public class Plateau {
                     if(jetons.get(0).position == 2 || jetons.get(1).position == 2){
                         jeton.img.setX(296);
                         jeton.img.setY(100-8*finalIndiceSuperposition);
+                        playSound("audio\\place.mp3");
                     }
                     else{
                         jeton.img.setX(296);
                         jeton.img.setY(100);
+                        playSound("audio\\place.mp3");
                     }
                     jeton.position = 2;
                     jeton.img.setOnMouseDragged(null);
@@ -986,6 +1048,7 @@ public class Plateau {
                 } else {
                     jeton.img.setX(initX);
                     jeton.img.setY(initY);
+                    playSound("audio\\place.mp3");
                 }
             }
         });
@@ -1023,10 +1086,12 @@ public class Plateau {
                         if(jetons.get(0).position == 2 || jetons.get(1).position == 2){
                             jeton.img.setX(296);
                             jeton.img.setY(100-8*finalIndiceSuperposition);
+                            playSound("audio\\place.mp3");
                         }
                         else{
                             jeton.img.setX(296);
                             jeton.img.setY(100);
+                            playSound("audio\\place.mp3");
                         }
                         jeton.position = 2;
                         jeton.img.setOnMouseDragged(null);
@@ -1039,6 +1104,7 @@ public class Plateau {
                     } else {
                         jeton.img.setX(initX);
                         jeton.img.setY(initY);
+                        playSound("audio\\place.mp3");
                     }
                 }
 
@@ -1047,10 +1113,12 @@ public class Plateau {
                         if(jetons.get(0).position == 3 || jetons.get(1).position == 3){
                             jeton.img.setX(394);
                             jeton.img.setY(100-8*finalIndiceSuperposition);
+                            playSound("audio\\place.mp3");
                         }
                         else{
                             jeton.img.setX(394);
                             jeton.img.setY(100);
+                            playSound("audio\\place.mp3");
                         }
                         jeton.position = 3;
                         jeton.img.setOnMouseDragged(null);
@@ -1063,6 +1131,7 @@ public class Plateau {
                     else {
                         jeton.img.setX(initX);
                         jeton.img.setY(initY);
+                        playSound("audio\\place.mp3");
                     }
                 }
 
@@ -1071,10 +1140,12 @@ public class Plateau {
                         if(jetons.get(0).position == 4 || jetons.get(1).position == 4){
                             jeton.img.setX(492+8*finalIndiceSuperposition);
                             jeton.img.setY(198);
+                            playSound("audio\\place.mp3");
                         }
                         else{
                             jeton.img.setX(492);
                             jeton.img.setY(198);
+                            playSound("audio\\place.mp3");
                         }
                         jeton.position = 4;
                         jeton.img.setOnMouseDragged(null);
@@ -1086,6 +1157,7 @@ public class Plateau {
                     } else {
                         jeton.img.setX(initX);
                         jeton.img.setY(initY);
+                        playSound("audio\\place.mp3");
                     }
                 }
 
@@ -1094,10 +1166,12 @@ public class Plateau {
                         if(jetons.get(0).position == 5 || jetons.get(1).position == 5){
                             jeton.img.setX(492+8*finalIndiceSuperposition);
                             jeton.img.setY(296);
+                            playSound("audio\\place.mp3");
                         }
                         else{
                             jeton.img.setX(492);
                             jeton.img.setY(296);
+                            playSound("audio\\place.mp3");
                         }
                         jeton.position = 5;
                         jeton.img.setOnMouseDragged(null);
@@ -1109,6 +1183,7 @@ public class Plateau {
                     } else {
                         jeton.img.setX(initX);
                         jeton.img.setY(initY);
+                        playSound("audio\\place.mp3");
                     }
                 }
 
@@ -1117,10 +1192,12 @@ public class Plateau {
                         if(jetons.get(0).position == 6 || jetons.get(1).position == 6){
                             jeton.img.setX(492+8*finalIndiceSuperposition);
                             jeton.img.setY(394);
+                            playSound("audio\\place.mp3");
                         }
                         else{
                             jeton.img.setX(492);
                             jeton.img.setY(394);
+                            playSound("audio\\place.mp3");
                         }
                         jeton.position = 6;
                         jeton.img.setOnMouseDragged(null);
@@ -1132,6 +1209,7 @@ public class Plateau {
                     } else {
                         jeton.img.setX(initX);
                         jeton.img.setY(initY);
+                        playSound("audio\\place.mp3");
                     }
                 }
 
@@ -1140,10 +1218,12 @@ public class Plateau {
                         if(jetons.get(0).position == 7 || jetons.get(1).position == 7){
                             jeton.img.setX(394);
                             jeton.img.setY(492+8*finalIndiceSuperposition);
+                            playSound("audio\\place.mp3");
                         }
                         else{
                             jeton.img.setX(394);
                             jeton.img.setY(492);
+                            playSound("audio\\place.mp3");
                         }
                         jeton.position = 7;
                         jeton.img.setOnMouseDragged(null);
@@ -1155,6 +1235,7 @@ public class Plateau {
                     } else {
                         jeton.img.setX(initX);
                         jeton.img.setY(initY);
+                        playSound("audio\\place.mp3");
                     }
                 }
 
@@ -1163,10 +1244,12 @@ public class Plateau {
                         if(jetons.get(0).position == 8 || jetons.get(1).position == 8){
                             jeton.img.setX(296);
                             jeton.img.setY(492+8*finalIndiceSuperposition);
+                            playSound("audio\\place.mp3");
                         }
                         else{
                             jeton.img.setX(296);
                             jeton.img.setY(492);
+                            playSound("audio\\place.mp3");
                         }
                         jeton.position = 8;
                         jeton.img.setOnMouseDragged(null);
@@ -1178,6 +1261,7 @@ public class Plateau {
                     } else {
                         jeton.img.setX(initX);
                         jeton.img.setY(initY);
+                        playSound("audio\\place.mp3");
                     }
                 }
 
@@ -1186,10 +1270,12 @@ public class Plateau {
                         if(jetons.get(0).position == 9 || jetons.get(1).position == 9){
                             jeton.img.setX(198);
                             jeton.img.setY(492+8*finalIndiceSuperposition);
+                            playSound("audio\\place.mp3");
                         }
                         else{
                             jeton.img.setX(198);
                             jeton.img.setY(492);
+                            playSound("audio\\place.mp3");
                         }
                         jeton.position = 9;
                         jeton.img.setOnMouseDragged(null);
@@ -1201,6 +1287,7 @@ public class Plateau {
                     } else {
                         jeton.img.setX(initX);
                         jeton.img.setY(initY);
+                        playSound("audio\\place.mp3");
                     }
                 }
 
@@ -1209,10 +1296,12 @@ public class Plateau {
                         if(jetons.get(0).position == 10 || jetons.get(1).position == 10){
                             jeton.img.setX(100-8*finalIndiceSuperposition);
                             jeton.img.setY(394);
+                            playSound("audio\\place.mp3");
                         }
                         else{
                             jeton.img.setX(100);
                             jeton.img.setY(394);
+                            playSound("audio\\place.mp3");
                         }
                         jeton.position = 10;
                         jeton.img.setOnMouseDragged(null);
@@ -1224,6 +1313,7 @@ public class Plateau {
                     } else {
                         jeton.img.setX(initX);
                         jeton.img.setY(initY);
+                        playSound("audio\\place.mp3");
                     }
                 }
 
@@ -1232,10 +1322,12 @@ public class Plateau {
                         if(jetons.get(0).position == 11 || jetons.get(1).position == 11){
                             jeton.img.setX(100-8*finalIndiceSuperposition);
                             jeton.img.setY(296);
+                            playSound("audio\\place.mp3");
                         }
                         else{
                             jeton.img.setX(100);
                             jeton.img.setY(296);
+                            playSound("audio\\place.mp3");
                         }
                         jeton.position = 11;
                         jeton.img.setOnMouseDragged(null);
@@ -1247,6 +1339,7 @@ public class Plateau {
                     } else {
                         jeton.img.setX(initX);
                         jeton.img.setY(initY);
+                        playSound("audio\\place.mp3");
                     }
                 }
 
@@ -1255,10 +1348,12 @@ public class Plateau {
                         if(jetons.get(0).position == 12 || jetons.get(1).position == 12){
                             jeton.img.setX(100-8*finalIndiceSuperposition);
                             jeton.img.setY(198);
+                            playSound("audio\\place.mp3");
                         }
                         else{
                             jeton.img.setX(100);
                             jeton.img.setY(198);
+                            playSound("audio\\place.mp3");
                         }
                         jeton.position = 12;
                         jeton.img.setOnMouseDragged(null);
@@ -1270,6 +1365,7 @@ public class Plateau {
                     } else {
                         jeton.img.setX(initX);
                         jeton.img.setY(initY);
+                        playSound("audio\\place.mp3");
                     }
                 }
 
@@ -1278,10 +1374,12 @@ public class Plateau {
                         if(jetons.get(0).position == 1 || jetons.get(1).position == 1){
                             jeton.img.setX(198);
                             jeton.img.setY(100-8*finalIndiceSuperposition);
+                            playSound("audio\\place.mp3");
                         }
                         else{
                             jeton.img.setX(198);
                             jeton.img.setY(100);
+                            playSound("audio\\place.mp3");
                         }
                         jeton.position = 1;
                         jeton.img.setOnMouseDragged(null);
@@ -1293,6 +1391,7 @@ public class Plateau {
                     } else {
                         jeton.img.setX(initX);
                         jeton.img.setY(initY);
+                        playSound("audio\\place.mp3");
                     }
                 }
             });
@@ -1785,6 +1884,12 @@ public class Plateau {
                 return true;
         }
         return false;
+    }
+
+    public void playSound(String soundPath){
+        Media sound = new Media(new File(soundPath).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
     }
 
 }

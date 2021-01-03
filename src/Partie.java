@@ -238,7 +238,7 @@ public class Partie extends Application {
 
         lancer.setOnMouseClicked(e ->{
             playSound("audio\\click.wav");
-            
+
             root.getChildren().remove(lancer);
             root.getChildren().remove(lancerPartie);
 
