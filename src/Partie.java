@@ -19,11 +19,10 @@ import javafx.util.Duration;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-<<<<<<< HEAD
-=======
+
 import java.io.FilterInputStream;
 import java.lang.reflect.Array;
->>>>>>> 5d2830e30c341645366de06a71bd22caa052245e
+
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
