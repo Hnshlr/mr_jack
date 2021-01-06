@@ -1,5 +1,4 @@
 import javafx.animation.FadeTransition;
-import javafx.animation.RotateTransition;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,16 +13,14 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FilterInputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Partie extends Application {
@@ -34,12 +31,16 @@ public class Partie extends Application {
 
     Stage stage = new Stage();
     Pane root = new Pane();
+    Pane root2 = new Pane();
+
     Scene scene = new Scene(root,650,650);
+    Scene scene2 = new Scene(root2,650,650);
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
         primaryStage = stage;
+
         menu(primaryStage, scene, root);
 
         primaryStage.setTitle("Mister Jack's Pocket");
@@ -60,30 +61,30 @@ public class Partie extends Application {
     public void menu(Stage stage,Scene scene,Pane root) throws FileNotFoundException {
         //Menu du jeu
 
+        stage.setScene(scene); //Dans le cas ou l'on revient du menu paramètre
+
         /*    ----------------------------------
                 Gestion du menu avec le clavier
               ---------------------------------- */
 
+        ImageView menu1 = new ImageView(new Image(new FileInputStream("images\\Menu\\Menu1.png")));
+        ImageView menu2 = new ImageView(new Image(new FileInputStream("images\\Menu\\Menu2.png")));
+        ImageView menu3 = new ImageView(new Image(new FileInputStream("images\\Menu\\Menu3.png")));
+
         //Atomic integer nécessaire pour le passer dans lambda exp
         AtomicInteger count = new AtomicInteger(1); //compteur qui indique au programme où se trouve le curseur
 
-        loadImage(root,new FileInputStream("images\\Menu\\Menu1.png"));//Le curseur est sur play par défaut
-        scene.setOnKeyPressed(e -> { //scene receptives aux évenements clavier
+        root.getChildren().add(menu1);//Le curseur est sur play par défaut
+        scene.setOnKeyPressed(e -> { //scene receptive aux évenements clavier
             if(e.getCode().equals(KeyCode.DOWN)){ // si flèche du bas
-                try {
-                    loadImage(root,new FileInputStream("images\\Menu\\Menu2.png")); // curseur sur Quit
-                    count.set(2);
-                } catch (FileNotFoundException fileNotFoundException) {
-                    fileNotFoundException.printStackTrace();
-                }
+                root.getChildren().remove(menu1);
+                root.getChildren().add(menu2); // curseur sur Quit
+                count.set(2);
             }
             if(e.getCode().equals(KeyCode.UP)){ // si flèche du haut
-                try {
-                    loadImage(root,new FileInputStream("images\\Menu\\Menu1.png")); // curseur sur play
-                    count.set(1);
-                } catch (FileNotFoundException fileNotFoundException) {
-                    fileNotFoundException.printStackTrace();
-                }
+                root.getChildren().remove(menu2);
+                root.getChildren().add(menu1); // curseur sur Play
+                count.set(1);
             }
             if(e.getCode().equals(KeyCode.ENTER) && count.get()==1){ // si Entrer sur play
                     //on lance la partie
@@ -106,23 +107,34 @@ public class Partie extends Application {
                 Gestion du menu avec la souris
               ---------------------------------- */
 
+        AtomicBoolean onceJ = new AtomicBoolean(false);
+        AtomicBoolean onceQ = new AtomicBoolean(false);
+        AtomicBoolean onceP = new AtomicBoolean(false);
+
         scene.setOnMouseMoved(e -> {
-            if(e.getX() > 240 && e.getX() < 395 && e.getY() > 140 && e.getY() < 285){
-                try {
-                    loadImage(root,new FileInputStream("images\\Menu\\Menu1.png")); // curseur sur play
-                    count.set(1);
-                } catch (FileNotFoundException fileNotFoundException) {
-                    fileNotFoundException.printStackTrace();
-                }
+            if(e.getX() > 240 && e.getX() < 395 && e.getY() > 140 && e.getY() < 285 && !onceJ.get()){
+                onceJ.set(true);
+                onceQ.set(false);
+                onceP.set(false);
+                root.getChildren().remove(menu2);
+                root.getChildren().remove(menu1);
+                root.getChildren().add(menu1); // curseur sur Quit
+                count.set(1);
             }
-            if(e.getX() > 240 && e.getX() < 395 && e.getY() > 350 && e.getY() < 440){
-                try {
-                    loadImage(root,new FileInputStream("images\\Menu\\Menu2.png")); // curseur sur Quit
-                    count.set(2);
-                } catch (FileNotFoundException fileNotFoundException) {
-                    fileNotFoundException.printStackTrace();
-                }
+            if(e.getX() > 240 && e.getX() < 395 && e.getY() > 350 && e.getY() < 440 && !onceQ.get()){
+                onceQ.set(true);
+                onceJ.set(false);
+                onceP.set(false);
+                root.getChildren().remove(menu1);
+                root.getChildren().add(menu2); // curseur sur Quit
+                count.set(2);
             }
+            if(e.getX() > 10 && e.getX() < 200 && e.getY() > 600 && e.getY() < 650 && !onceP.get()){
+                onceP.set(true);
+                root.getChildren().clear();
+                root.getChildren().add(menu3);
+            }
+
         });
         scene.setOnMouseClicked(e -> {
             if(e.getX() > 240 && e.getX() < 410 && e.getY() > 140 && e.getY() < 295){
@@ -139,6 +151,107 @@ public class Partie extends Application {
             if(e.getX() > 240 && e.getX() < 395 && e.getY() > 350 && e.getY() < 440){
                 stage.close();
             }
+            if(e.getX() > 10 && e.getX() < 200 && e.getY() > 600 && e.getY() < 650){
+                //on lance le menu paramètre
+                try {
+                    menuParametre(root);
+                } catch (FileNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
+                scene.setOnMouseMoved(null);
+                scene.setOnKeyPressed(null);
+                scene.setOnMouseClicked(null);
+
+                stage.setScene(scene2);
+            }
+        });
+
+
+    }
+    public void menuParametre(Pane root) throws FileNotFoundException {
+        ImageView para1 = new ImageView(new Image(new FileInputStream("images\\Menu\\par1.png")));
+        ImageView para2 = new ImageView(new Image(new FileInputStream("images\\Menu\\para2.png")));
+        ImageView para3 = new ImageView(new Image(new FileInputStream("images\\Menu\\para3.png")));
+        ImageView para4 = new ImageView(new Image(new FileInputStream("images\\Menu\\para4.png")));
+
+        AtomicInteger count = new AtomicInteger();
+
+        AtomicBoolean onceT = new AtomicBoolean(false);
+        AtomicBoolean onceS = new AtomicBoolean(false);
+        AtomicBoolean onceA = new AtomicBoolean(false);
+        AtomicBoolean onceR = new AtomicBoolean(false);
+
+        root2.getChildren().add(para1);
+        scene2.setOnKeyPressed(e ->{
+            if(e.getCode().equals(KeyCode.DOWN)){
+                if(count.get() ==0){
+                    count.getAndIncrement();
+                    root2.getChildren().remove(para1);
+                    root2.getChildren().add(para2);
+                }
+                else if(count.get() ==1){
+                    count.getAndIncrement();
+                    root2.getChildren().remove(para2);
+                    root2.getChildren().add(para3);
+                }
+                else if(count.get() ==2){
+                    count.getAndIncrement();
+                    root2.getChildren().remove(para3);
+                    root2.getChildren().add(para4);
+                }
+            }
+            if(e.getCode().equals(KeyCode.UP)){
+                if(count.get() ==3){
+                    count.getAndDecrement();
+                    root2.getChildren().remove(para4);
+                    root2.getChildren().add(para3);
+                }
+                else if(count.get() ==2){
+                    count.getAndDecrement();
+                    root2.getChildren().remove(para3);
+                    root2.getChildren().add(para2);
+                }
+                else if(count.get() ==1){
+                    count.getAndDecrement();
+                    root2.getChildren().remove(para2);
+                    root2.getChildren().add(para1);
+                }
+            }
+        });
+        scene2.setOnMouseMoved(e-> {
+            if(e.getX()>180 && e.getX()<450 && e.getY()>220 && e.getY()<290 && !onceT.get()){
+                onceT.set(true);
+                onceS.set(false);
+                onceA.set(false);
+                onceR.set(false);
+                root2.getChildren().clear();
+                root2.getChildren().add(para1);
+            }
+            if(e.getX()>180 && e.getX()<450 && e.getY()>290 && e.getY()<350 && !onceS.get()){
+                onceT.set(false);
+                onceS.set(true);
+                onceA.set(false);
+                onceR.set(false);
+                root2.getChildren().clear();
+                root2.getChildren().add(para2);
+            }
+            if(e.getX()>180 && e.getX()<450 && e.getY()>355 && e.getY()<415 && !onceA.get()){
+                onceT.set(false);
+                onceS.set(false);
+                onceA.set(true);
+                onceR.set(false);
+                root2.getChildren().clear();
+                root2.getChildren().add(para3);
+            }
+            if(e.getX()>180 && e.getX()<450 && e.getY()>415 && e.getY()<480 && !onceR.get()){
+                onceT.set(false);
+                onceS.set(false);
+                onceA.set(false);
+                onceR.set(true);
+                root2.getChildren().clear();
+                root2.getChildren().add(para4);
+            }
+
         });
     }
 
