@@ -68,11 +68,11 @@ public class Partie extends Application {
         //Atomic integer nécessaire pour le passer dans lambda exp
         AtomicInteger count = new AtomicInteger(1); //compteur qui indique au programme où se trouve le curseur
 
-        loadImage(root,new FileInputStream("images\\Menu\\Menu1.png"));//Le curseur est sur play par défaut
+        loadImage(root,new FileInputStream("images/Menu/Menu1.png"));//Le curseur est sur play par défaut
         scene.setOnKeyPressed(e -> { //scene receptives aux évenements clavier
             if(e.getCode().equals(KeyCode.DOWN)){ // si flèche du bas
                 try {
-                    loadImage(root,new FileInputStream("images\\Menu\\Menu2.png")); // curseur sur Quit
+                    loadImage(root,new FileInputStream("images/Menu/Menu2.png")); // curseur sur Quit
                     count.set(2);
                 } catch (FileNotFoundException fileNotFoundException) {
                     fileNotFoundException.printStackTrace();
@@ -80,7 +80,7 @@ public class Partie extends Application {
             }
             if(e.getCode().equals(KeyCode.UP)){ // si flèche du haut
                 try {
-                    loadImage(root,new FileInputStream("images\\Menu\\Menu1.png")); // curseur sur play
+                    loadImage(root,new FileInputStream("images/Menu/Menu1.png")); // curseur sur play
                     count.set(1);
                 } catch (FileNotFoundException fileNotFoundException) {
                     fileNotFoundException.printStackTrace();
@@ -110,7 +110,7 @@ public class Partie extends Application {
         scene.setOnMouseMoved(e -> {
             if(e.getX() > 240 && e.getX() < 395 && e.getY() > 140 && e.getY() < 285){
                 try {
-                    loadImage(root,new FileInputStream("images\\Menu\\Menu1.png")); // curseur sur play
+                    loadImage(root,new FileInputStream("images/Menu/Menu1.png")); // curseur sur play
                     count.set(1);
                 } catch (FileNotFoundException fileNotFoundException) {
                     fileNotFoundException.printStackTrace();
@@ -118,7 +118,7 @@ public class Partie extends Application {
             }
             if(e.getX() > 240 && e.getX() < 395 && e.getY() > 350 && e.getY() < 440){
                 try {
-                    loadImage(root,new FileInputStream("images\\Menu\\Menu2.png")); // curseur sur Quit
+                    loadImage(root,new FileInputStream("images/Menu/Menu2.png")); // curseur sur Quit
                     count.set(2);
                 } catch (FileNotFoundException fileNotFoundException) {
                     fileNotFoundException.printStackTrace();
@@ -149,7 +149,7 @@ public class Partie extends Application {
 
         root.getChildren().clear();
 
-        loadImage(root,new FileInputStream("images\\Menu\\MenuRoles.png"));
+        loadImage(root,new FileInputStream("images/Menu/MenuRoles.png"));
 
         TextField textField1 = new TextField("");
         textField1.setFont(Font.font("Harrington", FontWeight.BOLD, 15));
@@ -183,7 +183,7 @@ public class Partie extends Application {
             valider.setStyle( "-fx-background-color: #6d532f; -fx-font-family : Harrington; -fx-text-fill: black; -fx-font-size : 15;-fx-border-color: grey; -fx-border-radius: 5;" );
         });
         valider.setOnMousePressed(e ->{
-            playSound("audio\\click.wav");
+            playSound("audio/click.wav");
 
             joueur1.nom = textField1.getText();
             joueur1.role = "Mr Jack";
@@ -220,7 +220,7 @@ public class Partie extends Application {
 
         round=0;
 
-        ImageView lancerPartie = loadImage2(root, new FileInputStream("images\\Menu\\Filtre.png"));
+        ImageView lancerPartie = loadImage2(root, new FileInputStream("images/Menu/Filtre.png"));
         root.getChildren().add(lancerPartie);
         FadeTransition fade = new FadeTransition();
         fade.setDuration(Duration.millis(700));
@@ -238,7 +238,7 @@ public class Partie extends Application {
         plateau.voirIdMrJack(root);
 
         lancer.setOnMouseClicked(e ->{
-            playSound("audio\\click.wav");
+            playSound("audio/click.wav");
 
             root.getChildren().remove(lancer);
             root.getChildren().remove(lancerPartie);
@@ -268,8 +268,8 @@ public class Partie extends Application {
         plateau.etatDePartie();
         System.out.println("\nDébut du round "+round+":");
 
-        ImageView inspTurn = new ImageView(new Image(new FileInputStream("images\\Menu\\plateau_insp.png")));
-        ImageView jackTurn = new ImageView(new Image(new FileInputStream("images\\Menu\\plateau_jack.png")));
+        ImageView inspTurn = new ImageView(new Image(new FileInputStream("images/Menu/plateau_insp.png")));
+        ImageView jackTurn = new ImageView(new Image(new FileInputStream("images/Menu/plateau_jack.png")));
 
         if(jetonjoues.get()==0){
             if(round%2==1){
@@ -438,7 +438,7 @@ public class Partie extends Application {
         ArrayList<ImageView> waits = new ArrayList<ImageView>(4);
 
         for (int i = 0; i < 4; i++) {
-            waits.add(i,new ImageView(new Image(new FileInputStream("images\\Divers\\wait3.png"))));
+            waits.add(i,new ImageView(new Image(new FileInputStream("images/Divers/wait3.png"))));
             waits.get(i).setFitHeight(48);
             waits.get(i).setFitWidth(48);
             waits.get(i).setX(21);
@@ -446,7 +446,7 @@ public class Partie extends Application {
             root.getChildren().add(waits.get(i));
         }
 
-        ImageView next = new ImageView(new Image(new FileInputStream("images\\Divers\\white_check.png")));
+        ImageView next = new ImageView(new Image(new FileInputStream("images/Divers/white_check.png")));
         next.setFitHeight(50);
         next.setFitWidth(50);
         next.setX(300);
@@ -483,7 +483,7 @@ public class Partie extends Application {
     }
     public void inspection() throws FileNotFoundException {
 
-        ImageView loupe = new ImageView(new Image(new FileInputStream("images\\Divers\\loupe.png")));
+        ImageView loupe = new ImageView(new Image(new FileInputStream("images/Divers/loupe.png")));
         loupe.setFitHeight(50);
         loupe.setFitWidth(50);
         loupe.setX(307);
@@ -492,7 +492,7 @@ public class Partie extends Application {
         root.getChildren().add(loupe);
 
         loupe.setOnMousePressed(event -> {
-            playSound("audio\\bell.mp3");
+            playSound("audio/bell.mp3");
             try {
                 plateau.isJackVisible(plateau.districtsVus());
 
@@ -505,7 +505,7 @@ public class Partie extends Application {
                 else {
                     plateau.enqueteur.sabliersRecuperes+=1;
 
-                    ImageView img = new ImageView(new Image(new FileInputStream("images\\JetonsTemps\\T"+round+".png")));
+                    ImageView img = new ImageView(new Image(new FileInputStream("images/JetonsTemps/T"+round+".png")));
                     img.setFitHeight(83);
                     img.setFitWidth(83);
                     img.setX(477-plateau.enqueteur.sabliersRecuperes*17);
@@ -595,12 +595,12 @@ public class Partie extends Application {
             status.add(1, true);
             status.add(2, false);
 
-            ImageView filtre = new ImageView(new Image(new FileInputStream("images\\Menu\\filtre.png")));
+            ImageView filtre = new ImageView(new Image(new FileInputStream("images/Menu/filtre.png")));
             root.getChildren().remove(filtre);
             root.getChildren().add(filtre);
             FadeTransition fade0 = new FadeTransition(); fade0.setDuration(Duration.millis(1000)); fade0.setFromValue(0.1); fade0.setToValue(10); fade0.setCycleCount(1); fade0.setNode(filtre); fade0.play();
 
-            ImageView win_jack = new ImageView(new Image(new FileInputStream("images\\Menu\\win_jack.png")));
+            ImageView win_jack = new ImageView(new Image(new FileInputStream("images/Menu/win_jack.png")));
             root.getChildren().remove(win_jack);
             root.getChildren().add(win_jack);
             FadeTransition fade = new FadeTransition(); fade.setDuration(Duration.millis(1000)); fade.setFromValue(0.1); fade.setToValue(10); fade.setCycleCount(1); fade.setNode(win_jack); fade.play();
@@ -660,18 +660,18 @@ public class Partie extends Application {
         }
         else if (doesEnqueteurWin()) {
 
-            ImageView filtre = new ImageView(new Image(new FileInputStream("images\\Menu\\filtre.png")));
+            ImageView filtre = new ImageView(new Image(new FileInputStream("images/Menu/filtre.png")));
             root.getChildren().remove(filtre);
             root.getChildren().add(filtre);
             FadeTransition fade0 = new FadeTransition(); fade0.setDuration(Duration.millis(1000)); fade0.setFromValue(0.1); fade0.setToValue(10); fade0.setCycleCount(1); fade0.setNode(filtre); fade0.play();
 
-            ImageView win_enqueteur = new ImageView(new Image(new FileInputStream("images\\Menu\\win_enqueteur.png")));
+            ImageView win_enqueteur = new ImageView(new Image(new FileInputStream("images/Menu/win_enqueteur.png")));
             root.getChildren().remove(win_enqueteur);
             root.getChildren().add(win_enqueteur);
             FadeTransition fade = new FadeTransition(); fade.setDuration(Duration.millis(1000)); fade.setFromValue(0.1); fade.setToValue(10); fade.setCycleCount(1); fade.setNode(win_enqueteur); fade.play();
 
 
-            ImageView img = new ImageView(new Image(new FileInputStream("images\\JetonsDetective\\Holmes.png")));
+            ImageView img = new ImageView(new Image(new FileInputStream("images/JetonsDetective/Holmes.png")));
             img.setX(245);
             img.setY(100);
             root.getChildren().remove(img);
