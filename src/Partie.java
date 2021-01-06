@@ -19,6 +19,11 @@ import javafx.util.Duration;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+<<<<<<< HEAD
+=======
+import java.io.FilterInputStream;
+import java.lang.reflect.Array;
+>>>>>>> 5d2830e30c341645366de06a71bd22caa052245e
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -376,15 +381,13 @@ public class Partie extends Application {
     public void round1(Pane root) throws FileNotFoundException {
 
         round+=1;
+        jetonjoues.set(0);
         plateau.etatDePartie();
         System.out.println("\nDébut du round "+round+":");
-
 
         ImageView inspTurn = new ImageView(new Image(new FileInputStream("images\\Menu\\plateau_insp.png")));
         ImageView jackTurn = new ImageView(new Image(new FileInputStream("images\\Menu\\plateau_jack.png")));
 
-
-        jetonjoues.set(0);
         if(jetonjoues.get()==0){
             if(round%2==1){
                 root.getChildren().remove(jackTurn);
@@ -397,57 +400,24 @@ public class Partie extends Application {
             }
         }
 
+
         // Jeton j: 1 à 4 générés et prêts à être joués grâce à jetonjoues:
 
         for (int j = 0; j < 4; j++) {
             int finalJ = j;
             plateau.jetonsAction.get(j).currentimg.setOnMousePressed(e -> {
+
                 System.out.println("Jeton "+(finalJ+1)+" sélectionné/joué");
                 jetonjoues.addAndGet(1);
 
-                if(jetonjoues.get()==1){
-                   if(round%2==1){
-                       root.getChildren().remove(inspTurn);
-                       root.getChildren().add(jackTurn);
-                   }
-                   else{
-                       root.getChildren().remove(jackTurn);
-                       root.getChildren().add(inspTurn);
-
-                   }
-                }
-                else if(jetonjoues.get()==2){
-                    if(round%2==1){
-                        root.getChildren().remove(jackTurn);
-                        root.getChildren().add(jackTurn);
-                    }
-                    else{
-                        root.getChildren().remove(inspTurn);
-                        root.getChildren().add(inspTurn);
-                    }
-                }
-                else if(jetonjoues.get()==3){
-                    if(round%2==1){
-                        root.getChildren().remove(jackTurn);
-                        root.getChildren().add(inspTurn);
-                    }
-                    else{
-                        root.getChildren().remove(inspTurn);
-                        root.getChildren().add(jackTurn);
-                    }
-                }
-                else if (jetonjoues.get() == 4) {
-                    if (round % 2 == 1) {
-                        root.getChildren().remove(inspTurn);
-                    } else {
-                        root.getChildren().remove(jackTurn);
-                    }
-                }
                 try {
+                    //affichageJoueur(root,inspTurn,jackTurn);
+                    validation(inspTurn,jackTurn);
                     actionsJeton(finalJ);
                 } catch (FileNotFoundException fileNotFoundException) {
                     fileNotFoundException.printStackTrace();
                 }
+
                 FadeTransition hide = new FadeTransition(Duration.millis(500));
                 hide.setToValue(0.4);
                 hide.setCycleCount(1);
@@ -456,23 +426,51 @@ public class Partie extends Application {
 
                 plateau.jetonsAction.get(finalJ).currentimg.setOnMousePressed(null);
             });
+        }
+    }
 
-            plateau.jetonsAction.get(j).currentimg.setOnMouseReleased(event -> {
-                if (jetonjoues.get() == 4) {
+    public void affichageJoueur(Pane root,ImageView inspTurn,ImageView jackTurn) throws FileNotFoundException {
 
-                    try {
-                        inspection();
-                    } catch (FileNotFoundException fileNotFoundException) {
-                        fileNotFoundException.printStackTrace();
-                    }
-                }
-                plateau.jetonsAction.get(finalJ).currentimg.setOnMousePressed(null);
-                plateau.jetonsAction.get(finalJ).currentimg.setOnMouseReleased(null);
-            });
+        if(jetonjoues.get()==1){
+            if(round%2==1){
+                root.getChildren().remove(inspTurn);
+                root.getChildren().add(jackTurn);
+            }
+            else{
+                root.getChildren().remove(jackTurn);
+                root.getChildren().add(inspTurn);
+
+            }
+        }
+        else if(jetonjoues.get()==2){
+            if(round%2==1){
+                root.getChildren().remove(jackTurn);
+                root.getChildren().add(jackTurn);
+            }
+            else{
+                root.getChildren().remove(inspTurn);
+                root.getChildren().add(inspTurn);
+            }
+        }
+        else if(jetonjoues.get()==3){
+            if(round%2==1){
+                root.getChildren().remove(jackTurn);
+                root.getChildren().add(inspTurn);
+            }
+            else{
+                root.getChildren().remove(inspTurn);
+                root.getChildren().add(jackTurn);
+            }
+        }
+        else if (jetonjoues.get() == 4) {
+            if (round % 2 == 1) {
+                root.getChildren().remove(inspTurn);
+            } else {
+                root.getChildren().remove(jackTurn);
+            }
         }
 
     }
-
     public void actionsJeton(int i) throws FileNotFoundException {
 
 
@@ -552,6 +550,54 @@ public class Partie extends Application {
         }
     }
 
+    public void validation(ImageView inspTurn, ImageView jackTurn) throws FileNotFoundException {
+
+        ArrayList<ImageView> waits = new ArrayList<ImageView>(4);
+
+        for (int i = 0; i < 4; i++) {
+            waits.add(i,new ImageView(new Image(new FileInputStream("images\\Divers\\wait3.png"))));
+            waits.get(i).setFitHeight(48);
+            waits.get(i).setFitWidth(48);
+            waits.get(i).setX(21);
+            waits.get(i).setY(183+80*i);
+            root.getChildren().add(waits.get(i));
+        }
+
+        ImageView next = new ImageView(new Image(new FileInputStream("images\\Divers\\white_check.png")));
+        next.setFitHeight(50);
+        next.setFitWidth(50);
+        next.setX(300);
+        next.setY(575);
+        next.setEffect(new DropShadow(10, Color.WHITE));
+        root.getChildren().add(next);
+
+        next.setOnMousePressed(event -> {
+            try {
+                for (int i = 0; i < 4; i++) {
+                    root.getChildren().remove(waits.get(i));
+                }
+                root.getChildren().remove(next);
+                affichageJoueur(root,inspTurn,jackTurn);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
+
+        next.setOnMouseReleased(event -> {
+            if (jetonjoues.get() == 4) {
+                try {
+                    for (int i = 0; i < 4; i++) {
+                        root.getChildren().remove(waits.get(i));
+                    }
+                    inspection();
+                } catch (FileNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
+                plateau.jetonsAction.get(3).currentimg.setOnMousePressed(null);
+                plateau.jetonsAction.get(3).currentimg.setOnMouseReleased(null);
+            }
+        });
+    }
     public void inspection() throws FileNotFoundException {
 
         ImageView loupe = new ImageView(new Image(new FileInputStream("images\\Divers\\loupe.png")));
