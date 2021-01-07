@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -23,6 +24,7 @@ import java.io.FileNotFoundException;
 import java.io.FilterInputStream;
 import java.lang.reflect.Array;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -254,6 +256,25 @@ public class Partie extends Application {
                 onceR.set(true);
                 root2.getChildren().clear();
                 root2.getChildren().add(para4);
+            }
+
+        });
+        scene2.setOnMouseClicked(e-> {
+            if(e.getX()>180 && e.getX()<450 && e.getY()>220 && e.getY()<290 ){
+
+            }
+            if(e.getX()>180 && e.getX()<450 && e.getY()>290 && e.getY()<350 ){
+
+            }
+            if(e.getX()>180 && e.getX()<450 && e.getY()>355 && e.getY()<415 ){
+
+            }
+            if(e.getX()>180 && e.getX()<450 && e.getY()>415 && e.getY()<480 ){   // si Retour, on revient au menu
+                try {
+                    menu(stage,scene,root);
+                } catch (FileNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
             }
 
         });
@@ -870,8 +891,8 @@ public class Partie extends Application {
     }
 
     public void playSound(String soundPath){
-        Media sound = new Media(new File(soundPath).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        Media hit = new Media(Paths.get(soundPath).toUri().toString());
+        AudioClip mediaPlayer = new AudioClip(hit.getSource());
         mediaPlayer.play();
     }
 }

@@ -483,6 +483,7 @@ public class Plateau {
 
                 }
                 if(cliques.get() == 2){
+                    playSound("audio\\switch.mp3");
                     for(District dis : districts){
                         dis.currentimg.setOnMouseEntered(null);
                         dis.currentimg.setOnMouseExited(null);
