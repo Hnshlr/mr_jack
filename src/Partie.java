@@ -1,13 +1,15 @@
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -17,15 +19,16 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 
-import java.io.FilterInputStream;
 import java.lang.reflect.Array;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -223,6 +226,28 @@ public class Partie extends Application {
                     root2.getChildren().add(para1);
                 }
             }
+            if(e.getCode().equals(KeyCode.ENTER)){
+                if(count.get() ==0){
+                    try {
+                        tutoriel(stage);
+                    } catch (FileNotFoundException fileNotFoundException) {
+                        fileNotFoundException.printStackTrace();
+                    }
+                }
+                else if(count.get() ==1){
+                    try {
+                        lireLesScores(stage);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                }
+                else if(count.get() ==2){
+
+                }
+                else{
+
+                }
+            }
         });
         scene2.setOnMouseMoved(e-> {
             if(e.getX()>180 && e.getX()<450 && e.getY()>220 && e.getY()<290 && !onceT.get()){
@@ -240,6 +265,7 @@ public class Partie extends Application {
                 onceR.set(false);
                 root2.getChildren().clear();
                 root2.getChildren().add(para2);
+
             }
             if(e.getX()>180 && e.getX()<450 && e.getY()>355 && e.getY()<415 && !onceA.get()){
                 onceT.set(false);
@@ -261,10 +287,18 @@ public class Partie extends Application {
         });
         scene2.setOnMouseClicked(e-> {
             if(e.getX()>180 && e.getX()<450 && e.getY()>220 && e.getY()<290 ){
-
+                try {
+                    tutoriel(stage);
+                } catch (FileNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
             }
             if(e.getX()>180 && e.getX()<450 && e.getY()>290 && e.getY()<350 ){
-
+                try {
+                    lireLesScores(stage);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
             if(e.getX()>180 && e.getX()<450 && e.getY()>355 && e.getY()<415 ){
 
@@ -279,7 +313,72 @@ public class Partie extends Application {
 
         });
     }
+    public void tutoriel(Stage stage) throws FileNotFoundException {
+        ScrollPane tuto = new ScrollPane();
+        tuto.setStyle(" -fx-background-color: #806237;");
+        tuto.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
+        Pane content = new Pane();
+        Scene sceneTuto = new Scene(tuto,650,650);
+        stage.setScene(sceneTuto);
+
+        ImageView tutoImg = new ImageView(new Image(new FileInputStream("images\\Menu\\Tutoriel.png")));
+        Hyperlink lien = new Hyperlink("juste ici");
+
+        lien.setLayoutX(110);
+        lien.setLayoutY(177);
+        lien.setStyle(" -fx-border-color: transparent; -fx-font-family: Harrington; -fx-text-fill: orange; -fx-font-size: 28");
+        content.getChildren().addAll(tutoImg,lien);
+        tuto.setContent(content);
+
+        lien.setOnAction(e->{
+            getHostServices().showDocument("https://moodle.isep.fr/moodle/pluginfile.php/29594/mod_resource/content/1/mr-jack-pocket_rules_fr.pdf");
+        });
+    }
+    public void lireLesScores(Stage stage) throws IOException {
+        ScrollPane sco = new ScrollPane();
+        sco.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+        Pane content = new Pane();
+        Scene sceneSco = new Scene(sco,650,650);
+        stage.setScene(sceneSco);
+        sco.setPrefSize(650, 650);
+        content.setMinSize(650,650);   // ainsi le scrollPane est extensible selon le nombre de noms à afficher
+        sco.setStyle("-fx-background: #806237; -fx-background-color: #806237");
+
+        //Label de titre
+        Label titre = new Label("Tableaux des scores");
+        titre.setTextFill(Color.web("orange"));
+        titre.setFont(new Font("Harrington",50));
+        titre.setLayoutX(90);
+        titre.setLayoutY(50);
+        content.getChildren().add(titre);
+
+        //lecture du fichir scores.txt
+        Path path = Paths.get("scores.txt");
+        List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+        for(int i =6;i<lines.size();i++){
+            long count = lines.get(i).chars().filter(ch -> ch == '1').count(); //On compte les scores
+            String nom = "";
+            for(int j=0;j<lines.get(i).length();j++){
+                if(lines.get(i).charAt(j) == '|'){
+                    break;                              // Les noms sont délimités par des '|'
+                }
+                nom = nom + lines.get(i).charAt(j);
+            }
+            //On ajoute un label pour chaque nom du fichier
+            Label lab = new Label(nom+" : "+count);
+            lab.setTextFill(Color.web("white"));
+            lab.setFont(new Font("Harrington",30));
+            lab.setLayoutY((i-3)*50);
+            lab.setLayoutX(100);
+
+
+            content.getChildren().add(lab);
+        }
+
+        sco.setContent(content);
+    }
     // Joueur 1 - Joueur 2 +  Button valider
     public void menuPlayers(Scene scene,Pane root) throws FileNotFoundException {
         //Récupère noms et rôles des edux joueurs
@@ -666,7 +765,7 @@ public class Partie extends Application {
                     prochainRound();
                 }
 
-            } catch (FileNotFoundException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
@@ -724,10 +823,12 @@ public class Partie extends Application {
         }
     }
 
-    public ArrayList<Boolean> isGameOver() throws FileNotFoundException {
+    public ArrayList<Boolean> isGameOver() throws IOException {
         ArrayList<Boolean> status = new ArrayList<Boolean>(3);
 
         if (doesJackWin()) {
+            rajouterScore(joueur1); //On renseigne une victoire du joueur1 dans le fichier des scores
+
             status.add(0, true);
             status.add(1, true);
             status.add(2, false);
@@ -797,6 +898,8 @@ public class Partie extends Application {
         }
         else if (doesEnqueteurWin()) {
 
+            rajouterScore(joueur2); //On renseigne une victoire du joueur2 dans le fichier des scores
+
             ImageView filtre = new ImageView(new Image(new FileInputStream("images\\Menu\\filtre.png")));
             root.getChildren().remove(filtre);
             root.getChildren().add(filtre);
@@ -829,7 +932,14 @@ public class Partie extends Application {
 
             playAgain.setOnMousePressed(event2 -> {
                 try {
-                    menuPlayers(scene,root);
+                    round0(root);
+
+                    //On inverse les noms ce qui inverse les rôles (plus facile comme ca pr les scores par exemple)
+                    String temp = null;
+                    temp = joueur1.nom;
+                    joueur1.nom = joueur2.nom;
+                    joueur2.nom = temp;
+
                 } catch (FileNotFoundException fileNotFoundException) {
                     fileNotFoundException.printStackTrace();
                 }
@@ -869,6 +979,24 @@ public class Partie extends Application {
             status.add(2, false);
             return status;
         }
+    }
+    public void rajouterScore(Joueur joueur) throws IOException {
+
+        Path path = Paths.get("scores.txt");
+        List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+        int c = 0;
+        for(int i=0;i<lines.size();i++){
+            if(lines.get(i).contains(joueur.nom)){
+                lines.set(i,lines.get(i)+"1");
+                break;
+            }
+            else if(c== lines.size()-1){
+                lines.add(joueur.nom+"|  1");
+                break;
+            }
+            c++;
+        }
+        Files.write(path, lines, StandardCharsets.UTF_8);
     }
 
 
