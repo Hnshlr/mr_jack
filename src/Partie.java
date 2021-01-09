@@ -171,13 +171,14 @@ public class Partie extends Application {
                 scene.setOnKeyPressed(null);
                 scene.setOnMouseClicked(null);
 
-                stage.setScene(scene2);
             }
         });
 
 
     }
     public void menuParametre(Pane root) throws FileNotFoundException {
+        stage.setScene(scene2);
+
         ImageView para1 = new ImageView(new Image(new FileInputStream("images\\Menu\\par1.png")));
         ImageView para2 = new ImageView(new Image(new FileInputStream("images\\Menu\\para2.png")));
         ImageView para3 = new ImageView(new Image(new FileInputStream("images\\Menu\\para3.png")));
@@ -323,12 +324,30 @@ public class Partie extends Application {
         stage.setScene(sceneTuto);
 
         ImageView tutoImg = new ImageView(new Image(new FileInputStream("images\\Menu\\Tutoriel.png")));
-        Hyperlink lien = new Hyperlink("juste ici");
 
+        Hyperlink lien = new Hyperlink("juste ici");
         lien.setLayoutX(110);
         lien.setLayoutY(177);
         lien.setStyle(" -fx-border-color: transparent; -fx-font-family: Harrington; -fx-text-fill: orange; -fx-font-size: 28");
         content.getChildren().addAll(tutoImg,lien);
+
+        Button retour = new Button("Retour");
+        retour.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5"); retour.setMinHeight(45); retour.setMinWidth(100); retour.setLayoutX(275); retour.setLayoutY(5050);
+        content.getChildren().add(retour);
+        retour.setOnMouseEntered(e->{
+            retour.setStyle( "-fx-background-color: #806237 ; -fx-border-color: white; -fx-font-family: Harrington; -fx-text-fill: white; -fx-font-size: 20; -fx-border-radius: 5");
+        });
+        retour.setOnMouseExited(e->{
+            retour.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5");
+        });
+        retour.setOnMousePressed(e->{
+            try {
+                menuParametre(root);
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
+
         tuto.setContent(content);
 
         lien.setOnAction(e->{
