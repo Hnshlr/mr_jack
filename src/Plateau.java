@@ -23,6 +23,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class Plateau {
 
+    String urlFond = "images\\Menu\\plateau2.png";
+
     public MisterJack mrjack = new MisterJack();
     public Enqueteur enqueteur = new Enqueteur(0,0);
 
@@ -35,7 +37,6 @@ public class Plateau {
     public JetonDetective Toby;
 
     public ArrayList<JetonAction> jetonsAction = new ArrayList<JetonAction>(4);
-
     public ArrayList<JetonTemps> jetonsTemps = new ArrayList<JetonTemps>(8);
 
     public void initPlateau(Scene scene, Pane root) throws FileNotFoundException {
@@ -203,7 +204,7 @@ public class Plateau {
 
     public void affichageFondPlateau(Scene scene, Pane root) throws FileNotFoundException {
         // Ajout fond de plateau
-        ImageView plateau = Partie.loadImage2(root,new FileInputStream("images\\Menu\\plateau2.png"));
+        ImageView plateau = Partie.loadImage2(root,new FileInputStream(urlFond));
         root.getChildren().add(plateau);
     }
     public void affichageDistricts(Scene scene, Pane root) throws FileNotFoundException {

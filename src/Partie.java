@@ -243,10 +243,18 @@ public class Partie extends Application {
                     }
                 }
                 else if(count.get() ==2){
-
+                    try {
+                        changerSkin(stage);
+                    } catch (FileNotFoundException fileNotFoundException) {
+                        fileNotFoundException.printStackTrace();
+                    }
                 }
                 else{
-
+                    try {
+                        menu(stage,scene,root);
+                    } catch (FileNotFoundException fileNotFoundException) {
+                        fileNotFoundException.printStackTrace();
+                    }
                 }
             }
         });
@@ -302,7 +310,11 @@ public class Partie extends Application {
                 }
             }
             if(e.getX()>180 && e.getX()<450 && e.getY()>355 && e.getY()<415 ){
-
+                try {
+                    changerSkin(stage);
+                } catch (FileNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
             }
             if(e.getX()>180 && e.getX()<450 && e.getY()>415 && e.getY()<480 ){   // si Retour, on revient au menu
                 try {
@@ -399,13 +411,76 @@ public class Partie extends Application {
 
         sco.setContent(content);
     }
+    public void changerSkin(Stage stage) throws FileNotFoundException {
+        Pane skin = new Pane();
+        skin.setStyle("-fx-background: #806237; -fx-background-color: #806237");
+        Scene sceneSk = new Scene(skin,650,650);
+        stage.setScene(sceneSk);
+
+        ImageView normal = new ImageView(new Image(new FileInputStream("images\\Menu\\plateau2.png"))); normal.setFitHeight(100);normal.setFitWidth(100);normal.setX(120);normal.setY(275);
+        ImageView bois = new ImageView(new Image(new FileInputStream("images\\Menu\\plateau_bois.png"))); bois.setFitHeight(100);bois.setFitWidth(100);bois.setX(270);bois.setY(275);
+        ImageView whiteChapel = new ImageView(new Image(new FileInputStream("images\\Menu\\plateau_WhiteChapel.png"))); whiteChapel.setFitHeight(100);whiteChapel.setFitWidth(100);whiteChapel.setX(420);whiteChapel.setY(275);
+
+        skin.getChildren().addAll(normal,bois,whiteChapel);
+
+        normal.setOnMouseEntered(e->{
+            normal.setEffect(new DropShadow(10, Color.WHITE));
+        });
+        normal.setOnMouseExited(e->{
+            normal.setEffect(new DropShadow(0, Color.WHITE));
+        });
+        normal.setOnMouseClicked(e->{
+            normal.setEffect(new DropShadow(10, Color.ORANGE));
+            plateau.urlFond = "images\\Menu\\plateau2.png";
+        });
+
+        bois.setOnMouseEntered(e->{
+            bois.setEffect(new DropShadow(10, Color.WHITE));
+        });
+        bois.setOnMouseExited(e->{
+            bois.setEffect(new DropShadow(0, Color.WHITE));
+        });
+        bois.setOnMouseClicked(e->{
+            bois.setEffect(new DropShadow(10, Color.ORANGE));
+            plateau.urlFond = "images\\Menu\\plateau_bois.png";
+        });
+
+        whiteChapel.setOnMouseEntered(e->{
+            whiteChapel.setEffect(new DropShadow(10, Color.WHITE));
+        });
+        whiteChapel.setOnMouseExited(e->{
+            whiteChapel.setEffect(new DropShadow(0, Color.WHITE));
+        });
+        whiteChapel.setOnMouseClicked(e->{
+            whiteChapel.setEffect(new DropShadow(10, Color.ORANGE));
+            plateau.urlFond = "images\\Menu\\plateau_WhiteChapel.png";
+        });
+
+        Button retour = new Button("Retour");
+        retour.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5"); retour.setMinHeight(45); retour.setMinWidth(100); retour.setLayoutX(275); retour.setLayoutY(500);
+        skin.getChildren().add(retour);
+        retour.setOnMouseEntered(e->{
+            retour.setStyle( "-fx-background-color: #806237 ; -fx-border-color: white; -fx-font-family: Harrington; -fx-text-fill: white; -fx-font-size: 20; -fx-border-radius: 5");
+        });
+        retour.setOnMouseExited(e->{
+            retour.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5");
+        });
+        retour.setOnMousePressed(e->{
+            try {
+                menuParametre(root);
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
+    }
     // Joueur 1 - Joueur 2 +  Button valider
     public void menuPlayers(Scene scene,Pane root) throws FileNotFoundException {
         //Récupère noms et rôles des edux joueurs
 
         root.getChildren().clear();
 
-        loadImage(root,new FileInputStream("images\\Menu\\MenuRoles.png"));
+        ImageView menuPlayers = new ImageView(new Image(new FileInputStream("images\\Menu\\MenuRoles.png")));
+        root.getChildren().add(menuPlayers);
 
         TextField textField1 = new TextField("");
         textField1.setFont(Font.font("Harrington", FontWeight.BOLD, 15));
@@ -454,6 +529,7 @@ public class Partie extends Application {
 
             try {
                 round0(root); // on lance le jeu
+                root.getChildren().removeAll(menuPlayers,textField1,textField2);
             } catch (FileNotFoundException fileNotFoundException) {
                 fileNotFoundException.printStackTrace();
             }
