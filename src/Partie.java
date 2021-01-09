@@ -346,6 +346,7 @@ public class Partie extends Application {
         content.setMinSize(650,650);   // ainsi le scrollPane est extensible selon le nombre de noms à afficher
         sco.setStyle("-fx-background: #806237; -fx-background-color: #806237");
 
+
         //Label de titre
         Label titre = new Label("Tableaux des scores");
         titre.setTextFill(Color.web("orange"));

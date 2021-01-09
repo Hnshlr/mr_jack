@@ -1542,7 +1542,7 @@ public class Plateau {
 
         voir.setOnMousePressed(e ->{
             img.setX(10);
-            img.setY(10);
+            img.setY(8);
             img.setFitHeight(325.0/5.5);
             img.setFitWidth(200.0/5.5);
             root.getChildren().add(img);
