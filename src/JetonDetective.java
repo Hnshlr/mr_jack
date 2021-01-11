@@ -6,7 +6,6 @@ public class JetonDetective {
 
     String nom;
     int position; // de 1 à 12 autour du plateau
-    FileInputStream image;
     ImageView img;
 
     public JetonDetective() {}

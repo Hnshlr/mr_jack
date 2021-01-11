@@ -23,6 +23,7 @@ import java.io.*;
 
 import java.lang.reflect.Array;
 
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -52,8 +53,8 @@ public class Partie extends Application {
 
         menu(primaryStage, scene, root);
 
-        primaryStage.setTitle("Mister Jack's Pocket");
-        primaryStage.getIcons().add(new Image("file:images/JetonsDetective/Holmes.png"));
+        primaryStage.setTitle("Mister Jack Pocket");
+        primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("images/JetonsDetective/Holmes.png")));
         primaryStage.setResizable(false);
         primaryStage.setWidth(665);
         primaryStage.setHeight(689);
@@ -76,9 +77,10 @@ public class Partie extends Application {
                 Gestion du menu avec le clavier
               ---------------------------------- */
 
-        ImageView menu1 = new ImageView(new Image(new FileInputStream("images\\Menu\\Menu1.png")));
-        ImageView menu2 = new ImageView(new Image(new FileInputStream("images\\Menu\\Menu2.png")));
-        ImageView menu3 = new ImageView(new Image(new FileInputStream("images\\Menu\\Menu3.png")));
+        //ImageView menu1 = new ImageView(new Image(new FileInputStream("images/Menu/Menu1.png")));
+        ImageView menu1 = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/Menu1.png")));
+        ImageView menu2 = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/Menu2.png")));
+        ImageView menu3 = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/Menu3.png")));
 
         //Atomic integer nécessaire pour le passer dans lambda exp
         AtomicInteger count = new AtomicInteger(1); //compteur qui indique au programme où se trouve le curseur
@@ -122,6 +124,7 @@ public class Partie extends Application {
 
         scene.setOnMouseMoved(e -> {
             if(e.getX() > 240 && e.getX() < 395 && e.getY() > 140 && e.getY() < 285 && !onceJ.get()){
+                count.set(0);
                 onceJ.set(true);
                 onceQ.set(false);
                 onceP.set(false);
@@ -131,6 +134,7 @@ public class Partie extends Application {
                 count.set(1);
             }
             if(e.getX() > 240 && e.getX() < 395 && e.getY() > 350 && e.getY() < 440 && !onceQ.get()){
+                count.set(1);
                 onceQ.set(true);
                 onceJ.set(false);
                 onceP.set(false);
@@ -179,10 +183,10 @@ public class Partie extends Application {
     public void menuParametre(Pane root) throws FileNotFoundException {
         stage.setScene(scene2);
 
-        ImageView para1 = new ImageView(new Image(new FileInputStream("images\\Menu\\par1.png")));
-        ImageView para2 = new ImageView(new Image(new FileInputStream("images\\Menu\\para2.png")));
-        ImageView para3 = new ImageView(new Image(new FileInputStream("images\\Menu\\para3.png")));
-        ImageView para4 = new ImageView(new Image(new FileInputStream("images\\Menu\\para4.png")));
+        ImageView para1 = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/par1.png")));
+        ImageView para2 = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/para2.png")));
+        ImageView para3 = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/para3.png")));
+        ImageView para4 = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/para4.png")));
 
         AtomicInteger count = new AtomicInteger();
 
@@ -260,6 +264,7 @@ public class Partie extends Application {
         });
         scene2.setOnMouseMoved(e-> {
             if(e.getX()>180 && e.getX()<450 && e.getY()>220 && e.getY()<290 && !onceT.get()){
+                count.set(0);
                 onceT.set(true);
                 onceS.set(false);
                 onceA.set(false);
@@ -268,6 +273,7 @@ public class Partie extends Application {
                 root2.getChildren().add(para1);
             }
             if(e.getX()>180 && e.getX()<450 && e.getY()>290 && e.getY()<350 && !onceS.get()){
+                count.set(1);
                 onceT.set(false);
                 onceS.set(true);
                 onceA.set(false);
@@ -277,6 +283,7 @@ public class Partie extends Application {
 
             }
             if(e.getX()>180 && e.getX()<450 && e.getY()>355 && e.getY()<415 && !onceA.get()){
+                count.set(2);
                 onceT.set(false);
                 onceS.set(false);
                 onceA.set(true);
@@ -285,6 +292,7 @@ public class Partie extends Application {
                 root2.getChildren().add(para3);
             }
             if(e.getX()>180 && e.getX()<450 && e.getY()>415 && e.getY()<480 && !onceR.get()){
+                count.set(3);
                 onceT.set(false);
                 onceS.set(false);
                 onceA.set(false);
@@ -335,7 +343,7 @@ public class Partie extends Application {
         Scene sceneTuto = new Scene(tuto,650,650);
         stage.setScene(sceneTuto);
 
-        ImageView tutoImg = new ImageView(new Image(new FileInputStream("images\\Menu\\Tutoriel.png")));
+        ImageView tutoImg = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/Tutoriel.png")));
 
         Hyperlink lien = new Hyperlink("juste ici");
         lien.setLayoutX(110);
@@ -399,7 +407,7 @@ public class Partie extends Application {
                 nom = nom + lines.get(i).charAt(j);
             }
             //On ajoute un label pour chaque nom du fichier
-            Label lab = new Label(nom+" : "+count);
+            Label lab = new Label(nom+" : .....................................  " + "" + ""+count);
             lab.setTextFill(Color.web("white"));
             lab.setFont(new Font("Harrington",30));
             lab.setLayoutY((i-3)*50);
@@ -408,6 +416,23 @@ public class Partie extends Application {
 
             content.getChildren().add(lab);
         }
+        Button retour = new Button("Retour");
+        retour.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5"); retour.setMinHeight(45); retour.setMinWidth(100); retour.setLayoutX(275); retour.setLayoutY(lines.size()*45 - 20);
+        content.getChildren().add(retour);
+        retour.setOnMouseEntered(e->{
+            retour.setStyle( "-fx-background-color: #806237 ; -fx-border-color: white; -fx-font-family: Harrington; -fx-text-fill: white; -fx-font-size: 20; -fx-border-radius: 5");
+        });
+        retour.setOnMouseExited(e->{
+            retour.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5");
+        });
+        retour.setOnMousePressed(e->{
+            try {
+                menuParametre(root);
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
+
 
         sco.setContent(content);
     }
@@ -417,9 +442,9 @@ public class Partie extends Application {
         Scene sceneSk = new Scene(skin,650,650);
         stage.setScene(sceneSk);
 
-        ImageView normal = new ImageView(new Image(new FileInputStream("images\\Menu\\plateau2.png"))); normal.setFitHeight(100);normal.setFitWidth(100);normal.setX(120);normal.setY(275);
-        ImageView bois = new ImageView(new Image(new FileInputStream("images\\Menu\\plateau_bois.png"))); bois.setFitHeight(100);bois.setFitWidth(100);bois.setX(270);bois.setY(275);
-        ImageView whiteChapel = new ImageView(new Image(new FileInputStream("images\\Menu\\plateau_WhiteChapel.png"))); whiteChapel.setFitHeight(100);whiteChapel.setFitWidth(100);whiteChapel.setX(420);whiteChapel.setY(275);
+        ImageView normal = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/plateau2.png"))); normal.setFitHeight(100);normal.setFitWidth(100);normal.setX(120);normal.setY(275);
+        ImageView bois = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/plateau_bois.png"))); bois.setFitHeight(100);bois.setFitWidth(100);bois.setX(270);bois.setY(275);
+        ImageView whiteChapel = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/plateau_WhiteChapel.png"))); whiteChapel.setFitHeight(100);whiteChapel.setFitWidth(100);whiteChapel.setX(420);whiteChapel.setY(275);
 
         skin.getChildren().addAll(normal,bois,whiteChapel);
 
@@ -431,7 +456,7 @@ public class Partie extends Application {
         });
         normal.setOnMouseClicked(e->{
             normal.setEffect(new DropShadow(10, Color.ORANGE));
-            plateau.urlFond = "images\\Menu\\plateau2.png";
+            plateau.urlFond = "images/Menu/plateau2.png";
         });
 
         bois.setOnMouseEntered(e->{
@@ -442,7 +467,7 @@ public class Partie extends Application {
         });
         bois.setOnMouseClicked(e->{
             bois.setEffect(new DropShadow(10, Color.ORANGE));
-            plateau.urlFond = "images\\Menu\\plateau_bois.png";
+            plateau.urlFond = "images/Menu/plateau_bois.png";
         });
 
         whiteChapel.setOnMouseEntered(e->{
@@ -453,7 +478,7 @@ public class Partie extends Application {
         });
         whiteChapel.setOnMouseClicked(e->{
             whiteChapel.setEffect(new DropShadow(10, Color.ORANGE));
-            plateau.urlFond = "images\\Menu\\plateau_WhiteChapel.png";
+            plateau.urlFond = "images/Menu/plateau_WhiteChapel.png";
         });
 
         Button retour = new Button("Retour");
@@ -479,7 +504,7 @@ public class Partie extends Application {
 
         root.getChildren().clear();
 
-        ImageView menuPlayers = new ImageView(new Image(new FileInputStream("images\\Menu\\MenuRoles.png")));
+        ImageView menuPlayers = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/MenuRoles.png")));
         root.getChildren().add(menuPlayers);
 
         TextField textField1 = new TextField("");
@@ -514,7 +539,11 @@ public class Partie extends Application {
             valider.setStyle( "-fx-background-color: #6d532f; -fx-font-family : Harrington; -fx-text-fill: black; -fx-font-size : 15;-fx-border-color: grey; -fx-border-radius: 5;" );
         });
         valider.setOnMousePressed(e ->{
-            playSound("audio\\click.wav");
+            try {
+                playSound("audio/click.wav");
+            } catch (URISyntaxException uriSyntaxException) {
+                uriSyntaxException.printStackTrace();
+            }
 
             joueur1.nom = textField1.getText();
             joueur1.role = "Mr Jack";
@@ -524,8 +553,8 @@ public class Partie extends Application {
 
             root.getChildren().remove(valider);
 
-            //System.out.println(joueur1.nom + " " + joueur1.role);
-            //System.out.println(joueur2.nom + " " + joueur2.role);
+            System.out.println(joueur1.nom + " " + joueur1.role);
+            System.out.println(joueur2.nom + " " + joueur2.role);
 
             try {
                 round0(root); // on lance le jeu
@@ -552,7 +581,7 @@ public class Partie extends Application {
 
         round=0;
 
-        ImageView lancerPartie = loadImage2(root, new FileInputStream("images\\Menu\\Filtre.png"));
+        ImageView lancerPartie = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/Filtre.png")));
         root.getChildren().add(lancerPartie);
         FadeTransition fade = new FadeTransition();
         fade.setDuration(Duration.millis(700));
@@ -570,7 +599,11 @@ public class Partie extends Application {
         plateau.voirIdMrJack(root);
 
         lancer.setOnMouseClicked(e ->{
-            playSound("audio\\click.wav");
+            try {
+                playSound("audio/click.wav");
+            } catch (URISyntaxException uriSyntaxException) {
+                uriSyntaxException.printStackTrace();
+            }
 
             root.getChildren().remove(lancer);
             root.getChildren().remove(lancerPartie);
@@ -598,10 +631,10 @@ public class Partie extends Application {
         round+=1;
         jetonjoues.set(0);
         plateau.etatDePartie();
-        System.out.println("\nDébut du round "+round+":");
+        //System.out.println("\nDébut du round "+round+":");
 
-        ImageView inspTurn = new ImageView(new Image(new FileInputStream("images\\Menu\\plateau_insp.png")));
-        ImageView jackTurn = new ImageView(new Image(new FileInputStream("images\\Menu\\plateau_jack.png")));
+        ImageView inspTurn = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/plateau_insp.png")));
+        ImageView jackTurn = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/plateau_jack.png")));
 
         if(jetonjoues.get()==0){
             if(round%2==1){
@@ -622,7 +655,7 @@ public class Partie extends Application {
             int finalJ = j;
             plateau.jetonsAction.get(j).currentimg.setOnMousePressed(e -> {
 
-                System.out.println("Jeton "+(finalJ+1)+" sélectionné/joué");
+                //System.out.println("Jeton "+(finalJ+1)+" sélectionné/joué");
                 jetonjoues.addAndGet(1);
 
                 try {
@@ -770,7 +803,7 @@ public class Partie extends Application {
         ArrayList<ImageView> waits = new ArrayList<ImageView>(4);
 
         for (int i = 0; i < 4; i++) {
-            waits.add(i,new ImageView(new Image(new FileInputStream("images\\Divers\\wait3.png"))));
+            waits.add(i,new ImageView(new Image(this.getClass().getResourceAsStream("images/Divers/wait3.png"))));
             waits.get(i).setFitHeight(48);
             waits.get(i).setFitWidth(48);
             waits.get(i).setX(21);
@@ -778,7 +811,7 @@ public class Partie extends Application {
             root.getChildren().add(waits.get(i));
         }
 
-        ImageView next = new ImageView(new Image(new FileInputStream("images\\Divers\\white_check.png")));
+        ImageView next = new ImageView(new Image(this.getClass().getResourceAsStream("images/Divers/white_check.png")));
         next.setFitHeight(50);
         next.setFitWidth(50);
         next.setX(300);
@@ -815,7 +848,7 @@ public class Partie extends Application {
     }
     public void inspection() throws FileNotFoundException {
 
-        ImageView loupe = new ImageView(new Image(new FileInputStream("images\\Divers\\loupe.png")));
+        ImageView loupe = new ImageView(new Image(this.getClass().getResourceAsStream("images/Divers/loupe.png")));
         loupe.setFitHeight(50);
         loupe.setFitWidth(50);
         loupe.setX(307);
@@ -824,7 +857,11 @@ public class Partie extends Application {
         root.getChildren().add(loupe);
 
         loupe.setOnMousePressed(event -> {
-            playSound("audio\\bell.mp3");
+            try {
+                playSound("audio/bell.mp3");
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
             try {
                 plateau.isJackVisible(plateau.districtsVus());
 
@@ -837,7 +874,7 @@ public class Partie extends Application {
                 else {
                     plateau.enqueteur.sabliersRecuperes+=1;
 
-                    ImageView img = new ImageView(new Image(new FileInputStream("images\\JetonsTemps\\T"+round+".png")));
+                    ImageView img = new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsTemps/T"+round+".png")));
                     img.setFitHeight(83);
                     img.setFitWidth(83);
                     img.setX(477-plateau.enqueteur.sabliersRecuperes*17);
@@ -854,7 +891,7 @@ public class Partie extends Application {
 
                 plateau.affichageDistricts(scene,root);
                 ArrayList<Boolean> status = isGameOver();
-                System.out.println("Inspection: isJackVisible(): "+ plateau.isJackVisible(plateau.districtsVus())+"\nFin du round "+round+" - isGameOver(): " + status.get(0) + " | doesJackWin(): " + status.get(1) + " | doesEnqueteurWin(): " + status.get(2) + "\n________________________________________________________________");
+                //System.out.println("Inspection: isJackVisible(): "+ plateau.isJackVisible(plateau.districtsVus())+"\nFin du round "+round+" - isGameOver(): " + status.get(0) + " | doesJackWin(): " + status.get(1) + " | doesEnqueteurWin(): " + status.get(2) + "\n________________________________________________________________");
 
                 if (!status.get(0)) {
                     plateau.isJackVisible(plateau.districtsVus());
@@ -929,12 +966,12 @@ public class Partie extends Application {
             status.add(1, true);
             status.add(2, false);
 
-            ImageView filtre = new ImageView(new Image(new FileInputStream("images\\Menu\\filtre.png")));
+            ImageView filtre = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/filtre.png")));
             root.getChildren().remove(filtre);
             root.getChildren().add(filtre);
             FadeTransition fade0 = new FadeTransition(); fade0.setDuration(Duration.millis(1000)); fade0.setFromValue(0.1); fade0.setToValue(10); fade0.setCycleCount(1); fade0.setNode(filtre); fade0.play();
 
-            ImageView win_jack = new ImageView(new Image(new FileInputStream("images\\Menu\\win_jack.png")));
+            ImageView win_jack = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/win_jack.png")));
             root.getChildren().remove(win_jack);
             root.getChildren().add(win_jack);
             FadeTransition fade = new FadeTransition(); fade.setDuration(Duration.millis(1000)); fade.setFromValue(0.1); fade.setToValue(10); fade.setCycleCount(1); fade.setNode(win_jack); fade.play();
@@ -996,18 +1033,18 @@ public class Partie extends Application {
 
             rajouterScore(joueur2); //On renseigne une victoire du joueur2 dans le fichier des scores
 
-            ImageView filtre = new ImageView(new Image(new FileInputStream("images\\Menu\\filtre.png")));
+            ImageView filtre = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/filtre.png")));
             root.getChildren().remove(filtre);
             root.getChildren().add(filtre);
             FadeTransition fade0 = new FadeTransition(); fade0.setDuration(Duration.millis(1000)); fade0.setFromValue(0.1); fade0.setToValue(10); fade0.setCycleCount(1); fade0.setNode(filtre); fade0.play();
 
-            ImageView win_enqueteur = new ImageView(new Image(new FileInputStream("images\\Menu\\win_enqueteur.png")));
+            ImageView win_enqueteur = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/win_enqueteur.png")));
             root.getChildren().remove(win_enqueteur);
             root.getChildren().add(win_enqueteur);
             FadeTransition fade = new FadeTransition(); fade.setDuration(Duration.millis(1000)); fade.setFromValue(0.1); fade.setToValue(10); fade.setCycleCount(1); fade.setNode(win_enqueteur); fade.play();
 
 
-            ImageView img = new ImageView(new Image(new FileInputStream("images\\JetonsDetective\\Holmes.png")));
+            ImageView img = new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsDetective/Holmes.png")));
             img.setX(245);
             img.setY(100);
             root.getChildren().remove(img);
@@ -1114,8 +1151,8 @@ public class Partie extends Application {
         return imageView;
     }
 
-    public void playSound(String soundPath){
-        Media hit = new Media(Paths.get(soundPath).toUri().toString());
+    public void playSound(String soundPath) throws URISyntaxException {
+        Media hit = new Media(this.getClass().getResource(soundPath).toURI().toString());
         AudioClip mediaPlayer = new AudioClip(hit.getSource());
         mediaPlayer.play();
     }
