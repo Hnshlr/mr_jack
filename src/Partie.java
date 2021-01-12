@@ -24,6 +24,7 @@ import java.io.*;
 import java.lang.reflect.Array;
 
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class Partie extends Application {
 
@@ -395,8 +397,9 @@ public class Partie extends Application {
         content.getChildren().add(titre);
 
         //lecture du fichir scores.txt
-        Path path = Paths.get("scores.txt");
-        List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+        InputStream resource = getClass().getResourceAsStream("fichiers/scores.txt");
+        List<String> lines = new BufferedReader(new InputStreamReader(resource, StandardCharsets.UTF_8)).lines().collect(Collectors.toList());
+
         for(int i =6;i<lines.size();i++){
             long count = lines.get(i).chars().filter(ch -> ch == '1').count(); //On compte les scores
             String nom = "";
@@ -1114,8 +1117,11 @@ public class Partie extends Application {
         }
     }
     public void rajouterScore(Joueur joueur) throws IOException {
+        //InputStream resource = getClass().getResourceAsStream("src/fichiers/scores.txt");
+        //List<String> lines = new BufferedReader(new InputStreamReader(resource, StandardCharsets.UTF_8)).lines().collect(Collectors.toList());
 
-        Path path = Paths.get("scores.txt");
+
+        Path path = Paths.get(String.valueOf(this.getClass().getResourceAsStream("fichiers/scores.txt")));
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
         int c = 0;
         for(int i=0;i<lines.size();i++){
@@ -1142,6 +1148,8 @@ public class Partie extends Application {
         root.getChildren().add(imageView);
 
     }
+
+
     public static ImageView loadImage2(Pane root, FileInputStream inputstream) throws FileNotFoundException {
         //Charge l'image du fichier inputstream dans la fenetre
 

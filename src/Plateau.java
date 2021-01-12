@@ -5,6 +5,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -14,6 +15,7 @@ import javafx.util.Duration;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -423,7 +425,7 @@ public class Plateau {
     }
     public void affichageSabliers(Scene scene, Pane root) throws  FileNotFoundException {
         for (int i = 0; i < mrjack.nbSabliers; i++) {
-            ImageView sablier = new ImageView(new Image(new FileInputStream("images/JetonsTemps/Compteur_sablier.png")));
+            ImageView sablier = new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsTemps/Compteur_sablier.png")));
             sablier.setFitHeight(50);
             sablier.setFitWidth(50);
             sablier.setX(80+50*i);
@@ -475,7 +477,11 @@ public class Plateau {
 
                 }
                 if(cliques.get() == 2){
-                    playSound("audio/switch.mp3");
+                    try {
+                        playSound("audio/switch.mp3");
+                    } catch (URISyntaxException uriSyntaxException) {
+                        uriSyntaxException.printStackTrace();
+                    }
                     for(District dis : districts){
                         dis.currentimg.setOnMouseEntered(null);
                         dis.currentimg.setOnMouseExited(null);
@@ -511,13 +517,13 @@ public class Plateau {
     }
     public void rotationDistrict(Pane root,int position) throws FileNotFoundException {
 
-        ImageView gcheck = new ImageView(new Image(new FileInputStream("images/Divers/greeCheck.png")));
+        ImageView gcheck = new ImageView(new Image(this.getClass().getResourceAsStream("images/Divers/greeCheck.png")));
         gcheck.setFitHeight(350.0/15.0);
         gcheck.setFitWidth(350.0/15.0);
         gcheck.setX(districts.get(position-1).currentimg.getX());
         gcheck.setY(districts.get(position-1).currentimg.getY());
 
-        ImageView rcross = new ImageView(new Image(new FileInputStream("images/Divers/redCross.png")));
+        ImageView rcross = new ImageView(new Image(this.getClass().getResourceAsStream("images/Divers/redCross.png")));
         rcross.setFitHeight(350.0/15.0);
         rcross.setFitWidth(350.0/15.0);
         rcross.setX(districts.get(position-1).currentimg.getX());
@@ -542,7 +548,11 @@ public class Plateau {
             root.getChildren().remove(gcheck);
             root.getChildren().remove(rcross);
             if(e.getClickCount() == 1){
-                playSound("audio/rotation.mp3");
+                try {
+                    playSound("audio/rotation.mp3");
+                } catch (URISyntaxException uriSyntaxException) {
+                    uriSyntaxException.printStackTrace();
+                }
                 RotateTransition rotate = new RotateTransition();
                 rotate.setAxis(Rotate.Z_AXIS);
                 rotate.setByAngle(90);
@@ -616,13 +626,21 @@ public class Plateau {
                     if(jetons.get(0).position == 2 || jetons.get(1).position == 2){
                         jeton.img.setX(296);
                         jeton.img.setY(100-8*finalIndiceSuperposition);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
 
                     }
                     else{
                         jeton.img.setX(296);
                         jeton.img.setY(100);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     jeton.position = 2;
                     jeton.img.setOnMouseDragged(null);
@@ -631,12 +649,20 @@ public class Plateau {
                     if(jetons.get(0).position == 3 || jetons.get(1).position == 3){
                         jeton.img.setX(394);
                         jeton.img.setY(100-8*finalIndiceSuperposition);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     else{
                         jeton.img.setX(394);
                         jeton.img.setY(100);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     jeton.position = 3;
                     jeton.img.setOnMouseDragged(null);
@@ -644,7 +670,11 @@ public class Plateau {
                 } else {
                     jeton.img.setX(initX);
                     jeton.img.setY(initY);
-                    playSound("audio/place.mp3");
+                    try {
+                        playSound("audio/place.mp3");
+                    } catch (URISyntaxException uriSyntaxException) {
+                        uriSyntaxException.printStackTrace();
+                    }
                 }
             }
 
@@ -653,12 +683,20 @@ public class Plateau {
                     if(jetons.get(0).position == 3 || jetons.get(1).position == 3){
                         jeton.img.setX(394);
                         jeton.img.setY(100-8*finalIndiceSuperposition);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     else{
                         jeton.img.setX(394);
                         jeton.img.setY(100);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     jeton.position = 3;
                     jeton.img.setOnMouseDragged(null);
@@ -668,12 +706,20 @@ public class Plateau {
                     if(jetons.get(0).position == 4 || jetons.get(1).position == 4){
                         jeton.img.setX(492+8*finalIndiceSuperposition);
                         jeton.img.setY(198);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     else{
                         jeton.img.setX(492);
                         jeton.img.setY(198);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     jeton.position = 4;
                     jeton.img.setOnMouseDragged(null);
@@ -681,7 +727,11 @@ public class Plateau {
                 } else {
                     jeton.img.setX(initX);
                     jeton.img.setY(initY);
-                    playSound("audio/place.mp3");
+                    try {
+                        playSound("audio/place.mp3");
+                    } catch (URISyntaxException uriSyntaxException) {
+                        uriSyntaxException.printStackTrace();
+                    }
                 }
             }
 
@@ -690,12 +740,20 @@ public class Plateau {
                     if(jetons.get(0).position == 4 || jetons.get(1).position == 4){
                         jeton.img.setX(492+8*finalIndiceSuperposition);
                         jeton.img.setY(198);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     else{
                         jeton.img.setX(492);
                         jeton.img.setY(198);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     jeton.position = 4;
                     jeton.img.setOnMouseDragged(null);
@@ -704,12 +762,20 @@ public class Plateau {
                     if(jetons.get(0).position == 5 || jetons.get(1).position == 5){
                         jeton.img.setX(492+8*finalIndiceSuperposition);
                         jeton.img.setY(296);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     else{
                         jeton.img.setX(492);
                         jeton.img.setY(296);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     jeton.position = 5;
                     jeton.img.setOnMouseDragged(null);
@@ -717,7 +783,11 @@ public class Plateau {
                 } else {
                     jeton.img.setX(initX);
                     jeton.img.setY(initY);
-                    playSound("audio/place.mp3");
+                    try {
+                        playSound("audio/place.mp3");
+                    } catch (URISyntaxException uriSyntaxException) {
+                        uriSyntaxException.printStackTrace();
+                    }
                 }
             }
 
@@ -726,12 +796,20 @@ public class Plateau {
                     if(jetons.get(0).position == 5 || jetons.get(1).position == 5){
                         jeton.img.setX(492+8*finalIndiceSuperposition);
                         jeton.img.setY(296);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     else{
                         jeton.img.setX(492);
                         jeton.img.setY(296);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     jeton.position = 5;
                     jeton.img.setOnMouseDragged(null);
@@ -740,12 +818,20 @@ public class Plateau {
                     if(jetons.get(0).position == 6 || jetons.get(1).position == 6){
                         jeton.img.setX(492+8*finalIndiceSuperposition);
                         jeton.img.setY(394);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     else{
                         jeton.img.setX(492);
                         jeton.img.setY(394);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     jeton.position = 6;
                     jeton.img.setOnMouseDragged(null);
@@ -753,7 +839,11 @@ public class Plateau {
                 } else {
                     jeton.img.setX(initX);
                     jeton.img.setY(initY);
-                    playSound("audio/place.mp3");
+                    try {
+                        playSound("audio/place.mp3");
+                    } catch (URISyntaxException uriSyntaxException) {
+                        uriSyntaxException.printStackTrace();
+                    }
                 }
             }
 
@@ -762,12 +852,20 @@ public class Plateau {
                     if(jetons.get(0).position == 6 || jetons.get(1).position == 6){
                         jeton.img.setX(492+8*finalIndiceSuperposition);
                         jeton.img.setY(394);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     else{
                         jeton.img.setX(492);
                         jeton.img.setY(394);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     jeton.position = 6;
                     jeton.img.setOnMouseDragged(null);
@@ -776,12 +874,20 @@ public class Plateau {
                     if(jetons.get(0).position == 7 || jetons.get(1).position == 7){
                         jeton.img.setX(394);
                         jeton.img.setY(492+8*finalIndiceSuperposition);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     else{
                         jeton.img.setX(394);
                         jeton.img.setY(492);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     jeton.position = 7;
                     jeton.img.setOnMouseDragged(null);
@@ -789,7 +895,11 @@ public class Plateau {
                 } else {
                     jeton.img.setX(initX);
                     jeton.img.setY(initY);
-                    playSound("audio/place.mp3");
+                    try {
+                        playSound("audio/place.mp3");
+                    } catch (URISyntaxException uriSyntaxException) {
+                        uriSyntaxException.printStackTrace();
+                    }
                 }
             }
 
@@ -798,12 +908,20 @@ public class Plateau {
                     if(jetons.get(0).position == 7 || jetons.get(1).position == 7){
                         jeton.img.setX(394);
                         jeton.img.setY(492+8*finalIndiceSuperposition);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     else{
                         jeton.img.setX(394);
                         jeton.img.setY(492);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     jeton.position = 7;
                     jeton.img.setOnMouseDragged(null);
@@ -812,12 +930,20 @@ public class Plateau {
                     if(jetons.get(0).position == 8 || jetons.get(1).position == 8){
                         jeton.img.setX(296);
                         jeton.img.setY(492+8*finalIndiceSuperposition);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     else{
                         jeton.img.setX(296);
                         jeton.img.setY(492);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     jeton.position = 8;
                     jeton.img.setOnMouseDragged(null);
@@ -825,7 +951,11 @@ public class Plateau {
                 } else {
                     jeton.img.setX(initX);
                     jeton.img.setY(initY);
-                    playSound("audio/place.mp3");
+                    try {
+                        playSound("audio/place.mp3");
+                    } catch (URISyntaxException uriSyntaxException) {
+                        uriSyntaxException.printStackTrace();
+                    }
                 }
             }
 
@@ -834,12 +964,20 @@ public class Plateau {
                     if(jetons.get(0).position == 8 || jetons.get(1).position == 8){
                         jeton.img.setX(296);
                         jeton.img.setY(492+8*finalIndiceSuperposition);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     else{
                         jeton.img.setX(296);
                         jeton.img.setY(492);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     jeton.position = 8;
                     jeton.img.setOnMouseDragged(null);
@@ -848,12 +986,20 @@ public class Plateau {
                     if(jetons.get(0).position == 9 || jetons.get(1).position == 9){
                         jeton.img.setX(198);
                         jeton.img.setY(492+8*finalIndiceSuperposition);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     else{
                         jeton.img.setX(198);
                         jeton.img.setY(492);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     jeton.position = 9;
                     jeton.img.setOnMouseDragged(null);
@@ -861,7 +1007,11 @@ public class Plateau {
                 } else {
                     jeton.img.setX(initX);
                     jeton.img.setY(initY);
-                    playSound("audio/place.mp3");
+                    try {
+                        playSound("audio/place.mp3");
+                    } catch (URISyntaxException uriSyntaxException) {
+                        uriSyntaxException.printStackTrace();
+                    }
                 }
             }
 
@@ -870,12 +1020,20 @@ public class Plateau {
                     if(jetons.get(0).position == 9 || jetons.get(1).position == 9){
                         jeton.img.setX(198);
                         jeton.img.setY(492+8*finalIndiceSuperposition);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     else{
                         jeton.img.setX(198);
                         jeton.img.setY(492);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     jeton.position = 9;
                     jeton.img.setOnMouseDragged(null);
@@ -884,12 +1042,20 @@ public class Plateau {
                     if(jetons.get(0).position == 10 || jetons.get(1).position == 10){
                         jeton.img.setX(100-8*finalIndiceSuperposition);
                         jeton.img.setY(394);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     else{
                         jeton.img.setX(100);
                         jeton.img.setY(394);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     jeton.position = 10;
                     jeton.img.setOnMouseDragged(null);
@@ -897,7 +1063,11 @@ public class Plateau {
                 } else {
                     jeton.img.setX(initX);
                     jeton.img.setY(initY);
-                    playSound("audio/place.mp3");
+                    try {
+                        playSound("audio/place.mp3");
+                    } catch (URISyntaxException uriSyntaxException) {
+                        uriSyntaxException.printStackTrace();
+                    }
                 }
             }
 
@@ -906,12 +1076,20 @@ public class Plateau {
                     if(jetons.get(0).position == 10 || jetons.get(1).position == 10){
                         jeton.img.setX(100-8*finalIndiceSuperposition);
                         jeton.img.setY(394);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     else{
                         jeton.img.setX(100);
                         jeton.img.setY(394);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     jeton.position = 10;
                     jeton.img.setOnMouseDragged(null);
@@ -920,12 +1098,20 @@ public class Plateau {
                     if(jetons.get(0).position == 11 || jetons.get(1).position == 11){
                         jeton.img.setX(100-8*finalIndiceSuperposition);
                         jeton.img.setY(296);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     else{
                         jeton.img.setX(100);
                         jeton.img.setY(296);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     jeton.position = 11;
                     jeton.img.setOnMouseDragged(null);
@@ -933,7 +1119,11 @@ public class Plateau {
                 } else {
                     jeton.img.setX(initX);
                     jeton.img.setY(initY);
-                    playSound("audio/place.mp3");
+                    try {
+                        playSound("audio/place.mp3");
+                    } catch (URISyntaxException uriSyntaxException) {
+                        uriSyntaxException.printStackTrace();
+                    }
                 }
             }
 
@@ -942,12 +1132,20 @@ public class Plateau {
                     if(jetons.get(0).position == 11 || jetons.get(1).position == 11){
                         jeton.img.setX(100-8*finalIndiceSuperposition);
                         jeton.img.setY(296);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     else{
                         jeton.img.setX(100);
                         jeton.img.setY(296);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     jeton.position = 11;
                     jeton.img.setOnMouseDragged(null);
@@ -956,12 +1154,20 @@ public class Plateau {
                     if(jetons.get(0).position == 12 || jetons.get(1).position == 12){
                         jeton.img.setX(100-8*finalIndiceSuperposition);
                         jeton.img.setY(198);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     else{
                         jeton.img.setX(100);
                         jeton.img.setY(198);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     jeton.position = 12;
                     jeton.img.setOnMouseDragged(null);
@@ -969,7 +1175,11 @@ public class Plateau {
                 } else {
                     jeton.img.setX(initX);
                     jeton.img.setY(initY);
-                    playSound("audio/place.mp3");
+                    try {
+                        playSound("audio/place.mp3");
+                    } catch (URISyntaxException uriSyntaxException) {
+                        uriSyntaxException.printStackTrace();
+                    }
                 }
             }
 
@@ -978,12 +1188,20 @@ public class Plateau {
                     if(jetons.get(0).position == 12 || jetons.get(1).position == 12){
                         jeton.img.setX(100-8*finalIndiceSuperposition);
                         jeton.img.setY(198);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     else{
                         jeton.img.setX(100);
                         jeton.img.setY(198);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     jeton.position = 12;
                     jeton.img.setOnMouseDragged(null);
@@ -992,12 +1210,20 @@ public class Plateau {
                     if(jetons.get(0).position == 1 || jetons.get(1).position == 1){
                         jeton.img.setX(198);
                         jeton.img.setY(100-8*finalIndiceSuperposition);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     else{
                         jeton.img.setX(198);
                         jeton.img.setY(100);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     jeton.position = 1;
                     jeton.img.setOnMouseDragged(null);
@@ -1005,7 +1231,11 @@ public class Plateau {
                 } else {
                     jeton.img.setX(initX);
                     jeton.img.setY(initY);
-                    playSound("audio/place.mp3");
+                    try {
+                        playSound("audio/place.mp3");
+                    } catch (URISyntaxException uriSyntaxException) {
+                        uriSyntaxException.printStackTrace();
+                    }
                 }
             }
 
@@ -1014,12 +1244,20 @@ public class Plateau {
                     if(jetons.get(0).position == 1 || jetons.get(1).position == 1){
                         jeton.img.setX(198);
                         jeton.img.setY(100-8*finalIndiceSuperposition);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     else{
                         jeton.img.setX(198);
                         jeton.img.setY(100);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     jeton.position = 1;
                     jeton.img.setOnMouseDragged(null);
@@ -1028,12 +1266,20 @@ public class Plateau {
                     if(jetons.get(0).position == 2 || jetons.get(1).position == 2){
                         jeton.img.setX(296);
                         jeton.img.setY(100-8*finalIndiceSuperposition);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     else{
                         jeton.img.setX(296);
                         jeton.img.setY(100);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                     jeton.position = 2;
                     jeton.img.setOnMouseDragged(null);
@@ -1041,7 +1287,11 @@ public class Plateau {
                 } else {
                     jeton.img.setX(initX);
                     jeton.img.setY(initY);
-                    playSound("audio/place.mp3");
+                    try {
+                        playSound("audio/place.mp3");
+                    } catch (URISyntaxException uriSyntaxException) {
+                        uriSyntaxException.printStackTrace();
+                    }
                 }
             }
         });
@@ -1079,12 +1329,20 @@ public class Plateau {
                         if(jetons.get(0).position == 2 || jetons.get(1).position == 2){
                             jeton.img.setX(296);
                             jeton.img.setY(100-8*finalIndiceSuperposition);
-                            playSound("audio/place.mp3");
+                            try {
+                                playSound("audio/place.mp3");
+                            } catch (URISyntaxException uriSyntaxException) {
+                                uriSyntaxException.printStackTrace();
+                            }
                         }
                         else{
                             jeton.img.setX(296);
                             jeton.img.setY(100);
-                            playSound("audio/place.mp3");
+                            try {
+                                playSound("audio/place.mp3");
+                            } catch (URISyntaxException uriSyntaxException) {
+                                uriSyntaxException.printStackTrace();
+                            }
                         }
                         jeton.position = 2;
                         jeton.img.setOnMouseDragged(null);
@@ -1097,7 +1355,11 @@ public class Plateau {
                     } else {
                         jeton.img.setX(initX);
                         jeton.img.setY(initY);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                 }
 
@@ -1106,12 +1368,20 @@ public class Plateau {
                         if(jetons.get(0).position == 3 || jetons.get(1).position == 3){
                             jeton.img.setX(394);
                             jeton.img.setY(100-8*finalIndiceSuperposition);
-                            playSound("audio/place.mp3");
+                            try {
+                                playSound("audio/place.mp3");
+                            } catch (URISyntaxException uriSyntaxException) {
+                                uriSyntaxException.printStackTrace();
+                            }
                         }
                         else{
                             jeton.img.setX(394);
                             jeton.img.setY(100);
-                            playSound("audio/place.mp3");
+                            try {
+                                playSound("audio/place.mp3");
+                            } catch (URISyntaxException uriSyntaxException) {
+                                uriSyntaxException.printStackTrace();
+                            }
                         }
                         jeton.position = 3;
                         jeton.img.setOnMouseDragged(null);
@@ -1124,7 +1394,11 @@ public class Plateau {
                     else {
                         jeton.img.setX(initX);
                         jeton.img.setY(initY);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                 }
 
@@ -1133,12 +1407,20 @@ public class Plateau {
                         if(jetons.get(0).position == 4 || jetons.get(1).position == 4){
                             jeton.img.setX(492+8*finalIndiceSuperposition);
                             jeton.img.setY(198);
-                            playSound("audio/place.mp3");
+                            try {
+                                playSound("audio/place.mp3");
+                            } catch (URISyntaxException uriSyntaxException) {
+                                uriSyntaxException.printStackTrace();
+                            }
                         }
                         else{
                             jeton.img.setX(492);
                             jeton.img.setY(198);
-                            playSound("audio/place.mp3");
+                            try {
+                                playSound("audio/place.mp3");
+                            } catch (URISyntaxException uriSyntaxException) {
+                                uriSyntaxException.printStackTrace();
+                            }
                         }
                         jeton.position = 4;
                         jeton.img.setOnMouseDragged(null);
@@ -1150,7 +1432,11 @@ public class Plateau {
                     } else {
                         jeton.img.setX(initX);
                         jeton.img.setY(initY);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                 }
 
@@ -1159,12 +1445,20 @@ public class Plateau {
                         if(jetons.get(0).position == 5 || jetons.get(1).position == 5){
                             jeton.img.setX(492+8*finalIndiceSuperposition);
                             jeton.img.setY(296);
-                            playSound("audio/place.mp3");
+                            try {
+                                playSound("audio/place.mp3");
+                            } catch (URISyntaxException uriSyntaxException) {
+                                uriSyntaxException.printStackTrace();
+                            }
                         }
                         else{
                             jeton.img.setX(492);
                             jeton.img.setY(296);
-                            playSound("audio/place.mp3");
+                            try {
+                                playSound("audio/place.mp3");
+                            } catch (URISyntaxException uriSyntaxException) {
+                                uriSyntaxException.printStackTrace();
+                            }
                         }
                         jeton.position = 5;
                         jeton.img.setOnMouseDragged(null);
@@ -1176,7 +1470,11 @@ public class Plateau {
                     } else {
                         jeton.img.setX(initX);
                         jeton.img.setY(initY);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                 }
 
@@ -1185,12 +1483,20 @@ public class Plateau {
                         if(jetons.get(0).position == 6 || jetons.get(1).position == 6){
                             jeton.img.setX(492+8*finalIndiceSuperposition);
                             jeton.img.setY(394);
-                            playSound("audio/place.mp3");
+                            try {
+                                playSound("audio/place.mp3");
+                            } catch (URISyntaxException uriSyntaxException) {
+                                uriSyntaxException.printStackTrace();
+                            }
                         }
                         else{
                             jeton.img.setX(492);
                             jeton.img.setY(394);
-                            playSound("audio/place.mp3");
+                            try {
+                                playSound("audio/place.mp3");
+                            } catch (URISyntaxException uriSyntaxException) {
+                                uriSyntaxException.printStackTrace();
+                            }
                         }
                         jeton.position = 6;
                         jeton.img.setOnMouseDragged(null);
@@ -1202,7 +1508,11 @@ public class Plateau {
                     } else {
                         jeton.img.setX(initX);
                         jeton.img.setY(initY);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                 }
 
@@ -1211,12 +1521,20 @@ public class Plateau {
                         if(jetons.get(0).position == 7 || jetons.get(1).position == 7){
                             jeton.img.setX(394);
                             jeton.img.setY(492+8*finalIndiceSuperposition);
-                            playSound("audio/place.mp3");
+                            try {
+                                playSound("audio/place.mp3");
+                            } catch (URISyntaxException uriSyntaxException) {
+                                uriSyntaxException.printStackTrace();
+                            }
                         }
                         else{
                             jeton.img.setX(394);
                             jeton.img.setY(492);
-                            playSound("audio/place.mp3");
+                            try {
+                                playSound("audio/place.mp3");
+                            } catch (URISyntaxException uriSyntaxException) {
+                                uriSyntaxException.printStackTrace();
+                            }
                         }
                         jeton.position = 7;
                         jeton.img.setOnMouseDragged(null);
@@ -1228,7 +1546,11 @@ public class Plateau {
                     } else {
                         jeton.img.setX(initX);
                         jeton.img.setY(initY);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                 }
 
@@ -1237,12 +1559,20 @@ public class Plateau {
                         if(jetons.get(0).position == 8 || jetons.get(1).position == 8){
                             jeton.img.setX(296);
                             jeton.img.setY(492+8*finalIndiceSuperposition);
-                            playSound("audio/place.mp3");
+                            try {
+                                playSound("audio/place.mp3");
+                            } catch (URISyntaxException uriSyntaxException) {
+                                uriSyntaxException.printStackTrace();
+                            }
                         }
                         else{
                             jeton.img.setX(296);
                             jeton.img.setY(492);
-                            playSound("audio/place.mp3");
+                            try {
+                                playSound("audio/place.mp3");
+                            } catch (URISyntaxException uriSyntaxException) {
+                                uriSyntaxException.printStackTrace();
+                            }
                         }
                         jeton.position = 8;
                         jeton.img.setOnMouseDragged(null);
@@ -1254,7 +1584,11 @@ public class Plateau {
                     } else {
                         jeton.img.setX(initX);
                         jeton.img.setY(initY);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                 }
 
@@ -1263,12 +1597,20 @@ public class Plateau {
                         if(jetons.get(0).position == 9 || jetons.get(1).position == 9){
                             jeton.img.setX(198);
                             jeton.img.setY(492+8*finalIndiceSuperposition);
-                            playSound("audio/place.mp3");
+                            try {
+                                playSound("audio/place.mp3");
+                            } catch (URISyntaxException uriSyntaxException) {
+                                uriSyntaxException.printStackTrace();
+                            }
                         }
                         else{
                             jeton.img.setX(198);
                             jeton.img.setY(492);
-                            playSound("audio/place.mp3");
+                            try {
+                                playSound("audio/place.mp3");
+                            } catch (URISyntaxException uriSyntaxException) {
+                                uriSyntaxException.printStackTrace();
+                            }
                         }
                         jeton.position = 9;
                         jeton.img.setOnMouseDragged(null);
@@ -1280,7 +1622,11 @@ public class Plateau {
                     } else {
                         jeton.img.setX(initX);
                         jeton.img.setY(initY);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                 }
 
@@ -1289,12 +1635,20 @@ public class Plateau {
                         if(jetons.get(0).position == 10 || jetons.get(1).position == 10){
                             jeton.img.setX(100-8*finalIndiceSuperposition);
                             jeton.img.setY(394);
-                            playSound("audio/place.mp3");
+                            try {
+                                playSound("audio/place.mp3");
+                            } catch (URISyntaxException uriSyntaxException) {
+                                uriSyntaxException.printStackTrace();
+                            }
                         }
                         else{
                             jeton.img.setX(100);
                             jeton.img.setY(394);
-                            playSound("audio/place.mp3");
+                            try {
+                                playSound("audio/place.mp3");
+                            } catch (URISyntaxException uriSyntaxException) {
+                                uriSyntaxException.printStackTrace();
+                            }
                         }
                         jeton.position = 10;
                         jeton.img.setOnMouseDragged(null);
@@ -1306,7 +1660,11 @@ public class Plateau {
                     } else {
                         jeton.img.setX(initX);
                         jeton.img.setY(initY);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                 }
 
@@ -1315,12 +1673,20 @@ public class Plateau {
                         if(jetons.get(0).position == 11 || jetons.get(1).position == 11){
                             jeton.img.setX(100-8*finalIndiceSuperposition);
                             jeton.img.setY(296);
-                            playSound("audio/place.mp3");
+                            try {
+                                playSound("audio/place.mp3");
+                            } catch (URISyntaxException uriSyntaxException) {
+                                uriSyntaxException.printStackTrace();
+                            }
                         }
                         else{
                             jeton.img.setX(100);
                             jeton.img.setY(296);
-                            playSound("audio/place.mp3");
+                            try {
+                                playSound("audio/place.mp3");
+                            } catch (URISyntaxException uriSyntaxException) {
+                                uriSyntaxException.printStackTrace();
+                            }
                         }
                         jeton.position = 11;
                         jeton.img.setOnMouseDragged(null);
@@ -1332,7 +1698,11 @@ public class Plateau {
                     } else {
                         jeton.img.setX(initX);
                         jeton.img.setY(initY);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                 }
 
@@ -1341,12 +1711,20 @@ public class Plateau {
                         if(jetons.get(0).position == 12 || jetons.get(1).position == 12){
                             jeton.img.setX(100-8*finalIndiceSuperposition);
                             jeton.img.setY(198);
-                            playSound("audio/place.mp3");
+                            try {
+                                playSound("audio/place.mp3");
+                            } catch (URISyntaxException uriSyntaxException) {
+                                uriSyntaxException.printStackTrace();
+                            }
                         }
                         else{
                             jeton.img.setX(100);
                             jeton.img.setY(198);
-                            playSound("audio/place.mp3");
+                            try {
+                                playSound("audio/place.mp3");
+                            } catch (URISyntaxException uriSyntaxException) {
+                                uriSyntaxException.printStackTrace();
+                            }
                         }
                         jeton.position = 12;
                         jeton.img.setOnMouseDragged(null);
@@ -1358,7 +1736,11 @@ public class Plateau {
                     } else {
                         jeton.img.setX(initX);
                         jeton.img.setY(initY);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                 }
 
@@ -1367,12 +1749,20 @@ public class Plateau {
                         if(jetons.get(0).position == 1 || jetons.get(1).position == 1){
                             jeton.img.setX(198);
                             jeton.img.setY(100-8*finalIndiceSuperposition);
-                            playSound("audio/place.mp3");
+                            try {
+                                playSound("audio/place.mp3");
+                            } catch (URISyntaxException uriSyntaxException) {
+                                uriSyntaxException.printStackTrace();
+                            }
                         }
                         else{
                             jeton.img.setX(198);
                             jeton.img.setY(100);
-                            playSound("audio/place.mp3");
+                            try {
+                                playSound("audio/place.mp3");
+                            } catch (URISyntaxException uriSyntaxException) {
+                                uriSyntaxException.printStackTrace();
+                            }
                         }
                         jeton.position = 1;
                         jeton.img.setOnMouseDragged(null);
@@ -1384,7 +1774,11 @@ public class Plateau {
                     } else {
                         jeton.img.setX(initX);
                         jeton.img.setY(initY);
-                        playSound("audio/place.mp3");
+                        try {
+                            playSound("audio/place.mp3");
+                        } catch (URISyntaxException uriSyntaxException) {
+                            uriSyntaxException.printStackTrace();
+                        }
                     }
                 }
             });
@@ -1879,9 +2273,9 @@ public class Plateau {
         return false;
     }
 
-    public void playSound(String soundPath){
-        Media sound = new Media(new File(soundPath).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+    public void playSound(String soundPath) throws URISyntaxException {
+        Media hit = new Media(this.getClass().getResource(soundPath).toURI().toString());
+        AudioClip mediaPlayer = new AudioClip(hit.getSource());
         mediaPlayer.play();
     }
 
