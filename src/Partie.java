@@ -1,30 +1,36 @@
 import javafx.animation.FadeTransition;
-import javafx.animation.RotateTransition;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FilterInputStream;
+import java.io.*;
+
 import java.lang.reflect.Array;
+
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Partie extends Application {
@@ -35,16 +41,20 @@ public class Partie extends Application {
 
     Stage stage = new Stage();
     Pane root = new Pane();
+    Pane root2 = new Pane();
+
     Scene scene = new Scene(root,650,650);
+    Scene scene2 = new Scene(root2,650,650);
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
         primaryStage = stage;
+
         menu(primaryStage, scene, root);
 
-        primaryStage.setTitle("Mister Jack's Pocket");
-        primaryStage.getIcons().add(new Image("file:images/JetonsDetective/Holmes.png"));
+        primaryStage.setTitle("Mister Jack Pocket");
+        primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("images/JetonsDetective/Holmes.png")));
         primaryStage.setResizable(false);
         primaryStage.setWidth(665);
         primaryStage.setHeight(689);
@@ -61,30 +71,31 @@ public class Partie extends Application {
     public void menu(Stage stage,Scene scene,Pane root) throws FileNotFoundException {
         //Menu du jeu
 
+        stage.setScene(scene); //Dans le cas ou l'on revient du menu paramètre
+
         /*    ----------------------------------
                 Gestion du menu avec le clavier
               ---------------------------------- */
 
+        //ImageView menu1 = new ImageView(new Image(new FileInputStream("images/Menu/Menu1.png")));
+        ImageView menu1 = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/Menu1.png")));
+        ImageView menu2 = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/Menu2.png")));
+        ImageView menu3 = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/Menu3.png")));
+
         //Atomic integer nécessaire pour le passer dans lambda exp
         AtomicInteger count = new AtomicInteger(1); //compteur qui indique au programme où se trouve le curseur
 
-        loadImage(root,new FileInputStream("images/Menu/Menu1.png"));//Le curseur est sur play par défaut
-        scene.setOnKeyPressed(e -> { //scene receptives aux évenements clavier
+        root.getChildren().add(menu1);//Le curseur est sur play par défaut
+        scene.setOnKeyPressed(e -> { //scene receptive aux évenements clavier
             if(e.getCode().equals(KeyCode.DOWN)){ // si flèche du bas
-                try {
-                    loadImage(root,new FileInputStream("images/Menu/Menu2.png")); // curseur sur Quit
-                    count.set(2);
-                } catch (FileNotFoundException fileNotFoundException) {
-                    fileNotFoundException.printStackTrace();
-                }
+                root.getChildren().remove(menu1);
+                root.getChildren().add(menu2); // curseur sur Quit
+                count.set(2);
             }
             if(e.getCode().equals(KeyCode.UP)){ // si flèche du haut
-                try {
-                    loadImage(root,new FileInputStream("images/Menu/Menu1.png")); // curseur sur play
-                    count.set(1);
-                } catch (FileNotFoundException fileNotFoundException) {
-                    fileNotFoundException.printStackTrace();
-                }
+                root.getChildren().remove(menu2);
+                root.getChildren().add(menu1); // curseur sur Play
+                count.set(1);
             }
             if(e.getCode().equals(KeyCode.ENTER) && count.get()==1){ // si Entrer sur play
                     //on lance la partie
@@ -107,23 +118,36 @@ public class Partie extends Application {
                 Gestion du menu avec la souris
               ---------------------------------- */
 
+        AtomicBoolean onceJ = new AtomicBoolean(false);
+        AtomicBoolean onceQ = new AtomicBoolean(false);
+        AtomicBoolean onceP = new AtomicBoolean(false);
+
         scene.setOnMouseMoved(e -> {
-            if(e.getX() > 240 && e.getX() < 395 && e.getY() > 140 && e.getY() < 285){
-                try {
-                    loadImage(root,new FileInputStream("images/Menu/Menu1.png")); // curseur sur play
-                    count.set(1);
-                } catch (FileNotFoundException fileNotFoundException) {
-                    fileNotFoundException.printStackTrace();
-                }
+            if(e.getX() > 240 && e.getX() < 395 && e.getY() > 140 && e.getY() < 285 && !onceJ.get()){
+                count.set(0);
+                onceJ.set(true);
+                onceQ.set(false);
+                onceP.set(false);
+                root.getChildren().remove(menu2);
+                root.getChildren().remove(menu1);
+                root.getChildren().add(menu1); // curseur sur Quit
+                count.set(1);
             }
-            if(e.getX() > 240 && e.getX() < 395 && e.getY() > 350 && e.getY() < 440){
-                try {
-                    loadImage(root,new FileInputStream("images/Menu/Menu2.png")); // curseur sur Quit
-                    count.set(2);
-                } catch (FileNotFoundException fileNotFoundException) {
-                    fileNotFoundException.printStackTrace();
-                }
+            if(e.getX() > 240 && e.getX() < 395 && e.getY() > 350 && e.getY() < 440 && !onceQ.get()){
+                count.set(1);
+                onceQ.set(true);
+                onceJ.set(false);
+                onceP.set(false);
+                root.getChildren().remove(menu1);
+                root.getChildren().add(menu2); // curseur sur Quit
+                count.set(2);
             }
+            if(e.getX() > 10 && e.getX() < 200 && e.getY() > 600 && e.getY() < 650 && !onceP.get()){
+                onceP.set(true);
+                root.getChildren().clear();
+                root.getChildren().add(menu3);
+            }
+
         });
         scene.setOnMouseClicked(e -> {
             if(e.getX() > 240 && e.getX() < 410 && e.getY() > 140 && e.getY() < 295){
@@ -140,16 +164,348 @@ public class Partie extends Application {
             if(e.getX() > 240 && e.getX() < 395 && e.getY() > 350 && e.getY() < 440){
                 stage.close();
             }
+            if(e.getX() > 10 && e.getX() < 200 && e.getY() > 600 && e.getY() < 650){
+                //on lance le menu paramètre
+                try {
+                    menuParametre(root);
+                } catch (FileNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
+                scene.setOnMouseMoved(null);
+                scene.setOnKeyPressed(null);
+                scene.setOnMouseClicked(null);
+
+            }
+        });
+
+
+    }
+    public void menuParametre(Pane root) throws FileNotFoundException {
+        stage.setScene(scene2);
+
+        ImageView para1 = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/par1.png")));
+        ImageView para2 = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/para2.png")));
+        ImageView para3 = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/para3.png")));
+        ImageView para4 = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/para4.png")));
+
+        AtomicInteger count = new AtomicInteger();
+
+        AtomicBoolean onceT = new AtomicBoolean(false);
+        AtomicBoolean onceS = new AtomicBoolean(false);
+        AtomicBoolean onceA = new AtomicBoolean(false);
+        AtomicBoolean onceR = new AtomicBoolean(false);
+
+        root2.getChildren().add(para1);
+        scene2.setOnKeyPressed(e ->{
+            if(e.getCode().equals(KeyCode.DOWN)){
+                if(count.get() ==0){
+                    count.getAndIncrement();
+                    root2.getChildren().remove(para1);
+                    root2.getChildren().add(para2);
+                }
+                else if(count.get() ==1){
+                    count.getAndIncrement();
+                    root2.getChildren().remove(para2);
+                    root2.getChildren().add(para3);
+                }
+                else if(count.get() ==2){
+                    count.getAndIncrement();
+                    root2.getChildren().remove(para3);
+                    root2.getChildren().add(para4);
+                }
+            }
+            if(e.getCode().equals(KeyCode.UP)){
+                if(count.get() ==3){
+                    count.getAndDecrement();
+                    root2.getChildren().remove(para4);
+                    root2.getChildren().add(para3);
+                }
+                else if(count.get() ==2){
+                    count.getAndDecrement();
+                    root2.getChildren().remove(para3);
+                    root2.getChildren().add(para2);
+                }
+                else if(count.get() ==1){
+                    count.getAndDecrement();
+                    root2.getChildren().remove(para2);
+                    root2.getChildren().add(para1);
+                }
+            }
+            if(e.getCode().equals(KeyCode.ENTER)){
+                if(count.get() ==0){
+                    try {
+                        tutoriel(stage);
+                    } catch (FileNotFoundException fileNotFoundException) {
+                        fileNotFoundException.printStackTrace();
+                    }
+                }
+                else if(count.get() ==1){
+                    try {
+                        lireLesScores(stage);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                }
+                else if(count.get() ==2){
+                    try {
+                        changerSkin(stage);
+                    } catch (FileNotFoundException fileNotFoundException) {
+                        fileNotFoundException.printStackTrace();
+                    }
+                }
+                else{
+                    try {
+                        menu(stage,scene,root);
+                    } catch (FileNotFoundException fileNotFoundException) {
+                        fileNotFoundException.printStackTrace();
+                    }
+                }
+            }
+        });
+        scene2.setOnMouseMoved(e-> {
+            if(e.getX()>180 && e.getX()<450 && e.getY()>220 && e.getY()<290 && !onceT.get()){
+                count.set(0);
+                onceT.set(true);
+                onceS.set(false);
+                onceA.set(false);
+                onceR.set(false);
+                root2.getChildren().clear();
+                root2.getChildren().add(para1);
+            }
+            if(e.getX()>180 && e.getX()<450 && e.getY()>290 && e.getY()<350 && !onceS.get()){
+                count.set(1);
+                onceT.set(false);
+                onceS.set(true);
+                onceA.set(false);
+                onceR.set(false);
+                root2.getChildren().clear();
+                root2.getChildren().add(para2);
+
+            }
+            if(e.getX()>180 && e.getX()<450 && e.getY()>355 && e.getY()<415 && !onceA.get()){
+                count.set(2);
+                onceT.set(false);
+                onceS.set(false);
+                onceA.set(true);
+                onceR.set(false);
+                root2.getChildren().clear();
+                root2.getChildren().add(para3);
+            }
+            if(e.getX()>180 && e.getX()<450 && e.getY()>415 && e.getY()<480 && !onceR.get()){
+                count.set(3);
+                onceT.set(false);
+                onceS.set(false);
+                onceA.set(false);
+                onceR.set(true);
+                root2.getChildren().clear();
+                root2.getChildren().add(para4);
+            }
+
+        });
+        scene2.setOnMouseClicked(e-> {
+            if(e.getX()>180 && e.getX()<450 && e.getY()>220 && e.getY()<290 ){
+                try {
+                    tutoriel(stage);
+                } catch (FileNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
+            }
+            if(e.getX()>180 && e.getX()<450 && e.getY()>290 && e.getY()<350 ){
+                try {
+                    lireLesScores(stage);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+            if(e.getX()>180 && e.getX()<450 && e.getY()>355 && e.getY()<415 ){
+                try {
+                    changerSkin(stage);
+                } catch (FileNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
+            }
+            if(e.getX()>180 && e.getX()<450 && e.getY()>415 && e.getY()<480 ){   // si Retour, on revient au menu
+                try {
+                    menu(stage,scene,root);
+                } catch (FileNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
+            }
+
         });
     }
+    public void tutoriel(Stage stage) throws FileNotFoundException {
+        ScrollPane tuto = new ScrollPane();
+        tuto.setStyle(" -fx-background-color: #806237;");
+        tuto.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
+        Pane content = new Pane();
+        Scene sceneTuto = new Scene(tuto,650,650);
+        stage.setScene(sceneTuto);
+
+        ImageView tutoImg = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/Tutoriel.png")));
+
+        Hyperlink lien = new Hyperlink("juste ici");
+        lien.setLayoutX(110);
+        lien.setLayoutY(177);
+        lien.setStyle(" -fx-border-color: transparent; -fx-font-family: Harrington; -fx-text-fill: orange; -fx-font-size: 28");
+        content.getChildren().addAll(tutoImg,lien);
+
+        Button retour = new Button("Retour");
+        retour.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5"); retour.setMinHeight(45); retour.setMinWidth(100); retour.setLayoutX(275); retour.setLayoutY(5050);
+        content.getChildren().add(retour);
+        retour.setOnMouseEntered(e->{
+            retour.setStyle( "-fx-background-color: #806237 ; -fx-border-color: white; -fx-font-family: Harrington; -fx-text-fill: white; -fx-font-size: 20; -fx-border-radius: 5");
+        });
+        retour.setOnMouseExited(e->{
+            retour.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5");
+        });
+        retour.setOnMousePressed(e->{
+            try {
+                menuParametre(root);
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
+
+        tuto.setContent(content);
+
+        lien.setOnAction(e->{
+            getHostServices().showDocument("https://moodle.isep.fr/moodle/pluginfile.php/29594/mod_resource/content/1/mr-jack-pocket_rules_fr.pdf");
+        });
+    }
+    public void lireLesScores(Stage stage) throws IOException {
+        ScrollPane sco = new ScrollPane();
+        sco.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+        Pane content = new Pane();
+        Scene sceneSco = new Scene(sco,650,650);
+        stage.setScene(sceneSco);
+        sco.setPrefSize(650, 650);
+        content.setMinSize(650,650);   // ainsi le scrollPane est extensible selon le nombre de noms à afficher
+        sco.setStyle("-fx-background: #806237; -fx-background-color: #806237");
+
+
+        //Label de titre
+        Label titre = new Label("Tableaux des scores");
+        titre.setTextFill(Color.web("orange"));
+        titre.setFont(new Font("Harrington",50));
+        titre.setLayoutX(90);
+        titre.setLayoutY(50);
+        content.getChildren().add(titre);
+
+        //lecture du fichir scores.txt
+        Path path = Paths.get("scores.txt");
+        List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+        for(int i =6;i<lines.size();i++){
+            long count = lines.get(i).chars().filter(ch -> ch == '1').count(); //On compte les scores
+            String nom = "";
+            for(int j=0;j<lines.get(i).length();j++){
+                if(lines.get(i).charAt(j) == '|'){
+                    break;                              // Les noms sont délimités par des '|'
+                }
+                nom = nom + lines.get(i).charAt(j);
+            }
+            //On ajoute un label pour chaque nom du fichier
+            Label lab = new Label(nom+" : .....................................  " + "" + ""+count);
+            lab.setTextFill(Color.web("white"));
+            lab.setFont(new Font("Harrington",30));
+            lab.setLayoutY((i-3)*50);
+            lab.setLayoutX(100);
+
+
+            content.getChildren().add(lab);
+        }
+        Button retour = new Button("Retour");
+        retour.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5"); retour.setMinHeight(45); retour.setMinWidth(100); retour.setLayoutX(275); retour.setLayoutY(lines.size()*45 - 20);
+        content.getChildren().add(retour);
+        retour.setOnMouseEntered(e->{
+            retour.setStyle( "-fx-background-color: #806237 ; -fx-border-color: white; -fx-font-family: Harrington; -fx-text-fill: white; -fx-font-size: 20; -fx-border-radius: 5");
+        });
+        retour.setOnMouseExited(e->{
+            retour.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5");
+        });
+        retour.setOnMousePressed(e->{
+            try {
+                menuParametre(root);
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
+
+
+        sco.setContent(content);
+    }
+    public void changerSkin(Stage stage) throws FileNotFoundException {
+        Pane skin = new Pane();
+        skin.setStyle("-fx-background: #806237; -fx-background-color: #806237");
+        Scene sceneSk = new Scene(skin,650,650);
+        stage.setScene(sceneSk);
+
+        ImageView normal = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/plateau2.png"))); normal.setFitHeight(100);normal.setFitWidth(100);normal.setX(120);normal.setY(275);
+        ImageView bois = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/plateau_bois.png"))); bois.setFitHeight(100);bois.setFitWidth(100);bois.setX(270);bois.setY(275);
+        ImageView whiteChapel = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/plateau_WhiteChapel.png"))); whiteChapel.setFitHeight(100);whiteChapel.setFitWidth(100);whiteChapel.setX(420);whiteChapel.setY(275);
+
+        skin.getChildren().addAll(normal,bois,whiteChapel);
+
+        normal.setOnMouseEntered(e->{
+            normal.setEffect(new DropShadow(10, Color.WHITE));
+        });
+        normal.setOnMouseExited(e->{
+            normal.setEffect(new DropShadow(0, Color.WHITE));
+        });
+        normal.setOnMouseClicked(e->{
+            normal.setEffect(new DropShadow(10, Color.ORANGE));
+            plateau.urlFond = "images/Menu/plateau2.png";
+        });
+
+        bois.setOnMouseEntered(e->{
+            bois.setEffect(new DropShadow(10, Color.WHITE));
+        });
+        bois.setOnMouseExited(e->{
+            bois.setEffect(new DropShadow(0, Color.WHITE));
+        });
+        bois.setOnMouseClicked(e->{
+            bois.setEffect(new DropShadow(10, Color.ORANGE));
+            plateau.urlFond = "images/Menu/plateau_bois.png";
+        });
+
+        whiteChapel.setOnMouseEntered(e->{
+            whiteChapel.setEffect(new DropShadow(10, Color.WHITE));
+        });
+        whiteChapel.setOnMouseExited(e->{
+            whiteChapel.setEffect(new DropShadow(0, Color.WHITE));
+        });
+        whiteChapel.setOnMouseClicked(e->{
+            whiteChapel.setEffect(new DropShadow(10, Color.ORANGE));
+            plateau.urlFond = "images/Menu/plateau_WhiteChapel.png";
+        });
+
+        Button retour = new Button("Retour");
+        retour.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5"); retour.setMinHeight(45); retour.setMinWidth(100); retour.setLayoutX(275); retour.setLayoutY(500);
+        skin.getChildren().add(retour);
+        retour.setOnMouseEntered(e->{
+            retour.setStyle( "-fx-background-color: #806237 ; -fx-border-color: white; -fx-font-family: Harrington; -fx-text-fill: white; -fx-font-size: 20; -fx-border-radius: 5");
+        });
+        retour.setOnMouseExited(e->{
+            retour.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5");
+        });
+        retour.setOnMousePressed(e->{
+            try {
+                menuParametre(root);
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
+    }
     // Joueur 1 - Joueur 2 +  Button valider
     public void menuPlayers(Scene scene,Pane root) throws FileNotFoundException {
         //Récupère noms et rôles des edux joueurs
 
         root.getChildren().clear();
 
-        loadImage(root,new FileInputStream("images/Menu/MenuRoles.png"));
+        ImageView menuPlayers = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/MenuRoles.png")));
+        root.getChildren().add(menuPlayers);
 
         TextField textField1 = new TextField("");
         textField1.setFont(Font.font("Harrington", FontWeight.BOLD, 15));
@@ -183,7 +539,11 @@ public class Partie extends Application {
             valider.setStyle( "-fx-background-color: #6d532f; -fx-font-family : Harrington; -fx-text-fill: black; -fx-font-size : 15;-fx-border-color: grey; -fx-border-radius: 5;" );
         });
         valider.setOnMousePressed(e ->{
-            playSound("audio/click.wav");
+            try {
+                playSound("audio/click.wav");
+            } catch (URISyntaxException uriSyntaxException) {
+                uriSyntaxException.printStackTrace();
+            }
 
             joueur1.nom = textField1.getText();
             joueur1.role = "Mr Jack";
@@ -193,11 +553,12 @@ public class Partie extends Application {
 
             root.getChildren().remove(valider);
 
-            //System.out.println(joueur1.nom + " " + joueur1.role);
-            //System.out.println(joueur2.nom + " " + joueur2.role);
+            System.out.println(joueur1.nom + " " + joueur1.role);
+            System.out.println(joueur2.nom + " " + joueur2.role);
 
             try {
                 round0(root); // on lance le jeu
+                root.getChildren().removeAll(menuPlayers,textField1,textField2);
             } catch (FileNotFoundException fileNotFoundException) {
                 fileNotFoundException.printStackTrace();
             }
@@ -220,7 +581,7 @@ public class Partie extends Application {
 
         round=0;
 
-        ImageView lancerPartie = loadImage2(root, new FileInputStream("images/Menu/Filtre.png"));
+        ImageView lancerPartie = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/Filtre.png")));
         root.getChildren().add(lancerPartie);
         FadeTransition fade = new FadeTransition();
         fade.setDuration(Duration.millis(700));
@@ -238,7 +599,11 @@ public class Partie extends Application {
         plateau.voirIdMrJack(root);
 
         lancer.setOnMouseClicked(e ->{
-            playSound("audio/click.wav");
+            try {
+                playSound("audio/click.wav");
+            } catch (URISyntaxException uriSyntaxException) {
+                uriSyntaxException.printStackTrace();
+            }
 
             root.getChildren().remove(lancer);
             root.getChildren().remove(lancerPartie);
@@ -266,10 +631,10 @@ public class Partie extends Application {
         round+=1;
         jetonjoues.set(0);
         plateau.etatDePartie();
-        System.out.println("\nDébut du round "+round+":");
+        //System.out.println("\nDébut du round "+round+":");
 
-        ImageView inspTurn = new ImageView(new Image(new FileInputStream("images/Menu/plateau_insp.png")));
-        ImageView jackTurn = new ImageView(new Image(new FileInputStream("images/Menu/plateau_jack.png")));
+        ImageView inspTurn = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/plateau_insp.png")));
+        ImageView jackTurn = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/plateau_jack.png")));
 
         if(jetonjoues.get()==0){
             if(round%2==1){
@@ -290,7 +655,7 @@ public class Partie extends Application {
             int finalJ = j;
             plateau.jetonsAction.get(j).currentimg.setOnMousePressed(e -> {
 
-                System.out.println("Jeton "+(finalJ+1)+" sélectionné/joué");
+                //System.out.println("Jeton "+(finalJ+1)+" sélectionné/joué");
                 jetonjoues.addAndGet(1);
 
                 try {
@@ -438,7 +803,7 @@ public class Partie extends Application {
         ArrayList<ImageView> waits = new ArrayList<ImageView>(4);
 
         for (int i = 0; i < 4; i++) {
-            waits.add(i,new ImageView(new Image(new FileInputStream("images/Divers/wait3.png"))));
+            waits.add(i,new ImageView(new Image(this.getClass().getResourceAsStream("images/Divers/wait3.png"))));
             waits.get(i).setFitHeight(48);
             waits.get(i).setFitWidth(48);
             waits.get(i).setX(21);
@@ -446,7 +811,7 @@ public class Partie extends Application {
             root.getChildren().add(waits.get(i));
         }
 
-        ImageView next = new ImageView(new Image(new FileInputStream("images/Divers/white_check.png")));
+        ImageView next = new ImageView(new Image(this.getClass().getResourceAsStream("images/Divers/white_check.png")));
         next.setFitHeight(50);
         next.setFitWidth(50);
         next.setX(300);
@@ -483,7 +848,7 @@ public class Partie extends Application {
     }
     public void inspection() throws FileNotFoundException {
 
-        ImageView loupe = new ImageView(new Image(new FileInputStream("images/Divers/loupe.png")));
+        ImageView loupe = new ImageView(new Image(this.getClass().getResourceAsStream("images/Divers/loupe.png")));
         loupe.setFitHeight(50);
         loupe.setFitWidth(50);
         loupe.setX(307);
@@ -492,7 +857,11 @@ public class Partie extends Application {
         root.getChildren().add(loupe);
 
         loupe.setOnMousePressed(event -> {
-            playSound("audio/bell.mp3");
+            try {
+                playSound("audio/bell.mp3");
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
             try {
                 plateau.isJackVisible(plateau.districtsVus());
 
@@ -505,7 +874,7 @@ public class Partie extends Application {
                 else {
                     plateau.enqueteur.sabliersRecuperes+=1;
 
-                    ImageView img = new ImageView(new Image(new FileInputStream("images/JetonsTemps/T"+round+".png")));
+                    ImageView img = new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsTemps/T"+round+".png")));
                     img.setFitHeight(83);
                     img.setFitWidth(83);
                     img.setX(477-plateau.enqueteur.sabliersRecuperes*17);
@@ -522,14 +891,14 @@ public class Partie extends Application {
 
                 plateau.affichageDistricts(scene,root);
                 ArrayList<Boolean> status = isGameOver();
-                System.out.println("Inspection: isJackVisible(): "+ plateau.isJackVisible(plateau.districtsVus())+"\nFin du round "+round+" - isGameOver(): " + status.get(0) + " | doesJackWin(): " + status.get(1) + " | doesEnqueteurWin(): " + status.get(2) + "\n________________________________________________________________");
+                //System.out.println("Inspection: isJackVisible(): "+ plateau.isJackVisible(plateau.districtsVus())+"\nFin du round "+round+" - isGameOver(): " + status.get(0) + " | doesJackWin(): " + status.get(1) + " | doesEnqueteurWin(): " + status.get(2) + "\n________________________________________________________________");
 
                 if (!status.get(0)) {
                     plateau.isJackVisible(plateau.districtsVus());
                     prochainRound();
                 }
 
-            } catch (FileNotFoundException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
@@ -587,20 +956,22 @@ public class Partie extends Application {
         }
     }
 
-    public ArrayList<Boolean> isGameOver() throws FileNotFoundException {
+    public ArrayList<Boolean> isGameOver() throws IOException {
         ArrayList<Boolean> status = new ArrayList<Boolean>(3);
 
         if (doesJackWin()) {
+            rajouterScore(joueur1); //On renseigne une victoire du joueur1 dans le fichier des scores
+
             status.add(0, true);
             status.add(1, true);
             status.add(2, false);
 
-            ImageView filtre = new ImageView(new Image(new FileInputStream("images/Menu/filtre.png")));
+            ImageView filtre = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/filtre.png")));
             root.getChildren().remove(filtre);
             root.getChildren().add(filtre);
             FadeTransition fade0 = new FadeTransition(); fade0.setDuration(Duration.millis(1000)); fade0.setFromValue(0.1); fade0.setToValue(10); fade0.setCycleCount(1); fade0.setNode(filtre); fade0.play();
 
-            ImageView win_jack = new ImageView(new Image(new FileInputStream("images/Menu/win_jack.png")));
+            ImageView win_jack = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/win_jack.png")));
             root.getChildren().remove(win_jack);
             root.getChildren().add(win_jack);
             FadeTransition fade = new FadeTransition(); fade.setDuration(Duration.millis(1000)); fade.setFromValue(0.1); fade.setToValue(10); fade.setCycleCount(1); fade.setNode(win_jack); fade.play();
@@ -660,18 +1031,20 @@ public class Partie extends Application {
         }
         else if (doesEnqueteurWin()) {
 
-            ImageView filtre = new ImageView(new Image(new FileInputStream("images/Menu/filtre.png")));
+            rajouterScore(joueur2); //On renseigne une victoire du joueur2 dans le fichier des scores
+
+            ImageView filtre = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/filtre.png")));
             root.getChildren().remove(filtre);
             root.getChildren().add(filtre);
             FadeTransition fade0 = new FadeTransition(); fade0.setDuration(Duration.millis(1000)); fade0.setFromValue(0.1); fade0.setToValue(10); fade0.setCycleCount(1); fade0.setNode(filtre); fade0.play();
 
-            ImageView win_enqueteur = new ImageView(new Image(new FileInputStream("images/Menu/win_enqueteur.png")));
+            ImageView win_enqueteur = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/win_enqueteur.png")));
             root.getChildren().remove(win_enqueteur);
             root.getChildren().add(win_enqueteur);
             FadeTransition fade = new FadeTransition(); fade.setDuration(Duration.millis(1000)); fade.setFromValue(0.1); fade.setToValue(10); fade.setCycleCount(1); fade.setNode(win_enqueteur); fade.play();
 
 
-            ImageView img = new ImageView(new Image(new FileInputStream("images/JetonsDetective/Holmes.png")));
+            ImageView img = new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsDetective/Holmes.png")));
             img.setX(245);
             img.setY(100);
             root.getChildren().remove(img);
@@ -692,7 +1065,14 @@ public class Partie extends Application {
 
             playAgain.setOnMousePressed(event2 -> {
                 try {
-                    menuPlayers(scene,root);
+                    round0(root);
+
+                    //On inverse les noms ce qui inverse les rôles (plus facile comme ca pr les scores par exemple)
+                    String temp = null;
+                    temp = joueur1.nom;
+                    joueur1.nom = joueur2.nom;
+                    joueur2.nom = temp;
+
                 } catch (FileNotFoundException fileNotFoundException) {
                     fileNotFoundException.printStackTrace();
                 }
@@ -733,6 +1113,24 @@ public class Partie extends Application {
             return status;
         }
     }
+    public void rajouterScore(Joueur joueur) throws IOException {
+
+        Path path = Paths.get("scores.txt");
+        List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+        int c = 0;
+        for(int i=0;i<lines.size();i++){
+            if(lines.get(i).contains(joueur.nom)){
+                lines.set(i,lines.get(i)+"1");
+                break;
+            }
+            else if(c== lines.size()-1){
+                lines.add(joueur.nom+"|  1");
+                break;
+            }
+            c++;
+        }
+        Files.write(path, lines, StandardCharsets.UTF_8);
+    }
 
 
     // Fonctions loadImages:
@@ -753,9 +1151,9 @@ public class Partie extends Application {
         return imageView;
     }
 
-    public void playSound(String soundPath){
-        Media sound = new Media(new File(soundPath).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+    public void playSound(String soundPath) throws URISyntaxException {
+        Media hit = new Media(this.getClass().getResource(soundPath).toURI().toString());
+        AudioClip mediaPlayer = new AudioClip(hit.getSource());
         mediaPlayer.play();
     }
 }

@@ -7,8 +7,8 @@ public class JetonAction {
 
     String nom;
     int face;        // 1 ou 2
-    FileInputStream image1;
-    FileInputStream image2;
+    //FileInputStream image1;
+    //FileInputStream image2;
     ImageView img1;
     ImageView img2;
     ImageView currentimg;

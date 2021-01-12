@@ -10,8 +10,6 @@ public class District {
     int orientation;   // de 1 à 4 dans le sens horaire
     int face;          // 1 ou 2 : face suspect ou chemins
     int nbChemins;
-    FileInputStream image;
-    FileInputStream image2;
     ImageView img;
     ImageView img2;
     ImageView currentimg;

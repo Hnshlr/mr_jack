@@ -23,6 +23,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class Plateau {
 
+    String urlFond = "images/Menu/plateau2.png";
+
     public MisterJack mrjack = new MisterJack();
     public Enqueteur enqueteur = new Enqueteur(0,0);
 
@@ -35,7 +37,6 @@ public class Plateau {
     public JetonDetective Toby;
 
     public ArrayList<JetonAction> jetonsAction = new ArrayList<JetonAction>(4);
-
     public ArrayList<JetonTemps> jetonsTemps = new ArrayList<JetonTemps>(8);
 
     public void initPlateau(Scene scene, Pane root) throws FileNotFoundException {
@@ -138,36 +139,30 @@ public class Plateau {
             }
         }
         for (int i = 0; i < 9; i++) {
-            districts.get(i).image = new FileInputStream("images/Districts/"+districts.get(i).nom+".png");
-            districts.get(i).img = new ImageView(new Image(districts.get(i).image));
+            districts.get(i).img = new ImageView(new Image(this.getClass().getResourceAsStream("images/Districts/"+districts.get(i).nom+".png")));
             if (districts.get(i).nbChemins==3) {
-                districts.get(i).image2 = new FileInputStream("images/Districts/3chemins.png");
-                districts.get(i).img2 = new ImageView(new Image(districts.get(i).image2));
+                districts.get(i).img2 = new ImageView(new Image(this.getClass().getResourceAsStream("images/Districts/3chemins.png")));
             }
             else {
-                districts.get(i).image2 = new FileInputStream("images/Districts/4chemins.png");
-                districts.get(i).img2 = new ImageView(new Image(districts.get(i).image2));
+                districts.get(i).img2 = new ImageView(new Image(this.getClass().getResourceAsStream("images/Districts/4chemins.png")));
             }
 
         }
     }
     public void initDetectives() throws FileNotFoundException {
         this.Holmes = new JetonDetective("Sherlock Holmes",12);
-        Holmes.image = new FileInputStream("images/JetonsDetective/Holmes.png");
-        Holmes.img = new ImageView(new Image(Holmes.image));
+        Holmes.img = new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsDetective/Holmes.png")));
 
         this.Watson = new JetonDetective("Dr Watson",4);
-        Watson.image = new FileInputStream("images/JetonsDetective/Watson.png");
-        Watson.img = new ImageView(new Image(Watson.image));
+        Watson.img = new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsDetective/Watson.png")));
 
         this.Toby = new JetonDetective("Toby",8);
-        Toby.image = new FileInputStream("images/JetonsDetective/Toby.png");
-        Toby.img = new ImageView(new Image(Toby.image));
+        Toby.img = new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsDetective/Toby.png")));
 
     }
     public void initPileAlibis() throws FileNotFoundException {
         ArrayList<Integer> temp_IndicesPos = new ArrayList<>(Arrays.asList(0,1,2,3,4,5,6,7,8));
-        CarteAlibi IL = new CarteAlibi("IL",0,new ImageView(new Image(new FileInputStream("images/CartesAlibi/IL.png")))); CarteAlibi MS = new CarteAlibi("MS",1,new ImageView(new Image(new FileInputStream("images/CartesAlibi/MS.png")))); CarteAlibi JB = new CarteAlibi("JB",1,new ImageView(new Image(new FileInputStream("images/CartesAlibi/JB.png")))); CarteAlibi JP = new CarteAlibi("JP",1,new ImageView(new Image(new FileInputStream("images/CartesAlibi/JP.png")))); CarteAlibi JS = new CarteAlibi("JS",1,new ImageView(new Image(new FileInputStream("images/CartesAlibi/JS.png")))); CarteAlibi JL = new CarteAlibi("JL",1,new ImageView(new Image(new FileInputStream("images/CartesAlibi/JL.png")))); CarteAlibi M = new CarteAlibi("M",2,new ImageView(new Image(new FileInputStream("images/CartesAlibi/M.png")))); CarteAlibi SG = new CarteAlibi("SG",0,new ImageView(new Image(new FileInputStream("images/CartesAlibi/SG.png")))); CarteAlibi WG = new CarteAlibi("WG",1,new ImageView(new Image(new FileInputStream("images/CartesAlibi/WG.png"))));
+        CarteAlibi IL = new CarteAlibi("IL",0,new ImageView(new Image(this.getClass().getResourceAsStream("images/CartesAlibi/IL.png")))); CarteAlibi MS = new CarteAlibi("MS",1,new ImageView(new Image(this.getClass().getResourceAsStream("images/CartesAlibi/MS.png")))); CarteAlibi JB = new CarteAlibi("JB",1,new ImageView(new Image(this.getClass().getResourceAsStream("images/CartesAlibi/JB.png")))); CarteAlibi JP = new CarteAlibi("JP",1,new ImageView(new Image(this.getClass().getResourceAsStream("images/CartesAlibi/JP.png")))); CarteAlibi JS = new CarteAlibi("JS",1,new ImageView(new Image(this.getClass().getResourceAsStream("images/CartesAlibi/JS.png")))); CarteAlibi JL = new CarteAlibi("JL",1,new ImageView(new Image(this.getClass().getResourceAsStream("images/CartesAlibi/JL.png")))); CarteAlibi M = new CarteAlibi("M",2,new ImageView(new Image(this.getClass().getResourceAsStream("images/CartesAlibi/M.png")))); CarteAlibi SG = new CarteAlibi("SG",0,new ImageView(new Image(this.getClass().getResourceAsStream("images/CartesAlibi/SG.png")))); CarteAlibi WG = new CarteAlibi("WG",1,new ImageView(new Image(this.getClass().getResourceAsStream("images/CartesAlibi/WG.png"))));
         ArrayList<CarteAlibi> temp_ListeAlibis = new ArrayList<CarteAlibi>(Arrays.asList(IL,MS,JB,JP,JS,JL,M,SG,WG));
 
         int temp_randIndice = new Random().nextInt(9);
@@ -187,15 +182,13 @@ public class Plateau {
     }
     public void initJetonsAction() throws FileNotFoundException {
         JetonAction J1 = new JetonAction("Alibi - Holmes"); JetonAction J2 = new JetonAction("Toby - Watson"); JetonAction J3 = new JetonAction("Pivot - Echange"); JetonAction J4 = new JetonAction("Pivot - Joker");
-        J1.image1 = new FileInputStream("images/JetonsAction/Alibi.png"); J1.image2 = new FileInputStream("images/JetonsAction/Holmes.png"); J2.image1 = new FileInputStream("images/JetonsAction/Toby.png"); J2.image2 = new FileInputStream("images/JetonsAction/Watson.png"); J3.image1 = new FileInputStream("images/JetonsAction/Pivot.png"); J3.image2 = new FileInputStream("images/JetonsAction/Echange.png"); J4.image1 = new FileInputStream("images/JetonsAction/Pivot.png"); J4.image2 = new FileInputStream("images/JetonsAction/Joker.png");
-        J1.img1= new ImageView(new Image(J1.image1)); J1.img2= new ImageView(new Image(J1.image2)); J2.img1= new ImageView(new Image(J2.image1)); J2.img2= new ImageView(new Image(J2.image2)); J3.img1= new ImageView(new Image(J3.image1)); J3.img2= new ImageView(new Image(J3.image2)); J4.img1= new ImageView(new Image(J4.image1)); J4.img2= new ImageView(new Image(J4.image2));
+        J1.img1= new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsAction/Alibi.png"))); J1.img2= new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsAction/Holmes.png"))); J2.img1= new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsAction/Toby.png"))); J2.img2= new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsAction/Watson.png"))); J3.img1= new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsAction/Pivot.png"))); J3.img2= new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsAction/Echange.png"))); J4.img1= new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsAction/Pivot.png"))); J4.img2= new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsAction/Joker.png")));
         jetonsAction.add(0, J1); jetonsAction.add(1, J2); jetonsAction.add(2, J3); jetonsAction.add(3, J4);
         lancerJetonsAction();
     }
     public void initJetonsTemps() throws FileNotFoundException {
         JetonTemps T1 = new JetonTemps(1,Partie.joueur2,1); JetonTemps T2 = new JetonTemps(2,Partie.joueur1,1); JetonTemps T3 = new JetonTemps(3,Partie.joueur2,1); JetonTemps T4 = new JetonTemps(4,Partie.joueur1,1);  JetonTemps T5 = new JetonTemps(5,Partie.joueur2,1); JetonTemps T6 = new JetonTemps(6,Partie.joueur1,1); JetonTemps T7 = new JetonTemps(7,Partie.joueur2,1); JetonTemps T8 = new JetonTemps(8,Partie.joueur1,1);
-        T1.image1 = new FileInputStream("images/JetonsTemps/T1.png"); T1.image2 = new FileInputStream("images/JetonsTemps/Sablier.png"); T2.image1 = new FileInputStream("images/JetonsTemps/T2.png"); T2.image2 = new FileInputStream("images/JetonsTemps/Sablier.png"); T3.image1 = new FileInputStream("images/JetonsTemps/T3.png"); T3.image2 = new FileInputStream("images/JetonsTemps/Sablier.png"); T4.image1 = new FileInputStream("images/JetonsTemps/T4.png"); T4.image2 = new FileInputStream("images/JetonsTemps/Sablier.png"); T5.image1 = new FileInputStream("images/JetonsTemps/T5.png"); T5.image2 = new FileInputStream("images/JetonsTemps/Sablier.png"); T6.image1 = new FileInputStream("images/JetonsTemps/T6.png"); T6.image2 = new FileInputStream("images/JetonsTemps/Sablier.png"); T7.image1 = new FileInputStream("images/JetonsTemps/T7.png"); T7.image2 = new FileInputStream("images/JetonsTemps/Sablier.png"); T8.image1 = new FileInputStream("images/JetonsTemps/T8.png"); T8.image2 = new FileInputStream("images/JetonsTemps/Sablier.png");
-        T1.img = new ImageView(new Image(T1.image1)); T2.img = new ImageView(new Image(T2.image1)); T3.img = new ImageView(new Image(T3.image1)); T4.img = new ImageView(new Image(T4.image1)); T5.img = new ImageView(new Image(T5.image1)); T6.img = new ImageView(new Image(T6.image1)); T7.img = new ImageView(new Image(T7.image1)); T8.img = new ImageView(new Image(T8.image1));
+        T1.img = new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsTemps/T1.png"))); T2.img = new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsTemps/T2.png"))); T3.img = new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsTemps/T3.png"))); T4.img = new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsTemps/T4.png"))); T5.img = new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsTemps/T5.png"))); T6.img = new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsTemps/T6.png"))); T7.img = new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsTemps/T7.png"))); T8.img = new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsTemps/T8.png")));
         jetonsTemps.add(0,T1); jetonsTemps.add(1,T2); jetonsTemps.add(2,T3); jetonsTemps.add(3,T4); jetonsTemps.add(4,T5); jetonsTemps.add(5,T6); jetonsTemps.add(6,T7); jetonsTemps.add(7,T8);
     }
 
@@ -203,7 +196,7 @@ public class Plateau {
 
     public void affichageFondPlateau(Scene scene, Pane root) throws FileNotFoundException {
         // Ajout fond de plateau
-        ImageView plateau = Partie.loadImage2(root,new FileInputStream("images/Menu/plateau2.png"));
+        ImageView plateau = new ImageView(new Image(this.getClass().getResourceAsStream(urlFond)));
         root.getChildren().add(plateau);
     }
     public void affichageDistricts(Scene scene, Pane root) throws FileNotFoundException {
@@ -430,7 +423,6 @@ public class Plateau {
     }
     public void affichageSabliers(Scene scene, Pane root) throws  FileNotFoundException {
         for (int i = 0; i < mrjack.nbSabliers; i++) {
-            //ImageView sablier = Partie.loadImage2(root,new FileInputStream("images/JetonsTemps/Compteur_sablier.png"));
             ImageView sablier = new ImageView(new Image(new FileInputStream("images/JetonsTemps/Compteur_sablier.png")));
             sablier.setFitHeight(50);
             sablier.setFitWidth(50);
@@ -483,6 +475,7 @@ public class Plateau {
 
                 }
                 if(cliques.get() == 2){
+                    playSound("audio/switch.mp3");
                     for(District dis : districts){
                         dis.currentimg.setOnMouseEntered(null);
                         dis.currentimg.setOnMouseExited(null);
@@ -1541,7 +1534,7 @@ public class Plateau {
 
         voir.setOnMousePressed(e ->{
             img.setX(10);
-            img.setY(10);
+            img.setY(8);
             img.setFitHeight(325.0/5.5);
             img.setFitWidth(200.0/5.5);
             root.getChildren().add(img);

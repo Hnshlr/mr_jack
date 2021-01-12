@@ -7,7 +7,6 @@ public class CarteAlibi {
     String nom;
     int nbSabliers;
     ImageView img;
-    FileInputStream image;
 
     public CarteAlibi(String nom, int nbSabliers,ImageView img) {
         this.nom = nom;

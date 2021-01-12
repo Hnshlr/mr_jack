@@ -7,8 +7,6 @@ public class JetonTemps {
     int tour;     // de 1 à 8
     Joueur meneur;
     int face;       // 1 ou 2
-    FileInputStream image1;
-    FileInputStream image2;
     ImageView img;
     ImageView currentimg;
 
