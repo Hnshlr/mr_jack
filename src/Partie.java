@@ -58,8 +58,9 @@ public class Partie extends Application {
         primaryStage.setTitle("Mister Jack Pocket");
         primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("images/JetonsDetective/Holmes.png")));
         primaryStage.setResizable(false);
-        primaryStage.setWidth(665);
-        primaryStage.setHeight(689);
+        primaryStage.setWidth(650);
+        primaryStage.setHeight(650);
+        primaryStage.sizeToScene();
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -397,8 +398,9 @@ public class Partie extends Application {
         content.getChildren().add(titre);
 
         //lecture du fichir scores.txt
-        InputStream resource = getClass().getResourceAsStream("fichiers/scores.txt");
-        List<String> lines = new BufferedReader(new InputStreamReader(resource, StandardCharsets.UTF_8)).lines().collect(Collectors.toList());
+        Path path = Paths.get("C:/Users/julie/OneDrive/Bureau/scores.txt");
+        List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+
 
         for(int i =6;i<lines.size();i++){
             long count = lines.get(i).chars().filter(ch -> ch == '1').count(); //On compte les scores
@@ -1036,7 +1038,7 @@ public class Partie extends Application {
 
             rajouterScore(joueur2); //On renseigne une victoire du joueur2 dans le fichier des scores
 
-            ImageView filtre = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/filtre.png")));
+            ImageView filtre = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/Filtre.png")));
             root.getChildren().remove(filtre);
             root.getChildren().add(filtre);
             FadeTransition fade0 = new FadeTransition(); fade0.setDuration(Duration.millis(1000)); fade0.setFromValue(0.1); fade0.setToValue(10); fade0.setCycleCount(1); fade0.setNode(filtre); fade0.play();
@@ -1117,12 +1119,10 @@ public class Partie extends Application {
         }
     }
     public void rajouterScore(Joueur joueur) throws IOException {
-        //InputStream resource = getClass().getResourceAsStream("src/fichiers/scores.txt");
-        //List<String> lines = new BufferedReader(new InputStreamReader(resource, StandardCharsets.UTF_8)).lines().collect(Collectors.toList());
 
-
-        Path path = Paths.get(String.valueOf(this.getClass().getResourceAsStream("fichiers/scores.txt")));
+        Path path = Paths.get("C:/Users/julie/OneDrive/Bureau/scores.txt");
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+
         int c = 0;
         for(int i=0;i<lines.size();i++){
             if(lines.get(i).contains(joueur.nom)){
@@ -1136,6 +1136,7 @@ public class Partie extends Application {
             c++;
         }
         Files.write(path, lines, StandardCharsets.UTF_8);
+
     }
 
 

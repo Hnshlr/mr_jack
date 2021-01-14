@@ -1,0 +1,27 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="Mr Jack Pocket">
+    <output-path>$PROJECT_DIR$/out/artifacts/Mr_Jack_Pocket</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="Partie" />
+        <option name="description" value="" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="icons">
+          <JavaFxApplicationIcons>
+            <option name="macIcon" value="$PROJECT_DIR$/Holmes.icns" />
+            <option name="windowsIcon" value="$PROJECT_DIR$/Holmes.ico" />
+          </JavaFxApplicationIcons>
+        </option>
+        <option name="nativeBundle" value="all" />
+        <option name="title" value="" />
+        <option name="vendor" value="" />
+        <option name="version" value="" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="mr_jack.jar">
+        <element id="module-output" name="mr_jack" />
+      </element>
+    </root>
+  </artifact>
+</component>
