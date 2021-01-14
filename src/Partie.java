@@ -398,7 +398,7 @@ public class Partie extends Application {
         content.getChildren().add(titre);
 
         //lecture du fichir scores.txt
-        Path path = Paths.get("C:/Users/julie/OneDrive/Bureau/scores.txt");
+        Path path = Paths.get("scores.txt");
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
 
 
@@ -1120,7 +1120,7 @@ public class Partie extends Application {
     }
     public void rajouterScore(Joueur joueur) throws IOException {
 
-        Path path = Paths.get("C:/Users/julie/OneDrive/Bureau/scores.txt");
+        Path path = Paths.get("scores.txt");
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
 
         int c = 0;
