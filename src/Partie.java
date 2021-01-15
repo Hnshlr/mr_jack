@@ -53,7 +53,7 @@ public class Partie extends Application {
 
         primaryStage = stage;
 
-        menu(primaryStage, scene, root);
+        menu(primaryStage, scene, root); // toute la suite en escalier depuis le menu
 
         primaryStage.setTitle("Mister Jack Pocket");
         primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("images/JetonsDetective/Holmes.png")));
@@ -70,7 +70,13 @@ public class Partie extends Application {
     }
 
 
-    // Jouer - Quitter
+   /* -----------------------------------------------------------------------------
+
+                       Différents menus et fonctions associées
+
+   -------------------------------------------------------------------------------- */
+
+    // Premier menu
     public void menu(Stage stage,Scene scene,Pane root) throws FileNotFoundException {
         //Menu du jeu
 
@@ -80,7 +86,7 @@ public class Partie extends Application {
                 Gestion du menu avec le clavier
               ---------------------------------- */
 
-        //ImageView menu1 = new ImageView(new Image(new FileInputStream("images/Menu/Menu1.png")));
+        //menu défilé par succession d'images
         ImageView menu1 = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/Menu1.png")));
         ImageView menu2 = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/Menu2.png")));
         ImageView menu3 = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/Menu3.png")));
@@ -183,22 +189,32 @@ public class Partie extends Application {
 
 
     }
-    public void menuParametre(Pane root) throws FileNotFoundException {
-        stage.setScene(scene2);
 
+    // Menu des paramètres accessivle depuis le premier menu
+    public void menuParametre(Pane root) throws FileNotFoundException {
+        //Nouvelle scene pour ne pas avoir les évenembts du menu précédent
+        stage.setScene(scene2);
+        //même procédé que pour le menu précédent
         ImageView para1 = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/par1.png")));
         ImageView para2 = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/para2.png")));
         ImageView para3 = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/para3.png")));
         ImageView para4 = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/para4.png")));
 
+        //compteur pour se repérer (atomic pour l'inserer en lambda)
         AtomicInteger count = new AtomicInteger();
 
+        //pour éviter les duplicate error avec la souris
         AtomicBoolean onceT = new AtomicBoolean(false);
         AtomicBoolean onceS = new AtomicBoolean(false);
         AtomicBoolean onceA = new AtomicBoolean(false);
         AtomicBoolean onceR = new AtomicBoolean(false);
 
         root2.getChildren().add(para1);
+
+        /*    ----------------------------------
+                Gestion du menu avec le clavier
+              ---------------------------------- */
+
         scene2.setOnKeyPressed(e ->{
             if(e.getCode().equals(KeyCode.DOWN)){
                 if(count.get() ==0){
@@ -265,6 +281,11 @@ public class Partie extends Application {
                 }
             }
         });
+
+         /*     ----------------------------------
+                Gestion du menu avec la souris
+              ---------------------------------- */
+
         scene2.setOnMouseMoved(e-> {
             if(e.getX()>180 && e.getX()<450 && e.getY()>220 && e.getY()<290 && !onceT.get()){
                 count.set(0);
@@ -346,8 +367,11 @@ public class Partie extends Application {
         Scene sceneTuto = new Scene(tuto,650,650);
         stage.setScene(sceneTuto);
 
+        // Le tutoriel est une longue image que l'on defile dans un scrollpane
+
         ImageView tutoImg = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/Tutoriel.png")));
 
+        // Lien vers le pdf des règles du jeu
         Hyperlink lien = new Hyperlink("juste ici");
         lien.setLayoutX(110);
         lien.setLayoutY(177);
@@ -378,10 +402,11 @@ public class Partie extends Application {
         });
     }
     public void lireLesScores(Stage stage) throws IOException {
+
         ScrollPane sco = new ScrollPane();
         sco.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
-        Pane content = new Pane();
+        Pane content = new Pane(); // contenu du scrollpane
         Scene sceneSco = new Scene(sco,650,650);
         stage.setScene(sceneSco);
         sco.setPrefSize(650, 650);
@@ -397,7 +422,7 @@ public class Partie extends Application {
         titre.setLayoutY(50);
         content.getChildren().add(titre);
 
-        //lecture du fichir scores.txt
+        //lecture du fichir scores.txt (disponible uniquement via l'IDE)
         Path path = Paths.get("scores.txt");
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
 
@@ -421,6 +446,7 @@ public class Partie extends Application {
 
             content.getChildren().add(lab);
         }
+        // Bouton de retour au menu des paramètres
         Button retour = new Button("Retour");
         retour.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5"); retour.setMinHeight(45); retour.setMinWidth(100); retour.setLayoutX(275); retour.setLayoutY(lines.size()*45 - 20);
         content.getChildren().add(retour);
@@ -447,6 +473,7 @@ public class Partie extends Application {
         Scene sceneSk = new Scene(skin,650,650);
         stage.setScene(sceneSk);
 
+        // 3 skins différents proposés
         ImageView normal = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/plateau2.png"))); normal.setFitHeight(100);normal.setFitWidth(100);normal.setX(120);normal.setY(275);
         ImageView bois = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/plateau_bois.png"))); bois.setFitHeight(100);bois.setFitWidth(100);bois.setX(270);bois.setY(275);
         ImageView whiteChapel = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/plateau_WhiteChapel.png"))); whiteChapel.setFitHeight(100);whiteChapel.setFitWidth(100);whiteChapel.setX(420);whiteChapel.setY(275);
@@ -486,6 +513,7 @@ public class Partie extends Application {
             plateau.urlFond = "images/Menu/plateau_WhiteChapel.png";
         });
 
+        //Bouton retour
         Button retour = new Button("Retour");
         retour.setStyle( "-fx-background-color: #806237 ; -fx-border-color: grey; -fx-font-family: Harrington; -fx-text-fill: black; -fx-font-size: 20; -fx-border-radius: 5"); retour.setMinHeight(45); retour.setMinWidth(100); retour.setLayoutX(275); retour.setLayoutY(500);
         skin.getChildren().add(retour);
@@ -503,7 +531,8 @@ public class Partie extends Application {
             }
         });
     }
-    // Joueur 1 - Joueur 2 +  Button valider
+
+    // Menu de choix des rôles accessible depuis menu en cliquant sur 'jouer'
     public void menuPlayers(Scene scene,Pane root) throws FileNotFoundException {
         //Récupère noms et rôles des edux joueurs
 
@@ -572,19 +601,26 @@ public class Partie extends Application {
 
     }
 
-    // Lancement de la partie
+    /* -----------------------------------------------------------------------------
 
-    public static int round=0;
-    AtomicInteger jetonjoues = new AtomicInteger(0);
+                             Déroulemnt de la partie
 
+   -------------------------------------------------------------------------------- */
 
+    public static int round=0; // compte les tours
+
+    AtomicInteger jetonjoues = new AtomicInteger(0); // compte les jetons actions sélectionnés pour activer l'inspection
+
+    // Mise en place des différents éléments (n'intervient qu'au lancement)
     public void round0(Pane root) throws FileNotFoundException {
 
-        plateau.initPlateau(scene,root);
+        plateau.initPlateau(scene,root); // On init le plateau
 
-        plateau.affichagePlateau(scene,root);
+        plateau.affichagePlateau(scene,root); // On le charge dans la fenêtre
 
         round=0;
+
+        //Mini interface de lancement
 
         ImageView lancerPartie = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/Filtre.png")));
         root.getChildren().add(lancerPartie);
@@ -601,8 +637,10 @@ public class Partie extends Application {
 
         root.getChildren().add(lancer);
 
+        // Mr jack peut découvrir son identité (déterminée dans initplateau l.617)
         plateau.voirIdMrJack(root);
 
+        //lancement du jeu avec la fonction round1
         lancer.setOnMouseClicked(e ->{
             try {
                 playSound("audio/click.wav");
@@ -633,11 +671,14 @@ public class Partie extends Application {
 
     public void round1(Pane root) throws FileNotFoundException {
 
+        // On incrémente les variables de comptage
         round+=1;
         jetonjoues.set(0);
-        plateau.etatDePartie();
-        //System.out.println("\nDébut du round "+round+":");
 
+        // Pour débug
+        //plateau.etatDePartie();
+
+        // Transaprents pour indiquer le joueur qui doit jouer (voir affichageJoueur l.726)
         ImageView inspTurn = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/plateau_insp.png")));
         ImageView jackTurn = new ImageView(new Image(this.getClass().getResourceAsStream("images/Menu/plateau_jack.png")));
 
@@ -660,23 +701,23 @@ public class Partie extends Application {
             int finalJ = j;
             plateau.jetonsAction.get(j).currentimg.setOnMousePressed(e -> {
 
-                //System.out.println("Jeton "+(finalJ+1)+" sélectionné/joué");
                 jetonjoues.addAndGet(1);
 
                 try {
-                    //affichageJoueur(root,inspTurn,jackTurn);
                     validation(inspTurn,jackTurn);
                     actionsJeton(finalJ);
                 } catch (FileNotFoundException fileNotFoundException) {
                     fileNotFoundException.printStackTrace();
                 }
 
+                // Modif de l'opacité en transition
                 FadeTransition hide = new FadeTransition(Duration.millis(500));
                 hide.setToValue(0.4);
                 hide.setCycleCount(1);
                 hide.setNode(plateau.jetonsAction.get(finalJ).currentimg);
                 hide.play();
 
+                // On ne peut plus jouer l'action
                 plateau.jetonsAction.get(finalJ).currentimg.setOnMousePressed(null);
             });
         }
@@ -684,7 +725,9 @@ public class Partie extends Application {
 
     public void affichageJoueur(Pane root,ImageView inspTurn,ImageView jackTurn) throws FileNotFoundException {
 
-        if(jetonjoues.get()==1){
+        // implémente l'aternance des coups de chaque joueur et affiche le joueur qui doit jouer dans la fenêtre
+
+        if(jetonjoues.get()==1){ // Une fois le premier jeton cliqué selon que le tour est pair ou impair Mr jack ou l'enquêteur prend la main
             if(round%2==1){
                 root.getChildren().remove(inspTurn);
                 root.getChildren().add(jackTurn);
@@ -695,7 +738,7 @@ public class Partie extends Application {
 
             }
         }
-        else if(jetonjoues.get()==2){
+        else if(jetonjoues.get()==2){ // Deux fois de suite le même joueur
             if(round%2==1){
                 root.getChildren().remove(jackTurn);
                 root.getChildren().add(jackTurn);
@@ -705,7 +748,7 @@ public class Partie extends Application {
                 root.getChildren().add(inspTurn);
             }
         }
-        else if(jetonjoues.get()==3){
+        else if(jetonjoues.get()==3){ // Celui qui n'a joué qu'une fois termine le tour
             if(round%2==1){
                 root.getChildren().remove(jackTurn);
                 root.getChildren().add(inspTurn);
@@ -715,7 +758,7 @@ public class Partie extends Application {
                 root.getChildren().add(jackTurn);
             }
         }
-        else if (jetonjoues.get() == 4) {
+        else if (jetonjoues.get() == 4) {  // Transition avec le tour suivant
             if (round % 2 == 1) {
                 root.getChildren().remove(inspTurn);
             } else {
