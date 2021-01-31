@@ -64,7 +64,6 @@ public class Partie extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
     public static void main(String[] args) {
         launch(args);
     }
@@ -77,6 +76,7 @@ public class Partie extends Application {
    -------------------------------------------------------------------------------- */
 
     // Premier menu
+
     public void menu(Stage stage,Scene scene,Pane root) throws FileNotFoundException {
         //Menu du jeu
 
@@ -190,7 +190,8 @@ public class Partie extends Application {
 
     }
 
-    // Menu des paramètres accessivle depuis le premier menu
+    // Menu des paramètres accessible depuis le premier menu
+
     public void menuParametre(Pane root) throws FileNotFoundException {
         //Nouvelle scene pour ne pas avoir les évenembts du menu précédent
         stage.setScene(scene2);
@@ -533,6 +534,7 @@ public class Partie extends Application {
     }
 
     // Menu de choix des rôles accessible depuis menu en cliquant sur 'jouer'
+
     public void menuPlayers(Scene scene,Pane root) throws FileNotFoundException {
         //Récupère noms et rôles des edux joueurs
 
@@ -614,9 +616,9 @@ public class Partie extends Application {
     // Mise en place des différents éléments (n'intervient qu'au lancement)
     public void round0(Pane root) throws FileNotFoundException {
 
-        plateau.initPlateau(scene,root); // On init le plateau
+        plateau.initPlateau(); // On init le plateau
 
-        plateau.affichagePlateau(scene,root); // On le charge dans la fenêtre
+        plateau.affichageFondPlateau(root); // On le charge dans la fenêtre
 
         round=0;
 
@@ -652,10 +654,10 @@ public class Partie extends Application {
             root.getChildren().remove(lancerPartie);
 
             try {
-                plateau.affichageDistricts(scene,root);
-                plateau.affichageJetonsTemps(scene,root,0);
-                plateau.affichageJetonsAction(scene,root);
-                plateau.affichageDetectives(scene,root);
+                plateau.affichageDistricts(root);
+                plateau.affichageJetonsTemps(root,0);
+                plateau.affichageJetonsAction(root);
+                plateau.affichageDetectives(root);
                 round1(root);
             } catch (FileNotFoundException fileNotFoundException) {
                 fileNotFoundException.printStackTrace();
@@ -748,7 +750,7 @@ public class Partie extends Application {
                 root.getChildren().add(inspTurn);
             }
         }
-        else if(jetonjoues.get()==3){ // Celui qui n'a joué qu'une fois termine le tour
+        else if(jetonjoues.get()==3){ // Celui qui n'a pas joué qu'une fois termine le tour
             if(round%2==1){
                 root.getChildren().remove(jackTurn);
                 root.getChildren().add(inspTurn);
@@ -768,17 +770,18 @@ public class Partie extends Application {
 
     }
     public void actionsJeton(int i) throws FileNotFoundException {
+        // On définit ici les fonctions appelées selon le jeton sur lequel on clique
 
+        if (plateau.jetonsAction.get(i).nom.equals((String) "Alibi - Holmes")) {                                            // si "Alibi/Holmes...
+            if (plateau.jetonsAction.get(i).face==1) {                                                                      // si face 1...
+                CarteAlibi cartePiochee = plateau.piocheAlibi();                                                            // On pioche une carte alibi
 
-        if (plateau.jetonsAction.get(i).nom.equals((String) "Alibi - Holmes")) { // Alibi OK | Holmes OK
-            if (plateau.jetonsAction.get(i).face==1) {
-                CarteAlibi cartePiochee = plateau.piocheAlibi();
-                if ((round%2==1 && (jetonjoues.get()==2 || jetonjoues.get()==3)) || (round%2==0 && (jetonjoues.get()==1 || jetonjoues.get()==4))) {
-                    plateau.mrjack.nbSabliers+=cartePiochee.nbSabliers;
-                    plateau.affichageSabliers(scene,root);
+                if ((round%2==1 && (jetonjoues.get()==2 || jetonjoues.get()==3)) || (round%2==0 && (jetonjoues.get()==1 || jetonjoues.get()==4))) { // si la pioche intervient pendant un tour de Jack...
+                    plateau.mrjack.nbSabliers+=cartePiochee.nbSabliers;                                                                             // on incrémente son compteur...
+                    plateau.affichageSabliers(root);                                                                                                // et on affiche les sabliers de la carte à côté de lui
                 }
-                else {
-                    ImageView img = cartePiochee.img;
+                else {                                                                                                                              // sinon...
+                    ImageView img = cartePiochee.img;                                                                                               // On affche l'image de la carte piochée à côté de l'enquêteur
                     img.setX(550-plateau.enqueteur.cartePiochees*7);
                     img.setY(580-plateau.enqueteur.cartePiochees*7); plateau.enqueteur.cartePiochees+=1;
                     img.setFitHeight(50);
@@ -791,15 +794,19 @@ public class Partie extends Application {
                     fade.setCycleCount(1);
                     fade.setNode(img);
                     fade.play();
-                    for (int j = 0; j < 9; j++) {
-                        if (plateau.districts.get(j).nom.equals(cartePiochee.nom)) {
+                    for (int j = 0; j < 9; j++) {                                                          // On test tous les districts pour savoir si le personnage est toujours visible
+                        if (plateau.districts.get(j).nom.equals(cartePiochee.nom)) {                       // si c'est le cas...
 
-                            plateau.districts.get(j).face=2;
+                            plateau.districts.get(j).face=2;                                               // on le retourne
 
+                            //on recupère les coordonnées pour replacer la nouvelle image
                             double x = plateau.districts.get(j).currentimg.getX();
                             double y = plateau.districts.get(j).currentimg.getY();
+
+                            //on retire l'ancienne
                             root.getChildren().remove(plateau.districts.get(j).currentimg);
 
+                            //on ajoute la nouvelle
                             plateau.districts.get(j).currentimg=plateau.districts.get(j).img2;
                             plateau.districts.get(j).currentimg.setX(x);
                             plateau.districts.get(j).currentimg.setY(y);
@@ -808,40 +815,41 @@ public class Partie extends Application {
                             plateau.districts.get(j).currentimg.setRotate(plateau.districts.get(j).orientation*90-90);
 
                             root.getChildren().add(plateau.districts.get(j).currentimg);
+                            break; // pas de test inutile
                         }
                     }
                 }
             }
-            if (plateau.jetonsAction.get(i).face==2) {
-                plateau.deplacerDetective(plateau.Holmes);
+            if (plateau.jetonsAction.get(i).face==2) {         // si [Alibi/Holmes] sur face 2
+                plateau.deplacerDetective(plateau.Holmes);     // on active le déplacement de Holmes
             }
         }
-        if (plateau.jetonsAction.get(i).nom.equals((String) "Toby - Watson")) { // Toby OK | Watson OK
-            if (plateau.jetonsAction.get(i).face==1) {
-                plateau.deplacerDetective(plateau.Toby);
+        if (plateau.jetonsAction.get(i).nom.equals((String) "Toby - Watson")) {   //si jeton Toby/Watson sélectionné
+            if (plateau.jetonsAction.get(i).face==1) {                            // si face 1...
+                plateau.deplacerDetective(plateau.Toby);                          // on active déplacement Toby
             }
-            if (plateau.jetonsAction.get(i).face==2) {
-                plateau.deplacerDetective(plateau.Watson);
+            if (plateau.jetonsAction.get(i).face==2) {                            // si face 2...
+                plateau.deplacerDetective(plateau.Watson);                        // on active le déplacement de Watson
             }
         }
-        if (plateau.jetonsAction.get(i).nom.equals((String) "Pivot - Echange")) { // Pivot OK |
-            if (plateau.jetonsAction.get(i).face==1) {
+        if (plateau.jetonsAction.get(i).nom.equals((String) "Pivot - Echange")) { // si pivot/echange sélectionné
+            if (plateau.jetonsAction.get(i).face==1) {                            // si face 1...
                 for (int j =1;j<10;j++) {
-                    plateau.rotationDistrict(root,j);
+                    plateau.rotationDistrict(root,j);                             // On active la rotation pour tous les districts
                 }
             }
-            if (plateau.jetonsAction.get(i).face==2) {
-                plateau.echangerDistrict();
+            if (plateau.jetonsAction.get(i).face==2) {                            // si face 2...
+                plateau.echangerDistrict();                                       // On active l'échange pour tous les districts
             }
         }
-        if (plateau.jetonsAction.get(i).nom.equals((String) "Pivot - Joker")) { // Pivot OK |
-            if (plateau.jetonsAction.get(i).face==1) {
+        if (plateau.jetonsAction.get(i).nom.equals((String) "Pivot - Joker")) {   // si pivot/Joker sélectionné
+            if (plateau.jetonsAction.get(i).face==1) {                            // si face 1...
                 for(int j =1;j<10;j++){
-                    plateau.rotationDistrict(root,j);
+                    plateau.rotationDistrict(root,j);                             // On active la rotation pour tous les districts
                 }
             }
-            if (plateau.jetonsAction.get(i).face==2) {
-                plateau.joker();
+            if (plateau.jetonsAction.get(i).face==2) {                            // si face 2...
+                plateau.joker();                                                  // on active le déplacement joker
             }
         }
     }
@@ -851,7 +859,7 @@ public class Partie extends Application {
         ArrayList<ImageView> waits = new ArrayList<ImageView>(4);
 
         for (int i = 0; i < 4; i++) {
-            waits.add(i,new ImageView(new Image(this.getClass().getResourceAsStream("images/Divers/wait3.png"))));
+            waits.add(i,new ImageView(new Image(this.getClass().getResourceAsStream("images/Divers/wait3.png"))));  // pour empêcher le clic sur le jeton le temps de l'action en cours
             waits.get(i).setFitHeight(48);
             waits.get(i).setFitWidth(48);
             waits.get(i).setX(21);
@@ -859,7 +867,7 @@ public class Partie extends Application {
             root.getChildren().add(waits.get(i));
         }
 
-        ImageView next = new ImageView(new Image(this.getClass().getResourceAsStream("images/Divers/white_check.png")));
+        ImageView next = new ImageView(new Image(this.getClass().getResourceAsStream("images/Divers/white_check.png")));  // bouton de validation de l'action sélectionnée
         next.setFitHeight(50);
         next.setFitWidth(50);
         next.setX(300);
@@ -867,24 +875,21 @@ public class Partie extends Application {
         next.setEffect(new DropShadow(10, Color.WHITE));
         root.getChildren().add(next);
 
-        next.setOnMousePressed(event -> {
+        next.setOnMousePressed(event -> {                    // une fois validé...
             try {
                 for (int i = 0; i < 4; i++) {
-                    root.getChildren().remove(waits.get(i));
+                    root.getChildren().remove(waits.get(i)); // on retire le cache
                 }
-                root.getChildren().remove(next);
-                affichageJoueur(root,inspTurn,jackTurn);
+                root.getChildren().remove(next);             // le bouton disparais
+                affichageJoueur(root,inspTurn,jackTurn);     // affichage du joueur en cours (changement ou non selon le nb de jetons selec.)
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         });
 
-        next.setOnMouseReleased(event -> {
+        next.setOnMouseReleased(event -> {                   // On configure le relachement pour empêcher les bugs au moment de l'inspection en séparant les tâches
             if (jetonjoues.get() == 4) {
                 try {
-                    for (int i = 0; i < 4; i++) {
-                        root.getChildren().remove(waits.get(i));
-                    }
                     inspection();
                 } catch (FileNotFoundException fileNotFoundException) {
                     fileNotFoundException.printStackTrace();
@@ -904,23 +909,25 @@ public class Partie extends Application {
         loupe.setEffect(new DropShadow(10, Color.WHITE));
         root.getChildren().add(loupe);
 
-        loupe.setOnMousePressed(event -> {
+        loupe.setOnMousePressed(event -> {                                  // On clique sur la loupe pour réaliser l'inspection
             try {
                 playSound("audio/bell.mp3");
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
             try {
-                plateau.isJackVisible(plateau.districtsVus());
+                plateau.isJackVisible(plateau.districtsVus());             // le programme révèle si Jack est visible
 
                 // Distribution des Jetons Temps:
-                plateau.affichageJetonsTemps(scene,root,round);
-                if (!plateau.isJackVisible(plateau.districtsVus())) {
-                    plateau.mrjack.nbSabliers+=1;
-                    plateau.affichageSabliers(scene,root);
+                plateau.affichageJetonsTemps(root,round);
+                if (!plateau.isJackVisible(plateau.districtsVus())) {      // si Jack n'est pas visible...
+                    plateau.mrjack.nbSabliers+=1;                          // il remporte le tour
+                    plateau.affichageSabliers(root);
                 }
                 else {
-                    plateau.enqueteur.sabliersRecuperes+=1;
+                    plateau.enqueteur.sabliersRecuperes+=1;                // sinon c'est l'enquêteur
+
+                    // On fait disparaitre le jeton temps du tour joué :
 
                     ImageView img = new ImageView(new Image(this.getClass().getResourceAsStream("images/JetonsTemps/T"+round+".png")));
                     img.setFitHeight(83);
@@ -937,11 +944,10 @@ public class Partie extends Application {
                     fade.play();
                 }
 
-                plateau.affichageDistricts(scene,root);
-                ArrayList<Boolean> status = isGameOver();
-                //System.out.println("Inspection: isJackVisible(): "+ plateau.isJackVisible(plateau.districtsVus())+"\nFin du round "+round+" - isGameOver(): " + status.get(0) + " | doesJackWin(): " + status.get(1) + " | doesEnqueteurWin(): " + status.get(2) + "\n________________________________________________________________");
+                plateau.affichageDistricts(root);
+                ArrayList<Boolean> status = isGameOver();                   // à chaque inspection on test si la partie est terminée
 
-                if (!status.get(0)) {
+                if (!status.get(0)) {                                       // si la partie continue...
                     plateau.isJackVisible(plateau.districtsVus());
                     prochainRound();
                 }
@@ -958,30 +964,29 @@ public class Partie extends Application {
 
         // Relancement des jetons
         for (int i = 0; i < 4; i++) {
-            root.getChildren().remove(plateau.jetonsAction.get(i).currentimg);
+            root.getChildren().remove(plateau.jetonsAction.get(i).currentimg);       // On retire les images du tour précédent
         }
-        if (round%2!=0) {
-            for (int i = 0; i < 4; i++) {
-                //plateau.jetonsAction.get(i).face=(plateau.jetonsAction.get(i).face+1)%2;
-                if(plateau.jetonsAction.get(i).face==1) {
+        if (round%2!=0) {                                                            // Si on est en round pair...
+            for (int i = 0; i < 4; i++) {                                            // On test tous les jetons action
+                if(plateau.jetonsAction.get(i).face==1) {                            // face 1 ==> face 2
                     plateau.jetonsAction.get(i).face=2;
                 }
-                else {
+                else {                                                               // face 2 ==> face 1
                     plateau.jetonsAction.get(i).face=1;
                 }
             }
         }
-        else {
-            plateau.lancerJetonsAction();
+        else {                                                                       // Si round impair...
+            plateau.lancerJetonsAction();                                            // On lance les jetons
         }
-        plateau.affichageJetonsAction(scene, root);
+        plateau.affichageJetonsAction(root);                                         // Un e fois la face déterminée, il reste plus qu'à afficher
 
-        round1(root);
+        round1(root);                                                                // On peut rentrer dans le round
 
     }
 
     public static boolean doesJackWin() {
-        if((plateau.mrjack.nbSabliers>=6) || (round>=8 && !plateau.isJackVisible(plateau.districtsVus()))) {
+        if((plateau.mrjack.nbSabliers>=6) || (round>=8 && !plateau.isJackVisible(plateau.districtsVus()))) {  // Jack gagne s'il possede 6 sabliers ou s'il est invisible après 8 tours de jeu
             return true;
         }
         else {
@@ -990,16 +995,18 @@ public class Partie extends Application {
     }
 
     public static boolean doesEnqueteurWin() {
+
+        // L'enquêteur gagne si jack est le seul visible avant 8 tours de jeu
         int compteur=0;
         for (int i = 0; i < 9; i++) {
-            if (plateau.districts.get(i).face==1) {
+            if (plateau.districts.get(i).face==1) {   // on compte l'ensemble des district dont le perso est tjr visible
                 compteur+=1;
             }
         }
-        if(compteur==1 & plateau.isJackVisible(plateau.districtsVus())) {
+        if(compteur==1 & plateau.isJackVisible(plateau.districtsVus())) {  // il gagne s'il y en a un et que jack est visible
             return true;
         }
-        else {
+        else {                                                             // sinon il n'a pas encore gagné
             return false;
         }
     }
@@ -1007,7 +1014,7 @@ public class Partie extends Application {
     public ArrayList<Boolean> isGameOver() throws IOException {
         ArrayList<Boolean> status = new ArrayList<Boolean>(3);
 
-        if (doesJackWin()) {
+        if (doesJackWin()) {  // Si jack gagne on affiche le menu de fin "victoire de Mr Jack"
             rajouterScore(joueur1); //On renseigne une victoire du joueur1 dans le fichier des scores
 
             status.add(0, true);
@@ -1077,7 +1084,7 @@ public class Partie extends Application {
 
             return status;
         }
-        else if (doesEnqueteurWin()) {
+        else if (doesEnqueteurWin()) { // Si enquêteur gagne on affiche le menu de fin "victoire de l'enquêteur"
 
             rajouterScore(joueur2); //On renseigne une victoire du joueur2 dans le fichier des scores
 
@@ -1154,7 +1161,8 @@ public class Partie extends Application {
             status.add(2, true);
             return status;
         }
-        else {
+        else {  // sinon la partie n'est pas terminée
+
             status.add(0, false);
             status.add(1, false);
             status.add(2, false);
@@ -1163,45 +1171,25 @@ public class Partie extends Application {
     }
     public void rajouterScore(Joueur joueur) throws IOException {
 
-        Path path = Paths.get("scores.txt");
+        Path path = Paths.get("scores.txt");  // On lis et on écris dans scores.txt (dans le directory donc pas d'écriture pour l'exécutable)
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
 
         int c = 0;
         for(int i=0;i<lines.size();i++){
-            if(lines.get(i).contains(joueur.nom)){
-                lines.set(i,lines.get(i)+"1");
+            if(lines.get(i).contains(joueur.nom)){  // si le nom du joueur est déjà présent dans le nom du fichier
+                lines.set(i,lines.get(i)+"1");      // On rajoute 1 après le dernier cara de la ligne
                 break;
             }
-            else if(c== lines.size()-1){
+            else if(c== lines.size()-1){   // sinon on rajoute son nom et le 1
                 lines.add(joueur.nom+"|  1");
                 break;
             }
             c++;
         }
-        Files.write(path, lines, StandardCharsets.UTF_8);
+        Files.write(path, lines, StandardCharsets.UTF_8); // On écrit les modif dans le fichier
 
     }
 
-
-    // Fonctions loadImages:
-    public static void loadImage(Pane root, FileInputStream inputstream) throws FileNotFoundException {
-        //Charge l'image du fichier inputstream dans la fenetre
-
-        Image img = new Image(inputstream);
-        ImageView imageView = new ImageView(img);
-        root.getChildren().add(imageView);
-
-    }
-
-
-    public static ImageView loadImage2(Pane root, FileInputStream inputstream) throws FileNotFoundException {
-        //Charge l'image du fichier inputstream dans la fenetre
-
-        Image img = new Image(inputstream);
-        ImageView imageView = new ImageView(img);
-
-        return imageView;
-    }
 
     public void playSound(String soundPath) throws URISyntaxException {
         Media hit = new Media(this.getClass().getResource(soundPath).toURI().toString());
