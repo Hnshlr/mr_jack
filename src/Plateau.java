@@ -1801,6 +1801,7 @@ public class Plateau {
                              Différentes méthodes de jeu
 
    -------------------------------------------------------------------------------- */
+    
     public void lancerJetonsAction() {
 
         //Attribution à chaque début de tour d'une face aléatoire qui correspond au lancer des jetons
